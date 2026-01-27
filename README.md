@@ -8,6 +8,7 @@ A high-performance SolidJS application scaffold using Vite for build tooling and
 - **Vite** - Fast build tool with HMR
 - **Bun** - Fast JavaScript runtime and package manager
 - **TypeScript** - Type safety
+- **Vitest** - Unit/component testing
 - **Playwright** - End-to-end testing
 
 ## Getting Started
@@ -56,27 +57,59 @@ bun run serve
 
 ## Testing
 
-Run end-to-end tests with Playwright across all browsers (Chromium, Firefox, WebKit):
+### Run All Tests
+
+Run both unit and e2e tests:
 
 ```bash
 bun run test
 ```
 
-**Note:** Use `bun run test`, not `bun test`. The latter runs Bun's built-in test runner which doesn't work with Playwright.
+**Note:** Use `bun run test`, not `bun test`. The latter runs Bun's built-in test runner.
 
-Run tests with UI mode for debugging:
+### Unit Tests (Vitest)
 
-```bash
-bun run test:ui
-```
-
-Run tests in headed mode (see browser):
+Run unit tests:
 
 ```bash
-bun run test:headed
+bun run test:unit
 ```
 
-Tests are located in `tests/e2e/` and will automatically start the dev server. Test results and reports are saved in `tests/.output/` (git-ignored).
+Watch mode for development:
+
+```bash
+bun run test:unit:watch
+```
+
+UI mode for debugging:
+
+```bash
+bun run test:unit:ui
+```
+
+Unit tests are located in `tests/unit/` and use Vitest with SolidJS Testing Library.
+
+### E2E Tests (Playwright)
+
+Run e2e tests across all browsers (Chromium, Firefox, WebKit):
+
+```bash
+bun run test:e2e
+```
+
+UI mode for debugging:
+
+```bash
+bun run test:e2e:ui
+```
+
+Headed mode (see browser):
+
+```bash
+bun run test:e2e:headed
+```
+
+E2E tests are located in `tests/e2e/` and automatically start the dev server. Test results and reports are saved in `tests/.output/` (git-ignored).
 
 ## Deployment
 
@@ -87,4 +120,5 @@ Deploy the `dist` folder to any static host provider (Vercel, Netlify, Cloudflar
 - [SolidJS Documentation](https://solidjs.com)
 - [Vite Documentation](https://vitejs.dev)
 - [Bun Documentation](https://bun.sh)
+- [Vitest Documentation](https://vitest.dev)
 - [Playwright Documentation](https://playwright.dev)
