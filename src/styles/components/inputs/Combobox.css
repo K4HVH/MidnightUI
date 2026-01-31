@@ -141,7 +141,7 @@
   display: flex;
   align-items: center;
   gap: var(--g-spacing-sm);
-  padding: var(--g-spacing-sm) var(--g-spacing);
+  padding: var(--g-spacing-sm) var(--g-spacing) var(--g-spacing-sm) var(--g-spacing-sm);
   cursor: pointer;
   transition: all var(--g-transition);
   color: var(--g-text-secondary);
@@ -149,7 +149,7 @@
 }
 
 .combobox--compact .combobox__option {
-  padding: var(--spacing-1) var(--g-spacing-sm);
+  padding: var(--spacing-1) var(--g-spacing-sm) var(--spacing-1) var(--spacing-1);
   font-size: var(--font-size-sm);
 }
 
