@@ -1,0 +1,223 @@
+/* =============================================================================
+   Slider Component
+   ============================================================================= */
+
+.slider {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-width: 120px;
+  padding: var(--g-spacing);
+}
+
+.slider--vertical {
+  flex-direction: column;
+  width: auto;
+  height: 200px;
+  min-height: 120px;
+}
+
+.slider--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Track */
+.slider__track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: var(--g-background-elevated);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  overflow: visible;
+}
+
+.slider__track::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.slider__track:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.slider--vertical .slider__track {
+  width: 6px;
+  height: 100%;
+}
+
+.slider--compact .slider__track {
+  height: 4px;
+}
+
+.slider--vertical.slider--compact .slider__track {
+  width: 4px;
+  height: 100%;
+}
+
+.slider--disabled .slider__track {
+  cursor: not-allowed;
+}
+
+.slider--disabled .slider__track:hover::before {
+  background: rgba(255, 255, 255, 0);
+}
+
+/* Range (filled portion) */
+.slider__range {
+  position: absolute;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  transition: background var(--g-transition);
+}
+
+.slider__range {
+  height: 100%;
+}
+
+.slider--vertical .slider__range {
+  width: 100%;
+  left: 0;
+}
+
+/* Thumb */
+.slider__thumb {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: var(--g-background);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  transition: transform var(--g-transition), box-shadow var(--g-transition);
+  z-index: 1;
+}
+
+.slider--vertical .slider__thumb {
+  left: 50%;
+  transform: translate(-50%, 50%);
+  top: auto;
+}
+
+.slider--compact .slider__thumb {
+  width: 14px;
+  height: 14px;
+}
+
+.slider__thumb:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.slider--vertical .slider__thumb:hover {
+  transform: translate(-50%, 50%) scale(1.1);
+}
+
+.slider__thumb:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.slider--dragging .slider__thumb {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.slider--vertical.slider--dragging .slider__thumb {
+  transform: translate(-50%, 50%) scale(1.15);
+}
+
+.slider--disabled .slider__thumb {
+  cursor: not-allowed;
+  border-color: var(--g-border-color);
+}
+
+.slider--disabled .slider__thumb:hover {
+  transform: translate(-50%, -50%);
+}
+
+.slider--vertical.slider--disabled .slider__thumb:hover {
+  transform: translate(-50%, 50%);
+}
+
+/* Active thumb has higher z-index */
+.slider__thumb--start:active,
+.slider__thumb--end:active {
+  z-index: 2;
+}
+
+/* Marks */
+.slider__mark {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  pointer-events: none;
+}
+
+.slider--vertical .slider__mark {
+  left: 50%;
+  top: auto;
+  transform: translate(-50%, 50%);
+}
+
+.slider__mark-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--g-text-muted);
+  border-radius: var(--radius-full);
+}
+
+.slider__mark-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--g-text-muted);
+  white-space: nowrap;
+}
+
+.slider--vertical .slider__mark-label {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  margin-left: var(--g-spacing-sm);
+}
+
+/* Tooltip */
+.slider__tooltip {
+  background: var(--g-background-elevated);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  padding: var(--spacing-1) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--g-text-secondary);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: slider-tooltip-fade-in 0.15s ease-out;
+}
+
+@keyframes slider-tooltip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
