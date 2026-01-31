@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
-import { Button } from '../../src/components/Button';
+import { Button } from '../../src/components/inputs/Button';
 import { BsPlus } from 'solid-icons/bs';
 
 describe('Button', () => {

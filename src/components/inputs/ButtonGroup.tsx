@@ -1,5 +1,5 @@
 import { Component, JSX, splitProps, children } from 'solid-js';
-import '../styles/components/ButtonGroup.css';
+import '../../styles/components/inputs/ButtonGroup.css';
 
 interface ButtonGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   orientation?: 'horizontal' | 'vertical';

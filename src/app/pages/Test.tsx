@@ -1,14 +1,14 @@
 import type { Component } from 'solid-js';
 import { createSignal } from 'solid-js';
-import { GridBackground } from '../../components/GridBackground';
-import { Card, CardHeader } from '../../components/Card';
-import { Checkbox } from '../../components/Checkbox';
-import { RadioGroup } from '../../components/RadioGroup';
-import { Combobox } from '../../components/Combobox';
-import { Slider } from '../../components/Slider';
-import { Button } from '../../components/Button';
-import { ButtonGroup } from '../../components/ButtonGroup';
-import { Spinner } from '../../components/Spinner';
+import { GridBackground } from '../../components/surfaces/GridBackground';
+import { Card, CardHeader } from '../../components/surfaces/Card';
+import { Checkbox } from '../../components/inputs/Checkbox';
+import { RadioGroup } from '../../components/inputs/RadioGroup';
+import { Combobox } from '../../components/inputs/Combobox';
+import { Slider } from '../../components/inputs/Slider';
+import { Button } from '../../components/inputs/Button';
+import { ButtonGroup } from '../../components/inputs/ButtonGroup';
+import { Spinner } from '../../components/inputs/Spinner';
 import { getCSSVariable } from '../../utils/cssVariables';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill, BsStar, BsStarFill, BsPlus, BsTrash, BsPencil, BsDownload, BsUpload, BsGear, BsCircle, BsCircleFill, BsSquare, BsTriangle } from 'solid-icons/bs';
 

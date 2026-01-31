@@ -1,5 +1,5 @@
 import { Component, onMount, onCleanup } from 'solid-js';
-import { getCSSVariable } from '../utils/cssVariables';
+import { getCSSVariable } from '../../utils/cssVariables';
 
 interface GridBackgroundProps {
   gridSize?: number;

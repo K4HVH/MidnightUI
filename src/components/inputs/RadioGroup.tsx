@@ -1,5 +1,5 @@
 import { Component, JSX, For, splitProps, Show } from 'solid-js';
-import '../styles/components/Radio.css';
+import '../../styles/components/inputs/RadioGroup.css';
 
 interface RadioOption {
   value: string;

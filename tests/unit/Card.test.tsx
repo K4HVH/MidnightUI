@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
-import { Card, CardHeader } from '../../src/components/Card';
+import { Card, CardHeader } from '../../src/components/surfaces/Card';
 
 describe('Card', () => {
   it('renders children content', () => {

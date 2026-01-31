@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
 import { createSignal } from 'solid-js';
-import { Slider } from '../../src/components/Slider';
+import { Slider } from '../../src/components/inputs/Slider';
 
 describe('Slider', () => {
   it('renders with default value', () => {

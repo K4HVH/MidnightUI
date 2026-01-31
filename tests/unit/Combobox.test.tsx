@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
 import { createSignal } from 'solid-js';
-import { Combobox } from '../../src/components/Combobox';
+import { Combobox } from '../../src/components/inputs/Combobox';
 import { BsCircle, BsSquare } from 'solid-icons/bs';
 
 describe('Combobox', () => {
@@ -60,7 +60,7 @@ describe('Combobox', () => {
         <Combobox
           value={value()}
           onChange={(newValue) => {
-            setValue(newValue);
+            setValue(newValue as string);
             handleChange(newValue);
           }}
           options={mockOptions}

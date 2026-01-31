@@ -2,7 +2,7 @@ import { Component, createSignal, createEffect, Show, For, splitProps, JSX, onCl
 import { Portal } from 'solid-js/web';
 import { BsX } from 'solid-icons/bs';
 import { Checkbox } from './Checkbox';
-import '../styles/components/Combobox.css';
+import '../../styles/components/inputs/Combobox.css';
 
 interface ComboboxOption {
   value: string;
@@ -76,11 +76,11 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     document.removeEventListener('mousedown', handleClickOutside);
   });
 
-  const selectedValues = () => {
+  const selectedValues = (): string[] => {
     if (local.multiple) {
       return Array.isArray(local.value) ? local.value : [];
     }
-    return local.value ? [local.value] : [];
+    return local.value && typeof local.value === 'string' ? [local.value] : [];
   };
 
   const selectedOptions = () => {

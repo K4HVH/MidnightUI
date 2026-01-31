@@ -1,5 +1,5 @@
 import { Component, JSX, splitProps } from 'solid-js';
-import '../styles/components/Card.css';
+import '../../styles/components/surfaces/Card.css';
 
 interface CardProps extends JSX.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'emphasized' | 'subtle';

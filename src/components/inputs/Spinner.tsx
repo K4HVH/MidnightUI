@@ -1,5 +1,5 @@
 import { Component, JSX, splitProps } from 'solid-js';
-import '../styles/components/Spinner.css';
+import '../../styles/components/inputs/Spinner.css';
 
 interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'normal' | 'lg';

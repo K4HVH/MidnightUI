@@ -1,6 +1,6 @@
 import { Component, createSignal, splitProps, onMount, onCleanup, Show, For } from 'solid-js';
 import { Portal } from 'solid-js/web';
-import '../styles/components/Slider.css';
+import '../../styles/components/inputs/Slider.css';
 
 interface SliderMark {
   value: number;

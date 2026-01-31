@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
 import { createSignal } from 'solid-js';
-import { Checkbox } from '../../src/components/Checkbox';
+import { Checkbox } from '../../src/components/inputs/Checkbox';
 import { BsHeart, BsHeartFill } from 'solid-icons/bs';
 
 describe('Checkbox', () => {

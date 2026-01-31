@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
 import { createSignal } from 'solid-js';
-import { RadioGroup } from '../../src/components/RadioGroup';
+import { RadioGroup } from '../../src/components/inputs/RadioGroup';
 import { BsHeart, BsHeartFill, BsStar, BsStarFill } from 'solid-icons/bs';
 
 describe('RadioGroup', () => {

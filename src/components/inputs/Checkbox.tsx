@@ -1,5 +1,5 @@
 import { Component, JSX, createEffect, splitProps, Show } from 'solid-js';
-import '../styles/components/Checkbox.css';
+import '../../styles/components/inputs/Checkbox.css';
 
 interface CheckboxProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
   label?: string;
