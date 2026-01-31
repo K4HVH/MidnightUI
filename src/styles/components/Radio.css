@@ -1,0 +1,193 @@
+/* =============================================================================
+   Radio Component
+   ============================================================================= */
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--g-spacing-sm);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.radio--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hide native radio input */
+.radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Radio circle (replaces native radio) */
+.radio__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--radius-full);
+  background: var(--g-background);
+  transition: all var(--g-transition);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.radio__circle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.radio__circle::after {
+  content: '';
+  position: absolute;
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  z-index: 1;
+}
+
+/* Compact size */
+.radio--compact .radio__circle {
+  width: 14px;
+  height: 14px;
+}
+
+.radio--compact .radio__circle::after {
+  width: 6px;
+  height: 6px;
+}
+
+/* Checked state */
+.radio__input:checked + .radio__circle {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.radio__input:checked + .radio__circle::after {
+  display: block;
+}
+
+/* Focus state */
+.radio__input:focus-visible ~ .radio__circle {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Hover state (not disabled) */
+.radio:not(.radio--disabled):hover .radio__circle {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.radio:not(.radio--disabled):hover .radio__circle::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hover for checked state */
+.radio:not(.radio--disabled):hover .radio__input:checked + .radio__circle::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Label text */
+.radio__label {
+  color: var(--g-text-secondary);
+  font-size: var(--g-font-size);
+  line-height: var(--g-line-height);
+}
+
+.radio--compact .radio__label {
+  font-size: var(--font-size-sm);
+}
+
+/* Icon radios */
+.radio__icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--g-text-secondary);
+  transition: color var(--g-transition);
+}
+
+.radio--compact .radio__icon-wrapper {
+  width: 16px;
+  height: 16px;
+}
+
+.radio__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: opacity var(--g-transition);
+}
+
+.radio--compact .radio__icon {
+  font-size: 16px;
+}
+
+/* Show unchecked icon by default */
+.radio__icon--unchecked {
+  opacity: 1;
+}
+
+/* Hide checked icon by default */
+.radio__icon--checked {
+  opacity: 0;
+}
+
+/* When checked, hide unchecked icon and show checked icon */
+.radio__input:checked ~ .radio__icon-wrapper .radio__icon--unchecked {
+  opacity: 0;
+}
+
+.radio__input:checked ~ .radio__icon-wrapper .radio__icon--checked {
+  opacity: 1;
+}
+
+/* Change icon color when checked */
+.radio__input:checked ~ .radio__icon-wrapper {
+  color: var(--color-primary);
+}
+
+/* Hover effect for icon radios */
+.radio--icon:not(.radio--disabled):hover .radio__icon-wrapper {
+  color: var(--g-border-color-emphasis);
+}
+
+.radio--icon:not(.radio--disabled):hover .radio__input:checked ~ .radio__icon-wrapper {
+  color: var(--color-accent);
+}
+
+/* Radio Group */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--g-spacing-sm);
+}
+
+.radio-group--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
