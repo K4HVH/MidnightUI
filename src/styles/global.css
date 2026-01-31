@@ -39,6 +39,24 @@
   --color-red-400: #ef4444;  /* Light red */
   --color-red-300: #f87171;  /* Lighter red */
 
+  /* Green Scale */
+  --color-green-900: #003300;  /* Very dark green */
+  --color-green-800: #004d00;  /* Dark green */
+  --color-green-700: #006600;  /* Deep green */
+  --color-green-600: #008000;  /* Standard green */
+  --color-green-500: #10b981;  /* Bright green */
+  --color-green-400: #34d399;  /* Light green */
+  --color-green-300: #6ee7b7;  /* Lighter green */
+
+  /* Yellow/Orange Scale */
+  --color-yellow-900: #4d3300;  /* Very dark yellow */
+  --color-yellow-800: #664400;  /* Dark yellow */
+  --color-yellow-700: #805500;  /* Deep yellow */
+  --color-yellow-600: #996600;  /* Standard yellow */
+  --color-yellow-500: #f59e0b;  /* Bright yellow/orange */
+  --color-yellow-400: #fbbf24;  /* Light yellow */
+  --color-yellow-300: #fcd34d;  /* Lighter yellow */
+
   /* Semantic Colors */
   --color-primary: var(--color-blue-600);      /* Main interaction color */
   --color-secondary: var(--color-blue-800);    /* Secondary elements */
@@ -46,6 +64,8 @@
   --color-accent: var(--color-blue-500);       /* Highlight/accent color */
   --color-muted: var(--color-gray-400);        /* Muted text/elements */
   --color-danger: var(--color-red-600);        /* Danger/destructive color */
+  --color-success: var(--color-green-500);     /* Success/positive color */
+  --color-warning: var(--color-yellow-500);    /* Warning/caution color */
 
   /* Spacing Scale (4px base unit) */
   --spacing-1: 4px;
