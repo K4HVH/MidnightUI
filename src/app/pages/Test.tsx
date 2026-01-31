@@ -46,6 +46,9 @@ const Test: Component = () => {
   const [textValue7, setTextValue7] = createSignal('Short text');
   const [textValue8, setTextValue8] = createSignal('');
   const [textValue9, setTextValue9] = createSignal('');
+  const [multilineValue1, setMultilineValue1] = createSignal('');
+  const [multilineValue2, setMultilineValue2] = createSignal('This is a textarea that automatically grows as you type more content. Try adding several lines of text to see it expand!');
+  const [multilineValue3, setMultilineValue3] = createSignal('');
   const [currency, setCurrency] = createSignal('usd');
   const [protocol, setProtocol] = createSignal('https');
 
@@ -347,6 +350,54 @@ const Test: Component = () => {
                 }
               />
               <p><small>Full URL: {protocol()}://{textValue9() || 'example.com'}</small></p>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Multi-Line TextField" subtitle="Basic textarea" />
+            <div class="grid--sm">
+              <TextField
+                label="Comments"
+                multiline
+                placeholder="Enter your comments..."
+                value={multilineValue1()}
+                onChange={setMultilineValue1}
+              />
+              <p><small>Lines: {(multilineValue1().match(/\n/g) || []).length + 1}</small></p>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Auto-Growing Textarea" subtitle="Grows from 3 to 10 rows" />
+            <div class="grid--sm">
+              <TextField
+                label="Description"
+                multiline
+                rows={3}
+                maxRows={10}
+                placeholder="Start typing to see it grow..."
+                value={multilineValue2()}
+                onChange={setMultilineValue2}
+                clearable
+              />
+              <p><small>Characters: {multilineValue2().length}</small></p>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Multi-Line with Character Limit" />
+            <div class="grid--sm">
+              <TextField
+                label="Bio"
+                multiline
+                rows={4}
+                maxRows={6}
+                maxLength={200}
+                showCount
+                placeholder="Write a short bio..."
+                value={multilineValue3()}
+                onChange={setMultilineValue3}
+              />
             </div>
           </Card>
 

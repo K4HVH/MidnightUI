@@ -413,3 +413,32 @@ hr {
 .flex--wrap {
   flex-wrap: wrap;
 }
+
+/* =============================================================================
+   Scrollbar Styling
+   ============================================================================= */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--g-border-color);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--g-border-color-emphasis);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--g-border-color) transparent;
+}

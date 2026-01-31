@@ -187,24 +187,6 @@
   background: rgba(255, 255, 255, 0);
 }
 
-/* Scrollbar styling for dropdown */
-.combobox__dropdown::-webkit-scrollbar {
-  width: 8px;
-}
-
-.combobox__dropdown::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.combobox__dropdown::-webkit-scrollbar-thumb {
-  background: var(--g-border-color);
-  border-radius: var(--radius-full);
-}
-
-.combobox__dropdown::-webkit-scrollbar-thumb:hover {
-  background: var(--g-border-color-emphasis);
-}
-
 /* Multiple selection chips */
 .combobox__chips {
   display: flex;

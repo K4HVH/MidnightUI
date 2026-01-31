@@ -1,4 +1,4 @@
-import { Component, JSX, Show, splitProps } from 'solid-js';
+import { Component, JSX, Show, splitProps, createEffect } from 'solid-js';
 import { BsX } from 'solid-icons/bs';
 import '../../styles/components/inputs/TextField.css';
 
@@ -16,6 +16,9 @@ interface TextFieldProps {
   prefix?: JSX.Element | string;
   suffix?: JSX.Element | string;
   clearable?: boolean;
+  multiline?: boolean;
+  rows?: number;
+  maxRows?: number;
   class?: string;
   name?: string;
   id?: string;
@@ -36,6 +39,9 @@ export const TextField: Component<TextFieldProps> = (props) => {
     'prefix',
     'suffix',
     'clearable',
+    'multiline',
+    'rows',
+    'maxRows',
     'class',
     'name',
     'id',
@@ -43,12 +49,33 @@ export const TextField: Component<TextFieldProps> = (props) => {
 
   const size = () => local.size ?? 'normal';
   const type = () => local.type ?? 'text';
+  const rows = () => local.rows ?? 3;
 
   let inputRef: HTMLInputElement | undefined;
+  let textareaRef: HTMLTextAreaElement | undefined;
+
+  const autoGrowTextarea = () => {
+    if (!textareaRef || !local.multiline) return;
+
+    // Reset height to auto to get the correct scrollHeight
+    textareaRef.style.height = 'auto';
+
+    const minHeight = rows() * parseFloat(getComputedStyle(textareaRef).lineHeight);
+    const maxHeight = local.maxRows
+      ? local.maxRows * parseFloat(getComputedStyle(textareaRef).lineHeight)
+      : Infinity;
+
+    const newHeight = Math.min(Math.max(textareaRef.scrollHeight, minHeight), maxHeight);
+    textareaRef.style.height = `${newHeight}px`;
+  };
 
   const handleInput = (e: InputEvent) => {
-    const target = e.target as HTMLInputElement;
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     const newValue = target.value;
+
+    if (local.multiline) {
+      autoGrowTextarea();
+    }
 
     if (local.onInput) {
       local.onInput(newValue);
@@ -62,7 +89,12 @@ export const TextField: Component<TextFieldProps> = (props) => {
     if (local.onChange) {
       local.onChange('');
     }
-    inputRef?.focus();
+    if (local.multiline) {
+      textareaRef?.focus();
+      autoGrowTextarea();
+    } else {
+      inputRef?.focus();
+    }
   };
 
   const containerClassNames = () => {
@@ -103,6 +135,13 @@ export const TextField: Component<TextFieldProps> = (props) => {
 
   const inputId = () => local.id || local.name;
 
+  // Auto-grow textarea when value changes
+  createEffect(() => {
+    if (local.multiline && local.value !== undefined) {
+      autoGrowTextarea();
+    }
+  });
+
   return (
     <div class={containerClassNames()} {...rest}>
       <Show when={local.label}>
@@ -116,18 +155,37 @@ export const TextField: Component<TextFieldProps> = (props) => {
           <span class="textfield__prefix">{local.prefix}</span>
         </Show>
 
-        <input
-          ref={inputRef}
-          id={inputId()}
-          name={local.name}
-          type={type()}
-          class={inputClassNames()}
-          value={local.value || ''}
-          placeholder={local.placeholder}
-          disabled={local.disabled}
-          maxLength={local.maxLength}
-          onInput={handleInput}
-        />
+        <Show
+          when={local.multiline}
+          fallback={
+            <input
+              ref={inputRef}
+              id={inputId()}
+              name={local.name}
+              type={type()}
+              class={inputClassNames()}
+              value={local.value || ''}
+              placeholder={local.placeholder}
+              disabled={local.disabled}
+              maxLength={local.maxLength}
+              onInput={handleInput}
+            />
+          }
+        >
+          <textarea
+            ref={textareaRef}
+            id={inputId()}
+            name={local.name}
+            class={inputClassNames()}
+            value={local.value || ''}
+            placeholder={local.placeholder}
+            disabled={local.disabled}
+            maxLength={local.maxLength}
+            rows={rows()}
+            onInput={handleInput}
+            style={{ resize: local.maxRows ? 'none' : 'vertical' }}
+          />
+        </Show>
 
         <div class="textfield__suffix-container">
           <Show when={showClearButton()}>
