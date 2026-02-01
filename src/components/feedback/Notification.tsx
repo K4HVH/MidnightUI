@@ -185,6 +185,7 @@ const NotificationItem: Component<NotificationItemProps> = (props) => {
                     <Button
                       variant="subtle"
                       size="compact"
+                      class="notification__action"
                       onClick={() => {
                         action.onClick();
                         props.onDismiss();
