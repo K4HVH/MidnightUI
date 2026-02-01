@@ -1794,16 +1794,16 @@ const Test: Component = () => {
             <CardHeader title="Badge Placements" />
             <div class="flex--sm flex--wrap" style={{ gap: "calc(var(--g-spacing) * 2)" }}>
               <Badge content={5} placement="top-right">
-                <Button variant="secondary">Top Right</Button>
+                <Button variant="secondary">Placement: TR</Button>
               </Badge>
               <Badge content={5} placement="top-left">
-                <Button variant="secondary">Top Left</Button>
+                <Button variant="secondary">Placement: TL</Button>
               </Badge>
               <Badge content={5} placement="bottom-right">
-                <Button variant="secondary">Bottom Right</Button>
+                <Button variant="secondary">Placement: BR</Button>
               </Badge>
               <Badge content={5} placement="bottom-left">
-                <Button variant="secondary">Bottom Left</Button>
+                <Button variant="secondary">Placement: BL</Button>
               </Badge>
             </div>
           </Card>
@@ -1924,7 +1924,7 @@ const Test: Component = () => {
                   "border-radius": "var(--g-radius)",
                   "text-align": "center",
                   "min-width": "120px"
-                }}>Top Left</div>
+                }}>TL Corner</div>
               </Badge>
               <Badge content={2} placement="top-right">
                 <div style={{
@@ -1934,7 +1934,7 @@ const Test: Component = () => {
                   "border-radius": "var(--g-radius)",
                   "text-align": "center",
                   "min-width": "120px"
-                }}>Top Right</div>
+                }}>TR Corner</div>
               </Badge>
               <Badge content={3} placement="bottom-left">
                 <div style={{
@@ -1944,7 +1944,7 @@ const Test: Component = () => {
                   "border-radius": "var(--g-radius)",
                   "text-align": "center",
                   "min-width": "120px"
-                }}>Bottom Left</div>
+                }}>BL Corner</div>
               </Badge>
               <Badge content={4} placement="bottom-right">
                 <div style={{
@@ -1954,7 +1954,7 @@ const Test: Component = () => {
                   "border-radius": "var(--g-radius)",
                   "text-align": "center",
                   "min-width": "120px"
-                }}>Bottom Right</div>
+                }}>BR Corner</div>
               </Badge>
             </div>
           </Card>
