@@ -29,13 +29,18 @@ export const GridBackground: Component<GridBackgroundProps> = (props) => {
 
   const drawGrid = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     const size = gridSize();
+    const color1 = gridColor();
+    const color2 = getCSSVariable('--color-blue-950');
+
+    // Skip drawing if CSS variables aren't available (e.g. test environment)
+    if (!color1 || !color2) return;
 
     ctx.imageSmoothingEnabled = false;
 
     // Create gradient from NNE to SSW
     const gradient = ctx.createLinearGradient(width * 0.65, height * 0.1, width * 0.35, height * 0.9);
-    gradient.addColorStop(0, gridColor());
-    gradient.addColorStop(1, getCSSVariable('--color-blue-950'));
+    gradient.addColorStop(0, color1);
+    gradient.addColorStop(1, color2);
 
     ctx.strokeStyle = gradient;
     ctx.lineWidth = 1;

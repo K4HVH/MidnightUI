@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Fedora compat: skip Playwright's Debian-only host validation
+// (actual libs are provided via ~/.cache/ms-playwright/fedora-compat/)
+process.env.PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS ??= '1';
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
