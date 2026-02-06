@@ -17,6 +17,7 @@ import { Badge } from '../../components/display/Badge';
 import { Avatar } from '../../components/display/Avatar';
 import { AvatarGroup } from '../../components/display/AvatarGroup';
 import { Pane, type PaneState } from '../../components/navigation/Pane';
+import { Tabs } from '../../components/navigation/Tabs';
 import { getCSSVariable } from '../../utils/cssVariables';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill, BsStar, BsStarFill, BsPlus, BsTrash, BsPencil, BsDownload, BsUpload, BsGear, BsCircle, BsCircleFill, BsSquare, BsTriangle, BsSearch, BsEnvelope, BsInfoCircle, BsQuestionCircle, BsCheck, BsBell, BsFire, BsLightning, BsPerson } from 'solid-icons/bs';
 
@@ -69,6 +70,7 @@ const Test: Component = () => {
   const [fixedPaneOpen, setFixedPaneOpen] = createSignal(false);
   const [paneState1, setPaneState1] = createSignal<PaneState>('partial');
   const [paneState2, setPaneState2] = createSignal<PaneState>('closed');
+  const [tabValue, setTabValue] = createSignal('dashboard');
 
   const handleLoadingClick = () => {
     setLoading(true);
@@ -2398,6 +2400,257 @@ const Test: Component = () => {
               </div>
             </div>
           </Card>
+          {/* ================================================================
+              Tabs Component Examples
+              ================================================================ */}
+          <h2>Tabs Component Examples</h2>
+
+          <Card>
+            <CardHeader title="Basic Tabs" subtitle="Uncontrolled horizontal tabs with default selection" />
+            <div data-testid="tabs-basic">
+              <Tabs
+                options={[
+                  { value: 'dashboard', label: 'Dashboard' },
+                  { value: 'analytics', label: 'Analytics' },
+                  { value: 'reports', label: 'Reports' },
+                ]}
+                defaultValue="dashboard"
+              />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Vertical Tabs" subtitle="Stack tabs vertically for sidebar navigation patterns" />
+            <div data-testid="tabs-vertical">
+              <Tabs
+                orientation="vertical"
+                options={[
+                  { value: 'profile', label: 'Profile' },
+                  { value: 'security', label: 'Security' },
+                  { value: 'notifications', label: 'Notifications' },
+                  { value: 'billing', label: 'Billing' },
+                ]}
+                defaultValue="profile"
+              />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="With Icons" subtitle="Tabs can include icons alongside labels" />
+            <div data-testid="tabs-icons">
+              <Tabs
+                options={[
+                  { value: 'favorites', label: 'Favorites', icon: BsStar },
+                  { value: 'liked', label: 'Liked', icon: BsHeart },
+                  { value: 'settings', label: 'Settings', icon: BsGear },
+                ]}
+                defaultValue="favorites"
+              />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Size Variants" subtitle="Compact, normal, and spacious sizes" />
+            <div class="grid--sm">
+              <div>
+                <h4>Compact</h4>
+                <div data-testid="tabs-compact">
+                  <Tabs
+                    size="compact"
+                    options={[
+                      { value: 'a', label: 'Alpha' },
+                      { value: 'b', label: 'Beta' },
+                      { value: 'c', label: 'Gamma' },
+                    ]}
+                    defaultValue="a"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4>Normal</h4>
+                <Tabs
+                  options={[
+                    { value: 'a', label: 'Alpha' },
+                    { value: 'b', label: 'Beta' },
+                    { value: 'c', label: 'Gamma' },
+                  ]}
+                  defaultValue="a"
+                />
+              </div>
+              <div>
+                <h4>Spacious</h4>
+                <div data-testid="tabs-spacious">
+                  <Tabs
+                    size="spacious"
+                    options={[
+                      { value: 'a', label: 'Alpha' },
+                      { value: 'b', label: 'Beta' },
+                      { value: 'c', label: 'Gamma' },
+                    ]}
+                    defaultValue="a"
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Disabled Tabs" subtitle="Entire group or individual tabs can be disabled" />
+            <div class="grid--sm">
+              <div>
+                <h4>Per-tab disabled</h4>
+                <div data-testid="tabs-disabled">
+                  <Tabs
+                    options={[
+                      { value: 'active1', label: 'Active' },
+                      { value: 'disabled1', label: 'Disabled', disabled: true },
+                      { value: 'active2', label: 'Also Active' },
+                    ]}
+                    defaultValue="active1"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4>All disabled</h4>
+                <Tabs
+                  disabled
+                  options={[
+                    { value: 'a', label: 'Tab A' },
+                    { value: 'b', label: 'Tab B' },
+                    { value: 'c', label: 'Tab C' },
+                  ]}
+                  defaultValue="a"
+                />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Variants" subtitle="Primary (filled), secondary (bordered), and subtle (underline) styles" />
+            <div class="grid--sm">
+              <div>
+                <h4>Primary</h4>
+                <Tabs
+                  variant="primary"
+                  options={[
+                    { value: 'a', label: 'Overview' },
+                    { value: 'b', label: 'Details' },
+                    { value: 'c', label: 'History' },
+                  ]}
+                  defaultValue="a"
+                />
+              </div>
+              <div>
+                <h4>Secondary</h4>
+                <div data-testid="tabs-secondary">
+                  <Tabs
+                    variant="secondary"
+                    options={[
+                      { value: 'a', label: 'Overview' },
+                      { value: 'b', label: 'Details' },
+                      { value: 'c', label: 'History' },
+                    ]}
+                    defaultValue="a"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4>Subtle</h4>
+                <div data-testid="tabs-subtle">
+                  <Tabs
+                    variant="subtle"
+                    options={[
+                      { value: 'a', label: 'Overview' },
+                      { value: 'b', label: 'Details' },
+                      { value: 'c', label: 'History' },
+                    ]}
+                    defaultValue="a"
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Icon-Only Tabs" subtitle="Compact icon tabs for toolbars and partial pane views" />
+            <div class="grid--sm">
+              <div>
+                <h4>Primary icon-only</h4>
+                <div data-testid="tabs-icon-only">
+                  <Tabs
+                    iconOnly
+                    options={[
+                      { value: 'favorites', label: 'Favorites', icon: BsStar },
+                      { value: 'liked', label: 'Liked', icon: BsHeart },
+                      { value: 'settings', label: 'Settings', icon: BsGear },
+                    ]}
+                    defaultValue="favorites"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4>Secondary icon-only</h4>
+                <Tabs
+                  iconOnly
+                  variant="secondary"
+                  options={[
+                    { value: 'search', label: 'Search', icon: BsSearch },
+                    { value: 'bell', label: 'Notifications', icon: BsBell },
+                    { value: 'person', label: 'Profile', icon: BsPerson },
+                  ]}
+                  defaultValue="search"
+                />
+              </div>
+              <div>
+                <h4>Subtle icon-only</h4>
+                <Tabs
+                  iconOnly
+                  variant="subtle"
+                  options={[
+                    { value: 'star', label: 'Favorites', icon: BsStar },
+                    { value: 'fire', label: 'Trending', icon: BsFire },
+                    { value: 'lightning', label: 'Quick', icon: BsLightning },
+                  ]}
+                  defaultValue="star"
+                />
+              </div>
+              <div>
+                <h4>Vertical icon-only</h4>
+                <Tabs
+                  iconOnly
+                  orientation="vertical"
+                  options={[
+                    { value: 'star', label: 'Favorites', icon: BsStar },
+                    { value: 'search', label: 'Search', icon: BsSearch },
+                    { value: 'gear', label: 'Settings', icon: BsGear },
+                  ]}
+                  defaultValue="star"
+                />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Controlled Tabs" subtitle="External state controls the active tab" />
+            <div class="grid--sm">
+              <Tabs
+                value={tabValue()}
+                onChange={setTabValue}
+                options={[
+                  { value: 'dashboard', label: 'Dashboard' },
+                  { value: 'analytics', label: 'Analytics' },
+                  { value: 'reports', label: 'Reports' },
+                ]}
+              />
+              <div class="flex--sm">
+                <Button size="compact" variant={tabValue() === 'dashboard' ? 'primary' : 'subtle'} onClick={() => setTabValue('dashboard')}>Dashboard</Button>
+                <Button size="compact" variant={tabValue() === 'analytics' ? 'primary' : 'subtle'} onClick={() => setTabValue('analytics')}>Analytics</Button>
+                <Button size="compact" variant={tabValue() === 'reports' ? 'primary' : 'subtle'} onClick={() => setTabValue('reports')}>Reports</Button>
+              </div>
+              <p><small>Active tab: {tabValue()}</small></p>
+            </div>
+          </Card>
+
           {/* ================================================================
               Pane Component Examples
               ================================================================ */}

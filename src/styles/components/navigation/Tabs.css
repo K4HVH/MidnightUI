@@ -1,0 +1,233 @@
+/* =============================================================================
+   Tabs Component
+   ============================================================================= */
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  gap: var(--g-spacing-xs);
+}
+
+.tabs--vertical {
+  flex-direction: column;
+}
+
+/* =============================================================================
+   Tab Button (base)
+   Matches Button base styles: same padding, font, border, radius, ::before overlay.
+   Inactive tabs use muted text + transparent bg to distinguish from active.
+   ============================================================================= */
+
+.tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--g-spacing-sm);
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  border: var(--g-border-width) solid transparent;
+  border-radius: var(--g-radius);
+  background: transparent;
+  color: var(--g-text-muted);
+  font-size: var(--g-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--g-line-height);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--g-transition);
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tabs__tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Focus — matches Button */
+.tabs__tab:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   Variant: Primary
+   Active tab uses button-primary gradient (matches .button--primary).
+   Inactive tabs are transparent with muted text.
+   ============================================================================= */
+
+/* Inactive hover — matches .button--subtle hover overlay */
+.tabs--primary .tabs__tab:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs--primary .tabs__tab:hover:not(:disabled) {
+  color: var(--g-text-primary);
+}
+
+/* Inactive active (pressed) — matches .button--subtle */
+.tabs--primary .tabs__tab:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Active tab — matches .button--primary */
+.tabs--primary .tabs__tab--active {
+  background: var(--g-button-primary);
+  color: var(--color-white);
+}
+
+.tabs--primary .tabs__tab--active:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tabs--primary .tabs__tab--active:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* =============================================================================
+   Variant: Secondary
+   Active tab matches .button--secondary (border + background).
+   Inactive tabs have border but no background.
+   ============================================================================= */
+
+.tabs--secondary .tabs__tab {
+  border-color: var(--g-border-color);
+}
+
+/* Inactive hover — matches .button--secondary hover */
+.tabs--secondary .tabs__tab:hover:not(:disabled) {
+  border-color: var(--g-border-color-emphasis);
+  color: var(--g-text-primary);
+}
+
+.tabs--secondary .tabs__tab:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs--secondary .tabs__tab:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Active tab — matches .button--secondary */
+.tabs--secondary .tabs__tab--active {
+  background: var(--g-background);
+  border-color: var(--g-border-color-emphasis);
+  color: var(--g-text-primary);
+}
+
+.tabs--secondary .tabs__tab--active:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs--secondary .tabs__tab--active:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* =============================================================================
+   Variant: Subtle
+   Matches .button--subtle styling. Active tab gets a persistent subtle
+   background tint to indicate selection.
+   ============================================================================= */
+
+/* Hover — matches .button--subtle */
+.tabs--subtle .tabs__tab:hover:not(:disabled) {
+  color: var(--g-text-primary);
+}
+
+.tabs--subtle .tabs__tab:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs--subtle .tabs__tab:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Active tab — persistent tint like a held subtle button */
+.tabs--subtle .tabs__tab--active {
+  color: var(--g-text-primary);
+}
+
+.tabs--subtle .tabs__tab--active::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs--subtle .tabs__tab--active:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tabs--subtle .tabs__tab--active:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* =============================================================================
+   Disabled — matches Button
+   ============================================================================= */
+
+.tabs__tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.tabs--disabled .tabs__tab {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   Sizes — matches Button sizing exactly
+   ============================================================================= */
+
+.tabs--compact .tabs__tab {
+  padding: var(--g-spacing-xs) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+  gap: var(--g-spacing-xs);
+}
+
+.tabs--spacious .tabs__tab {
+  padding: var(--g-spacing) var(--g-spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+/* =============================================================================
+   Icon-Only Mode — matches .button--icon-only sizing
+   ============================================================================= */
+
+.tabs--icon-only .tabs__tab {
+  padding: var(--spacing-3) var(--spacing-3);
+  min-width: auto;
+}
+
+.tabs--icon-only.tabs--compact .tabs__tab {
+  padding: var(--g-spacing-xs) var(--g-spacing-xs);
+}
+
+.tabs--icon-only.tabs--spacious .tabs__tab {
+  padding: var(--g-spacing) var(--g-spacing);
+}
+
+/* =============================================================================
+   Tab Icon — matches .button__icon
+   ============================================================================= */
+
+.tabs__tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+}
+
+/* =============================================================================
+   Tab Label
+   ============================================================================= */
+
+.tabs__tab-label {
+  display: inline;
+}
