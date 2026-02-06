@@ -126,24 +126,21 @@ const Test: Component = () => {
           partialSize="48px"
           defaultState="partial"
           partialChildren={
-            <div style={{ display: "flex", "flex-direction": "column", "align-items": "center", gap: "var(--spacing-3)", padding: "var(--g-spacing-sm) 0" }}>
-              <BsStar style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
-              <BsSearch style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
-              <BsPerson style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
-              <BsBell style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
-              <BsGear style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+            <div style={{ display: "flex", "flex-direction": "column", gap: "2px", padding: "var(--g-spacing-sm)" }}>
+              <div style={{ display: "flex", "align-items": "center", "justify-content": "center", height: "32px", "border-radius": "var(--g-radius)", background: "rgba(255,255,255,0.05)" }}><BsStar style={{ "font-size": "16px", color: "var(--g-text-muted)" }} /></div>
+              <div style={{ display: "flex", "align-items": "center", "justify-content": "center", height: "32px" }}><BsSearch style={{ "font-size": "16px", color: "var(--g-text-muted)" }} /></div>
+              <div style={{ display: "flex", "align-items": "center", "justify-content": "center", height: "32px" }}><BsPerson style={{ "font-size": "16px", color: "var(--g-text-muted)" }} /></div>
+              <div style={{ display: "flex", "align-items": "center", "justify-content": "center", height: "32px" }}><BsBell style={{ "font-size": "16px", color: "var(--g-text-muted)" }} /></div>
+              <div style={{ display: "flex", "align-items": "center", "justify-content": "center", height: "32px" }}><BsGear style={{ "font-size": "16px", color: "var(--g-text-muted)" }} /></div>
             </div>
           }
         >
-          <div style={{ padding: "var(--g-spacing)" }}>
-            <h6 style={{ color: "var(--g-text-muted)", "margin-bottom": "var(--g-spacing-sm)", "text-transform": "uppercase", "font-size": "var(--font-size-xs)", "letter-spacing": "var(--letter-spacing-wide)" }}>Navigation</h6>
-            <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
-              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)", background: "rgba(255,255,255,0.05)" }}><BsStar /> <span>Favorites</span></div>
-              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsSearch /> <span>Search</span></div>
-              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsPerson /> <span>Profile</span></div>
-              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsBell /> <span>Notifications</span></div>
-              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsGear /> <span>Settings</span></div>
-            </div>
+          <div style={{ display: "flex", "flex-direction": "column", gap: "2px", padding: "var(--g-spacing-sm)" }}>
+            <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", height: "32px", padding: "0 var(--g-spacing-sm)", "border-radius": "var(--g-radius)", background: "rgba(255,255,255,0.05)" }}><BsStar style={{ "font-size": "16px", "flex-shrink": "0", color: "var(--g-text-muted)" }} /> <span>Favorites</span></div>
+            <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", height: "32px", padding: "0 var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsSearch style={{ "font-size": "16px", "flex-shrink": "0", color: "var(--g-text-muted)" }} /> <span>Search</span></div>
+            <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", height: "32px", padding: "0 var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsPerson style={{ "font-size": "16px", "flex-shrink": "0", color: "var(--g-text-muted)" }} /> <span>Profile</span></div>
+            <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", height: "32px", padding: "0 var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsBell style={{ "font-size": "16px", "flex-shrink": "0", color: "var(--g-text-muted)" }} /> <span>Notifications</span></div>
+            <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", height: "32px", padding: "0 var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsGear style={{ "font-size": "16px", "flex-shrink": "0", color: "var(--g-text-muted)" }} /> <span>Settings</span></div>
           </div>
         </Pane>
 

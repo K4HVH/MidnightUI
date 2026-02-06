@@ -74,7 +74,7 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--g-background-subtle);
+  background: var(--g-background-elevated);
 }
 
 /* Horizontal body */
@@ -199,10 +199,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: none;
-  background: transparent;
+  border: var(--g-border-width) solid var(--g-border-color);
+  background: var(--g-background);
   cursor: pointer;
-  color: var(--g-text-muted);
+  color: var(--g-text-primary);
   font-size: var(--font-size-xs);
   padding: 0;
   transition: all var(--g-transition);
@@ -221,7 +221,7 @@
 }
 
 .pane__handle:hover {
-  color: var(--g-text-primary);
+  border-color: var(--g-border-color-emphasis);
 }
 
 .pane__handle:hover::before {
