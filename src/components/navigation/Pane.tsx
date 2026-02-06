@@ -30,6 +30,9 @@ interface PaneProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** Show backdrop when overlay pane is not closed. Default: true */
   backdrop?: boolean;
 
+  /** Use fixed positioning (viewport-level) instead of absolute (container-level). Only applies to overlay behavior. Default: false */
+  fixed?: boolean;
+
   /** CSS value for open state size. Default: '280px' for left/right, '240px' for top/bottom */
   openSize?: string;
 
@@ -58,6 +61,7 @@ export const Pane: Component<PaneProps> = (props) => {
     'defaultState',
     'handle',
     'backdrop',
+    'fixed',
     'openSize',
     'partialSize',
     'size',
@@ -72,6 +76,7 @@ export const Pane: Component<PaneProps> = (props) => {
   const behavior = () => local.behavior ?? (mode() === 'permanent' ? 'push' : 'overlay');
   const showHandle = () => local.handle ?? (mode() === 'permanent');
   const showBackdrop = () => local.backdrop ?? true;
+  const isFixed = () => local.fixed ?? false;
   const sizeVariant = () => local.size ?? 'normal';
   const isHorizontal = () => position() === 'left' || position() === 'right';
 
@@ -154,6 +159,10 @@ export const Pane: Component<PaneProps> = (props) => {
       classes.push('pane--overlay');
     }
 
+    if (isFixed()) {
+      classes.push('pane--fixed');
+    }
+
     if (sizeVariant() !== 'normal') {
       classes.push(`pane--${sizeVariant()}`);
     }
@@ -183,7 +192,10 @@ export const Pane: Component<PaneProps> = (props) => {
     <>
       <div
         class="pane__backdrop"
-        classList={{ 'pane__backdrop--visible': isBackdropVisible() }}
+        classList={{
+          'pane__backdrop--visible': isBackdropVisible(),
+          'pane__backdrop--fixed': isFixed(),
+        }}
         onClick={handleBackdropClick}
       />
       <div

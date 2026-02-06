@@ -66,6 +66,7 @@ const Test: Component = () => {
   const [dialogOpen5, setDialogOpen5] = createSignal(false);
   const [dialogOpen6, setDialogOpen6] = createSignal(false);
   const [tempPaneOpen, setTempPaneOpen] = createSignal(false);
+  const [fixedPaneOpen, setFixedPaneOpen] = createSignal(false);
 
   const handleLoadingClick = () => {
     setLoading(true);
@@ -74,10 +75,63 @@ const Test: Component = () => {
 
   return (
     <>
+      {/* Viewport-level temporary overlay pane (fixed) */}
+      <Pane
+        position="right"
+        mode="temporary"
+        behavior="overlay"
+        fixed
+        state={fixedPaneOpen() ? 'open' : 'closed'}
+        onStateChange={(s) => setFixedPaneOpen(s !== 'closed')}
+        openSize="300px"
+      >
+        <div style={{ padding: "var(--g-spacing)" }}>
+          <h5>Viewport Settings</h5>
+          <p style={{ color: "var(--g-text-secondary)" }}>This is a temporary fixed overlay pane. It covers the entire viewport and dismisses on backdrop click or Escape.</p>
+          <hr />
+          <div style={{ display: "flex", "flex-direction": "column", gap: "var(--g-spacing-sm)" }}>
+            <Checkbox label="Dark mode" checked={true} onChange={() => {}} />
+            <Checkbox label="Notifications" checked={false} onChange={() => {}} />
+            <Checkbox label="Compact layout" checked={false} onChange={() => {}} />
+          </div>
+        </div>
+      </Pane>
+
       <GridBackground gridSize={10} />
-      <div class="content" style={{ overflow: 'auto' }}>
-        <div class="container grid">
-          <h1>Design System Test Page</h1>
+
+      {/* Viewport-level permanent push pane wrapping the entire page */}
+      <div class="content" style={{ display: "flex", height: "100%", width: "100%" }}>
+        <Pane
+          position="left"
+          mode="permanent"
+          openSize="200px"
+          partialSize="48px"
+          defaultState="partial"
+          partialChildren={
+            <div style={{ display: "flex", "flex-direction": "column", "align-items": "center", gap: "var(--spacing-3)", padding: "var(--g-spacing-sm) 0" }}>
+              <BsStar style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+              <BsSearch style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+              <BsPerson style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+              <BsBell style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+              <BsGear style={{ "font-size": "18px", color: "var(--g-text-muted)" }} />
+            </div>
+          }
+        >
+          <div style={{ padding: "var(--g-spacing)" }}>
+            <h6 style={{ color: "var(--g-text-muted)", "margin-bottom": "var(--g-spacing-sm)", "text-transform": "uppercase", "font-size": "var(--font-size-xs)", "letter-spacing": "var(--letter-spacing-wide)" }}>Navigation</h6>
+            <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
+              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)", background: "rgba(255,255,255,0.05)" }}><BsStar /> <span>Favorites</span></div>
+              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsSearch /> <span>Search</span></div>
+              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsPerson /> <span>Profile</span></div>
+              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsBell /> <span>Notifications</span></div>
+              <div style={{ display: "flex", "align-items": "center", gap: "var(--g-spacing-sm)", padding: "var(--g-spacing-xs) var(--g-spacing-sm)", "border-radius": "var(--g-radius)" }}><BsGear /> <span>Settings</span></div>
+            </div>
+          </div>
+        </Pane>
+
+        <div style={{ flex: 1, overflow: "auto" }}>
+          <div class="container grid">
+            <h1>Design System Test Page</h1>
 
           <Card>
             <h2>Typography Examples</h2>
@@ -2435,6 +2489,15 @@ const Test: Component = () => {
             </div>
           </Card>
 
+          {/* Viewport-Level Fixed Pane */}
+          <Card>
+            <CardHeader title="Viewport-Level Fixed Pane" subtitle="Uses fixed positioning to overlay the entire viewport" />
+            <div style={{ padding: "var(--g-spacing)" }}>
+              <Button onClick={() => setFixedPaneOpen(true)}>Open Viewport Pane</Button>
+              <p style={{ color: "var(--g-text-muted)", "margin-top": "var(--g-spacing-sm)" }}>Opens a fixed overlay pane that covers the viewport, not just a container.</p>
+            </div>
+          </Card>
+
           {/* Size Variants */}
           <Card>
             <CardHeader title="Size Variants" subtitle="Compact, normal, and spacious handle sizes" />
@@ -2460,6 +2523,7 @@ const Test: Component = () => {
             </div>
           </Card>
 
+        </div>
       </div>
     </>
   );

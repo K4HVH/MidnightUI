@@ -297,6 +297,39 @@ describe('Pane', () => {
   });
 
   // =========================================================================
+  // Fixed (viewport-level)
+  // =========================================================================
+
+  it('does not add fixed class by default', () => {
+    const { container } = render(() => <Pane mode="temporary">Content</Pane>);
+    const pane = container.querySelector('.pane');
+    expect(pane?.classList.contains('pane--fixed')).toBe(false);
+  });
+
+  it('applies fixed class when fixed prop is true', () => {
+    const { container } = render(() => (
+      <Pane mode="temporary" fixed>Content</Pane>
+    ));
+    expect(container.querySelector('.pane--fixed')).toBeInTheDocument();
+  });
+
+  it('backdrop gets fixed class when fixed prop is true', () => {
+    render(() => (
+      <Pane mode="temporary" defaultState="open" fixed>Content</Pane>
+    ));
+    const backdrop = document.querySelector('.pane__backdrop--fixed');
+    expect(backdrop).toBeInTheDocument();
+  });
+
+  it('backdrop does not get fixed class by default', () => {
+    render(() => (
+      <Pane mode="temporary" defaultState="open">Content</Pane>
+    ));
+    const backdrop = document.querySelector('.pane__backdrop');
+    expect(backdrop?.classList.contains('pane__backdrop--fixed')).toBe(false);
+  });
+
+  // =========================================================================
   // Size Variants
   // =========================================================================
 
