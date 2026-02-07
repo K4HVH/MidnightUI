@@ -74,7 +74,7 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--g-background-elevated);
+  background: var(--g-background);
 }
 
 /* Horizontal body */
@@ -141,6 +141,10 @@
   transition: opacity 0.15s ease;
 }
 
+.pane__content--full {
+  padding: var(--g-spacing-xs);
+}
+
 .pane__content--active {
   opacity: 1;
   pointer-events: auto;
@@ -156,6 +160,7 @@
 .pane--right > .pane__body > .pane__content--full {
   width: var(--pane-open-size);
   height: 100%;
+  transition: opacity 0.15s ease, width var(--pane-transition);
 }
 
 .pane--left > .pane__body > .pane__content--partial,
@@ -169,11 +174,31 @@
 .pane--bottom > .pane__body > .pane__content--full {
   width: 100%;
   height: var(--pane-open-size);
+  transition: opacity 0.15s ease, height var(--pane-transition);
 }
 
 .pane--top > .pane__body > .pane__content--partial,
 .pane--bottom > .pane__body > .pane__content--partial {
   width: 100%;
+  height: var(--pane-partial-size);
+}
+
+/* Tabs inside pane content use square-friendly padding.
+   12px horizontal makes content area = icon width (16px) so icon fills it exactly.
+   8px vertical keeps button height at 42px. Same padding in both states = zero icon shift. */
+.pane__content .tabs__tab {
+  padding: var(--g-spacing-sm) var(--spacing-3);
+}
+
+/* When full content is shown in partial state (no separate partial content),
+   match content size to partial size so padding is visible on all edges */
+.pane--partial.pane--left > .pane__body > .pane__content--full.pane__content--active,
+.pane--partial.pane--right > .pane__body > .pane__content--full.pane__content--active {
+  width: var(--pane-partial-size);
+}
+
+.pane--partial.pane--top > .pane__body > .pane__content--full.pane__content--active,
+.pane--partial.pane--bottom > .pane__body > .pane__content--full.pane__content--active {
   height: var(--pane-partial-size);
 }
 

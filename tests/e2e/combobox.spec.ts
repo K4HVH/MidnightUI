@@ -3,6 +3,15 @@ import { test, expect } from '@playwright/test';
 test.describe('Combobox behavior', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+
+    // Navigate to the Combobox demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Combobox' || t.textContent?.trim() === 'Combobox') { t.click(); return; }
+      }
+    });
   });
 
   test('disabled options cannot be clicked and do not close dropdown', async ({ page }) => {

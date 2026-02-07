@@ -222,6 +222,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1em;
+  min-height: calc(1em * var(--g-line-height, 1.5));
 }
 
 /* =============================================================================
@@ -230,4 +231,13 @@
 
 .tabs__tab-label {
   display: inline;
+}
+
+/* =============================================================================
+   Labels Hidden — hides labels while preserving icon position.
+   Used when Tabs are inside a narrow container (e.g. collapsed Pane sidebar).
+   ============================================================================= */
+
+.tabs--labels-hidden .tabs__tab-label {
+  display: none;
 }

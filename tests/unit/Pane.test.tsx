@@ -167,7 +167,7 @@ describe('Pane', () => {
     expect(container.querySelector('.pane--open')).toBeInTheDocument();
   });
 
-  it('cycles state on handle click: closed → open (no partialChildren)', () => {
+  it('cycles state on handle click: closed → open (no partialChildren or partialSize)', () => {
     const { container } = render(() => <Pane>Content</Pane>);
     const handle = container.querySelector('.pane__handle') as HTMLButtonElement;
 
@@ -176,6 +176,33 @@ describe('Pane', () => {
 
     fireEvent.click(handle);
     expect(container.querySelector('.pane--closed')).toBeInTheDocument();
+  });
+
+  it('cycles state with partial when partialSize is set (no partialChildren)', () => {
+    const { container } = render(() => (
+      <Pane partialSize="48px">Content</Pane>
+    ));
+    const handle = container.querySelector('.pane__handle') as HTMLButtonElement;
+
+    // closed → partial
+    fireEvent.click(handle);
+    expect(container.querySelector('.pane--partial')).toBeInTheDocument();
+
+    // partial → open
+    fireEvent.click(handle);
+    expect(container.querySelector('.pane--open')).toBeInTheDocument();
+
+    // open → closed
+    fireEvent.click(handle);
+    expect(container.querySelector('.pane--closed')).toBeInTheDocument();
+  });
+
+  it('full content is active in partial state when no partialChildren', () => {
+    const { container } = render(() => (
+      <Pane defaultState="partial" partialSize="48px">Full content</Pane>
+    ));
+    const full = container.querySelector('.pane__content--full');
+    expect(full?.classList.contains('pane__content--active')).toBe(true);
   });
 
   it('cycles state on handle click: closed → partial → open → closed (with partialChildren)', () => {

@@ -8,16 +8,16 @@ describe('App', () => {
     expect(getByText('Design System Test Page')).toBeInTheDocument();
   });
 
-  it('renders typography section', () => {
+  it('renders typography section by default', () => {
     const { getByText } = render(() => <App />);
     expect(getByText('Typography Examples')).toBeInTheDocument();
   });
 
-  it('renders component sections', () => {
-    const { getByText } = render(() => <App />);
-    expect(getByText('Card Component Examples')).toBeInTheDocument();
-    expect(getByText('Checkbox Component Examples')).toBeInTheDocument();
-    expect(getByText('Button Component Examples')).toBeInTheDocument();
-    expect(getByText('Combobox Examples')).toBeInTheDocument();
+  it('renders sidebar navigation with tabs', () => {
+    const { container } = render(() => <App />);
+    // The sidebar permanent pane should be present
+    expect(container.querySelector('.pane--permanent')).toBeInTheDocument();
+    // The sidebar should contain a tablist for navigation
+    expect(document.querySelector('.pane--permanent [role="tablist"]')).toBeInTheDocument();
   });
 });

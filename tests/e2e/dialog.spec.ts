@@ -4,6 +4,15 @@ test.describe('Dialog behavior', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
 
+    // Navigate to the Dialog demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Dialog' || t.textContent?.trim() === 'Dialog') { t.click(); return; }
+      }
+    });
+
     // Scroll to the Dialog section
     const dialogSection = page.locator('h2', { hasText: 'Dialog Component Examples' });
     await dialogSection.scrollIntoViewIfNeeded();

@@ -3,6 +3,15 @@ import { test, expect } from '@playwright/test';
 test.describe('Button sizing consistency', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+
+    // Navigate to the Button demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Button' || t.textContent?.trim() === 'Button') { t.click(); return; }
+      }
+    });
   });
 
   test('icon-only buttons should match height of text buttons', async ({ page }) => {

@@ -4,6 +4,15 @@ test.describe('Notification behavior', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
 
+    // Navigate to the Notification demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Notification' || t.textContent?.trim() === 'Notification') { t.click(); return; }
+      }
+    });
+
     // Scroll to the Notification section
     const notificationSection = page.locator('h2', { hasText: 'Notification Component Examples' });
     await notificationSection.scrollIntoViewIfNeeded();

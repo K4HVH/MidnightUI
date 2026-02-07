@@ -57,7 +57,15 @@ test.describe('Pane component', () => {
   });
 
   test('temporary overlay pane opens with backdrop', async ({ page }) => {
-    // Scroll to the Pane section and click Open Right Pane
+    // Navigate to the Pane demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Pane' || t.textContent?.trim() === 'Pane') { t.click(); return; }
+      }
+    });
+
     const paneSection = page.getByRole('heading', { name: 'Pane Component Examples', exact: true });
     await paneSection.scrollIntoViewIfNeeded();
 
@@ -75,6 +83,15 @@ test.describe('Pane component', () => {
   });
 
   test('temporary overlay pane closes on backdrop click', async ({ page }) => {
+    // Navigate to the Pane demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Pane' || t.textContent?.trim() === 'Pane') { t.click(); return; }
+      }
+    });
+
     const paneSection = page.getByRole('heading', { name: 'Pane Component Examples', exact: true });
     await paneSection.scrollIntoViewIfNeeded();
 
@@ -93,6 +110,15 @@ test.describe('Pane component', () => {
   });
 
   test('temporary overlay pane closes on Escape', async ({ page }) => {
+    // Navigate to the Pane demo section via sidebar
+    await page.evaluate(() => {
+      const activeContent = document.querySelector('.pane--permanent .pane__content--active');
+      const tabs = activeContent!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+      for (const t of tabs) {
+        if (t.getAttribute('aria-label') === 'Pane' || t.textContent?.trim() === 'Pane') { t.click(); return; }
+      }
+    });
+
     const paneSection = page.getByRole('heading', { name: 'Pane Component Examples', exact: true });
     await paneSection.scrollIntoViewIfNeeded();
 
@@ -121,5 +147,76 @@ test.describe('Pane component', () => {
     await handle.click(); // open → closed
 
     await expect(pane).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('pane content has padding', async ({ page }) => {
+    const pane = page.locator('.pane--permanent.pane--left').first();
+    const handle = pane.locator('.pane__handle');
+
+    // Open the pane to see full content padding
+    await handle.click(); // partial → open
+    await expect(pane).toHaveClass(/pane--open/);
+
+    // Check that the active content layer has padding
+    const padding = await pane.locator('.pane__content--full').evaluate((el) => {
+      return window.getComputedStyle(el).padding;
+    });
+
+    // Should have non-zero padding
+    const paddingValue = parseFloat(padding);
+    expect(paddingValue).toBeGreaterThan(0);
+  });
+
+  test('sidebar icon position does not change between partial and open states', async ({ page }) => {
+    const pane = page.locator('.pane--permanent.pane--left').first();
+    const handle = pane.locator('.pane__handle');
+
+    // Starts in partial state
+    await expect(pane).toHaveClass(/pane--partial/);
+
+    // Get the first tab icon's position in partial state
+    const firstIcon = pane.locator('.pane__content--full [role="tab"] .tabs__tab-icon').first();
+    const partialBox = await firstIcon.boundingBox();
+    expect(partialBox).not.toBeNull();
+
+    // Click handle to open
+    await handle.click();
+    await expect(pane).toHaveClass(/pane--open/);
+
+    // Wait for the width transition to complete
+    await page.waitForTimeout(350);
+
+    // Get icon position in open state
+    const openBox = await firstIcon.boundingBox();
+    expect(openBox).not.toBeNull();
+
+    // Icon X and Y position must be identical (same DOM element, no shift)
+    expect(Math.abs(partialBox!.x - openBox!.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(partialBox!.y - openBox!.y)).toBeLessThanOrEqual(1);
+  });
+
+  test('sidebar labels are hidden in partial state and visible in open state', async ({ page }) => {
+    const pane = page.locator('.pane--permanent.pane--left').first();
+    const handle = pane.locator('.pane__handle');
+
+    // Starts in partial state
+    await expect(pane).toHaveClass(/pane--partial/);
+
+    // Tab labels should be hidden (display: none)
+    const firstLabel = pane.locator('.pane__content--full [role="tab"] .tabs__tab-label').first();
+    const partialDisplay = await firstLabel.evaluate((el) => {
+      return window.getComputedStyle(el).display;
+    });
+    expect(partialDisplay).toBe('none');
+
+    // Click handle to open
+    await handle.click();
+    await expect(pane).toHaveClass(/pane--open/);
+
+    // Tab labels should now be visible
+    const openDisplay = await firstLabel.evaluate((el) => {
+      return window.getComputedStyle(el).display;
+    });
+    expect(openDisplay).not.toBe('none');
   });
 });

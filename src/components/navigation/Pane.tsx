@@ -95,10 +95,10 @@ export const Pane: Component<PaneProps> = (props) => {
   };
 
   // Handle click cycles: closed → partial → open → closed
-  // Skips partial if no partialChildren provided
+  // Includes partial if partialChildren or partialSize is provided
   const cycleState = () => {
     const current = currentState();
-    const hasPartial = local.partialChildren !== undefined;
+    const hasPartial = local.partialChildren !== undefined || local.partialSize !== undefined;
 
     if (current === 'closed') {
       setState(hasPartial ? 'partial' : 'open');
@@ -204,7 +204,7 @@ export const Pane: Component<PaneProps> = (props) => {
         <div class="pane__body">
           <div
             class="pane__content pane__content--full"
-            classList={{ 'pane__content--active': currentState() === 'open' }}
+            classList={{ 'pane__content--active': currentState() === 'open' || (currentState() === 'partial' && !local.partialChildren) }}
           >
             {local.children}
           </div>
