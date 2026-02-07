@@ -6,7 +6,7 @@ Comprehensive reference for the SolidJS component library. Combines the componen
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 17 components in this SolidJS design system, organized by category.
+A comprehensive reference for all 18 components in this SolidJS design system, organized by category.
 
 ---
 
@@ -1088,10 +1088,10 @@ interface PaneProps extends JSX.HTMLAttributes<HTMLDivElement> {
 **Variants and States**
 
 - **Positions**: `left`, `right`, `top`, `bottom` -- determines which edge the pane attaches to
-- **States**: `closed` (collapsed, 0 size), `partial` (shows `partialChildren` at `partialSize`), `open` (shows `children` at `openSize`)
+- **States**: `closed` (collapsed, 0 size), `partial` (shows `partialChildren` at `partialSize`, or clips `children` to `partialSize` if `partialChildren` is not provided), `open` (shows `children` at `openSize`)
 - **Modes**: `permanent` (always shows a handle, defaults to push behavior) or `temporary` (can be fully hidden, defaults to overlay behavior, closes on Escape)
 - **Behaviors**: `push` (displaces adjacent content) or `overlay` (slides over content with optional backdrop)
-- **Handle**: A clickable bar that cycles through states: closed -> partial -> open -> closed (skips partial if `partialChildren` is not provided)
+- **Handle**: A clickable bar that cycles through states: closed -> partial -> open -> closed (skips partial if neither `partialChildren` nor `partialSize` is provided)
 - **Controlled vs Uncontrolled**: Provide `state` + `onStateChange` for controlled; use `defaultState` for uncontrolled
 - **Backdrop**: Semi-transparent overlay shown when overlay pane is not closed; clicking it closes the pane
 - **Fixed**: When `true` with overlay behavior, uses `position: fixed` instead of `position: absolute`
@@ -1154,6 +1154,98 @@ import { Pane } from '../components/navigation/Pane';
 | `.pane__backdrop` | Overlay backdrop |
 | `.pane__backdrop--visible` | Visible backdrop |
 | `.pane__backdrop--fixed` | Fixed position backdrop |
+
+**Testing Notes**
+
+- Pane content uses `width: 100%; height: 100%; box-sizing: border-box` so content always matches the body size during transitions
+- When `partialSize` is set without `partialChildren`, the full content layer is active in both open and partial states — the body's `overflow: hidden` clips to the partial size
+- Sidebar tabs in partial Pane mode may be overlapped by adjacent elements. Use `page.evaluate()` to click tabs directly via DOM in E2E tests
+
+---
+
+### Tabs
+
+A tab bar component for switching between content sections. Uses an options array API (not children). Supports controlled and uncontrolled usage, keyboard navigation, icon-only mode, and three visual variants.
+
+**Props Interface**
+
+```typescript
+interface TabOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  icon?: Component;
+}
+
+interface TabsProps {
+  options: TabOption[];
+  value?: string;                                    // controlled value
+  onChange?: (value: string) => void;
+  defaultValue?: string;                             // uncontrolled default
+  variant?: 'primary' | 'secondary' | 'subtle';     // default: 'primary'
+  orientation?: 'horizontal' | 'vertical';           // default: 'horizontal'
+  size?: 'compact' | 'normal' | 'spacious';          // default: 'normal'
+  iconOnly?: boolean;                                // default: false
+  disabled?: boolean;                                // default: false
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Variants**: `primary` (active tab uses button-primary gradient), `secondary` (active tab has border + background), `subtle` (active tab has persistent tint)
+- **Orientation**: `horizontal` (row layout) or `vertical` (column layout)
+- **Sizes**: `compact` (smaller padding/font), `normal`, `spacious` (larger padding/font)
+- **Icon-only**: Renders only icons, hides labels, uses `aria-label` for accessibility
+- **Labels-hidden mode**: Apply `tabs--labels-hidden` CSS class to hide labels while preserving icon position (used in collapsed Pane sidebar)
+- **Keyboard navigation**: Arrow keys cycle through enabled tabs (wrapping), Home/End jump to first/last
+- **Controlled vs Uncontrolled**: Provide `value` + `onChange` for controlled; use `defaultValue` for uncontrolled
+
+**Usage Example**
+
+```tsx
+import { Tabs } from '../components/navigation/Tabs';
+import { BsType, BsCursor } from 'solid-icons/bs';
+
+{/* Basic horizontal tabs */}
+<Tabs
+  options={[
+    { value: 'tab1', label: 'Tab 1' },
+    { value: 'tab2', label: 'Tab 2' },
+  ]}
+  value={activeTab()}
+  onChange={setActiveTab}
+/>
+
+{/* Vertical tabs with icons in a sidebar */}
+<Tabs
+  orientation="vertical"
+  variant="subtle"
+  options={[
+    { value: 'typography', label: 'Typography', icon: BsType },
+    { value: 'button', label: 'Button', icon: BsCursor },
+  ]}
+  value={activeDemo()}
+  onChange={(v) => navigate(`/${v}`)}
+  class={collapsed() ? 'tabs--labels-hidden' : ''}
+/>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.tabs` | Base container (flexbox row) |
+| `.tabs--primary`, `.tabs--secondary`, `.tabs--subtle` | Variant modifiers |
+| `.tabs--vertical` | Column layout |
+| `.tabs--compact`, `.tabs--spacious` | Size modifiers |
+| `.tabs--icon-only` | Icon-only mode (square padding) |
+| `.tabs--labels-hidden` | Hides labels, preserves icon position |
+| `.tabs--disabled` | Disabled state |
+| `.tabs__tab` | Individual tab button |
+| `.tabs__tab--active` | Active/selected tab |
+| `.tabs__tab-icon` | Icon wrapper span |
+| `.tabs__tab-label` | Label text span |
 
 ---
 
@@ -1663,25 +1755,50 @@ The TypeScript configuration uses `"jsx": "preserve"` with `"jsxImportSource": "
 
 ## Router Structure
 
-Routing is handled by `@solidjs/router` (v0.15.4), configured in `src/app/App.tsx`.
+Routing is handled by `@solidjs/router` (v0.15.4), configured in `src/app/App.tsx` using nested layout routes.
 
 ```tsx
 <NotificationProvider>
   <Router>
-    <Route path="/" component={Test} />
+    <Route path="/" component={Test}>
+      <Route path="/" component={() => <Navigate href="/typography" />} />
+      <Route path="typography" component={TypographyDemo} />
+      <Route path="button" component={ButtonDemo} />
+      {/* ... 18 demo routes total */}
+    </Route>
   </Router>
 </NotificationProvider>
 ```
+
+`Test` is the layout component — it renders the sidebar Pane with Tabs navigation and receives the matched child route via `props.children` (using `RouteSectionProps` from `@solidjs/router`). Each demo component has its own URL route.
 
 ### Current Routes
 
 | Path | Component | Description |
 |---|---|---|
-| `/` | `Test` | Design system showcase page with component examples |
+| `/` | (redirect) | Redirects to `/typography` |
+| `/typography` | `TypographyDemo` | Typography examples |
+| `/textfield` | `TextFieldDemo` | TextField examples |
+| `/card` | `CardDemo` | Card examples |
+| `/checkbox` | `CheckboxDemo` | Checkbox examples |
+| `/radiogroup` | `RadioGroupDemo` | RadioGroup examples |
+| `/combobox` | `ComboboxDemo` | Combobox examples |
+| `/multiselect` | `MultiSelectComboboxDemo` | Multi-select Combobox examples |
+| `/slider` | `SliderDemo` | Slider examples |
+| `/button` | `ButtonDemo` | Button examples |
+| `/buttongroup` | `ButtonGroupDemo` | ButtonGroup examples |
+| `/spinner` | `SpinnerDemo` | Spinner examples |
+| `/dialog` | `DialogDemo` | Dialog examples |
+| `/notification` | `NotificationDemo` | Notification examples |
+| `/tooltip` | `TooltipDemo` | Tooltip examples |
+| `/badge` | `BadgeDemo` | Badge examples |
+| `/avatar` | `AvatarDemo` | Avatar examples |
+| `/tabs` | `TabsDemo` | Tabs examples |
+| `/pane` | `PaneDemo` | Pane examples |
 
 The `NotificationProvider` wraps the entire router, making the notification system available on every route.
 
-Pages are located in `src/app/pages/`. The `Test` page is imported from `src/app/pages/Test.tsx`.
+Demo files are located in `src/app/pages/demos/`. The layout shell is at `src/app/pages/Test.tsx`.
 
 ---
 
@@ -1690,9 +1807,28 @@ Pages are located in `src/app/pages/`. The `Test` page is imported from `src/app
 ```
 src/
   app/
-    App.tsx                          -- Root component with Router and providers
+    App.tsx                          -- Root component with Router, nested routes, providers
     pages/
-      Test.tsx                       -- Design system demo page
+      Test.tsx                       -- Layout shell: sidebar Pane + Tabs nav, renders routed children
+      demos/                         -- 18 individual demo files
+        TypographyDemo.tsx
+        TextFieldDemo.tsx
+        CardDemo.tsx
+        CheckboxDemo.tsx
+        RadioGroupDemo.tsx
+        ComboboxDemo.tsx
+        MultiSelectComboboxDemo.tsx
+        SliderDemo.tsx
+        ButtonDemo.tsx
+        ButtonGroupDemo.tsx
+        SpinnerDemo.tsx
+        DialogDemo.tsx
+        NotificationDemo.tsx
+        TooltipDemo.tsx
+        BadgeDemo.tsx
+        AvatarDemo.tsx
+        TabsDemo.tsx
+        PaneDemo.tsx
   components/
     display/                         -- Data presentation components
       Avatar.tsx
@@ -1713,6 +1849,7 @@ src/
       TextField.tsx
     navigation/                      -- Navigation components
       Pane.tsx
+      Tabs.tsx
     surfaces/                        -- Layout and background components
       Card.tsx
       GridBackground.tsx
@@ -1738,6 +1875,7 @@ src/
         TextField.css
       navigation/
         Pane.css
+        Tabs.css
       surfaces/
         Card.css
 tests/
@@ -1754,6 +1892,7 @@ tests/
     Dialog.test.tsx
     Notification.test.tsx
     Pane.test.tsx
+    Tabs.test.tsx
     RadioGroup.test.tsx
     Slider.test.tsx
     TextField.test.tsx
@@ -1765,6 +1904,7 @@ tests/
     dialog.spec.ts
     notification.spec.ts
     pane.spec.ts
+    tabs.spec.ts
   .output/                           -- Test reports and results (git-ignored)
 ```
 

@@ -47,15 +47,16 @@ src/
   index.html               # HTML entry point (Vite root is src/)
   index.tsx                 # App bootstrap
   app/
-    App.tsx                 # Router setup, wraps in NotificationProvider
+    App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
-      Test.tsx              # Design system showcase page (route: /)
+      Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
+      demos/                # 18 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (8 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (4 components)
     feedback/               # User feedback (2 components)
-    navigation/             # Navigation patterns (1 component)
+    navigation/             # Navigation patterns (2 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
     components/{category}/  # Per-component CSS files (mirror component tree)
@@ -63,8 +64,8 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (15 test files)
-  e2e/                      # Playwright e2e tests (6 spec files)
+  unit/                     # Vitest unit tests (16 test files)
+  e2e/                      # Playwright e2e tests (7 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -101,6 +102,7 @@ src/components/
     Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (default), top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
   navigation/                # Navigation patterns
     Pane.tsx                 # Collapsible side/top/bottom panel. States: closed, partial, open. Modes: permanent (push, with handle) or temporary (overlay, with backdrop). Controlled or uncontrolled. Position: left (default), right, top, bottom.
+    Tabs.tsx                 # Tab bar for content switching. Variants: primary, secondary, subtle. Orientation: horizontal (default), vertical. Options array with value/label/icon. Controlled or uncontrolled. Sizes: compact, normal, spacious.
 ```
 
 **CSS Files**: Each component has a matching CSS file at `src/styles/components/{category}/ComponentName.css`. Exception: `GridBackground` uses inline styles only.
@@ -111,7 +113,7 @@ Consistent patterns across components:
 
 1. **Size variants**: Most components support `'normal'` (default) | `'compact'`. Button and Card also support `'spacious'`.
 2. **Disabled state**: `disabled?: boolean` -- reduces opacity, sets `cursor: not-allowed`.
-3. **Orientation** (RadioGroup, Slider, ButtonGroup): `'horizontal'` | `'vertical'`.
+3. **Orientation** (RadioGroup, Slider, ButtonGroup, Tabs): `'horizontal'` | `'vertical'`.
 4. **Icon support**: Components use `solid-icons/bs`. Checkbox and RadioGroup accept `iconUnchecked`/`iconChecked` component props for custom icon mode.
 5. **splitProps pattern**: All components use SolidJS `splitProps()` to separate local props from passthrough DOM attributes.
 6. **Class composition**: Components build class strings via array `.join(' ')` pattern, accepting an optional `class` prop to append.
@@ -219,7 +221,7 @@ The project uses CSS custom properties defined in `src/styles/global.css` with a
 
 ### Unit Tests (Vitest)
 
-- Located in `tests/unit/` (15 test files covering all components)
+- Located in `tests/unit/` (16 test files covering all components)
 - Config: `vitest.config.ts` -- jsdom environment, setup file imports `@testing-library/jest-dom`
 - Uses `@solidjs/testing-library` for component rendering
 - **All Portal-rendered content must be queried via `document`, not `container`** (affects Combobox, Slider tooltip, Tooltip, Dialog, Notification)
@@ -227,7 +229,7 @@ The project uses CSS custom properties defined in `src/styles/global.css` with a
 
 ### E2E Tests (Playwright)
 
-- Located in `tests/e2e/` (6 spec files)
+- Located in `tests/e2e/` (7 spec files)
 - Config: `playwright.config.ts` -- tests Chromium, Firefox, and WebKit
 - Uses `127.0.0.1` instead of `localhost` (critical for cross-browser compat)
 - Dev server auto-starts via `bun run dev --host 127.0.0.1` on port 3000
@@ -290,10 +292,11 @@ Three jobs:
 
 ## Router Structure
 
-Routes defined in `src/app/App.tsx` using `@solidjs/router`:
+Routes defined in `src/app/App.tsx` using `@solidjs/router` with nested layout routes:
 - App is wrapped in `NotificationProvider` (required for `useNotification()` hook)
-- Current route: `/` renders `Test` page (design system showcase)
-- Pages go in `src/app/pages/`
+- `Test` is the layout component (sidebar Pane + Tabs nav), renders child routes via `props.children`
+- Each demo has its own route (e.g., `/typography`, `/button`, `/pane`). `/` redirects to `/typography`
+- Demo files live in `src/app/pages/demos/` (18 files, one per component)
 - Use `<A>` component for navigation (not `<a>`)
 
 ## Component Development Workflow
@@ -307,6 +310,6 @@ When adding new components:
 5. Use `Portal` for any floating/overlay content (dropdowns, tooltips, modals)
 6. Add comprehensive unit tests in `tests/unit/ComponentName.test.tsx`
 7. Add e2e tests in `tests/e2e/` if the component has complex interactions
-8. Update `src/app/pages/Test.tsx` with usage examples
+8. Create a demo file in `src/app/pages/demos/ComponentNameDemo.tsx` and add a route in `src/app/App.tsx`
 9. Verify all tests pass: `bun run test`
 10. Type check: `bunx tsc --noEmit`

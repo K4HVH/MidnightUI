@@ -1,10 +1,10 @@
 # Homepage v2
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 17 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 18 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **17 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **18 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -84,6 +84,7 @@ Page layout and navigation components.
 | Component | Description |
 |-----------|-------------|
 | **Pane** | Collapsible side/top/bottom panel |
+| **Tabs** | Tab bar for content switching with icon support |
 
 ## Project Structure
 
@@ -92,15 +93,16 @@ src/
 ├── index.html                  # HTML entry point
 ├── index.tsx                   # JavaScript entry point
 ├── app/
-│   ├── App.tsx                 # Router setup with NotificationProvider
+│   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
-│       └── Test.tsx            # Component showcase page (/)
+│       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
+│       └── demos/              # 18 demo files (TypographyDemo.tsx, ButtonDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
 │   ├── feedback/               # Dialog, Notification
 │   ├── surfaces/               # Card, GridBackground
-│   └── navigation/             # Pane
+│   └── navigation/             # Pane, Tabs
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files
