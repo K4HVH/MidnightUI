@@ -1,10 +1,10 @@
 # Homepage v2
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 18 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 19 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **18 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **19 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -57,6 +57,7 @@ Components for presenting information.
 | **Avatar** | User avatar display |
 | **AvatarGroup** | Grouped avatar display with overlap |
 | **Badge** | Status and label badges |
+| **Table** | Data table with sorting, selection, and sticky headers |
 | **Tooltip** | Hover tooltips for contextual information |
 
 ### Feedback
@@ -96,7 +97,7 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 18 demo files (TypographyDemo.tsx, ButtonDemo.tsx, etc.)
+│       └── demos/              # 19 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.

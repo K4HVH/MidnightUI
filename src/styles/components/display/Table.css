@@ -1,0 +1,278 @@
+/* =============================================================================
+   Table Component
+   ============================================================================= */
+
+.table {
+  width: 100%;
+  border-radius: var(--g-radius);
+  background: var(--g-background);
+  border: var(--g-border-width) solid var(--g-border-color);
+  overflow: hidden; /* For border radius */
+}
+
+.table--sticky-header {
+  overflow: visible;
+}
+
+.table__container {
+  width: 100%;
+  overflow: auto;
+}
+
+.table--sticky-header .table__container {
+  overflow: visible;
+}
+
+.table__element {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* =============================================================================
+   Table Header
+   ============================================================================= */
+
+.table__header {
+  background: var(--g-background-elevated);
+  border-bottom: var(--g-border-width) solid var(--g-border-color-emphasis);
+}
+
+.table--sticky-header .table__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: none;
+  box-shadow: inset 0 calc(-1 * var(--g-border-width)) 0 0 var(--g-border-color-emphasis);
+}
+
+.table--subtle.table--sticky-header .table__header {
+  box-shadow: inset 0 calc(-1 * var(--g-border-width)) 0 0 var(--g-border-color-subtle);
+}
+
+.table__header-row {
+  border: none;
+}
+
+.table__header-cell {
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  text-align: left;
+  font-size: var(--g-font-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--g-text-primary);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.table__header-cell--checkbox {
+  width: 48px;
+  padding-left: var(--g-spacing);
+  padding-right: var(--g-spacing-sm);
+}
+
+.table__header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--g-spacing-xs);
+}
+
+/* Sortable headers */
+.table__header-cell--sortable {
+  cursor: pointer;
+  transition: background var(--g-transition);
+}
+
+.table__header-cell--sortable:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table__header-cell--sortable:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.table__sort-icon {
+  display: flex;
+  align-items: center;
+  color: var(--g-text-muted);
+  transition: color var(--g-transition);
+}
+
+.table__header-cell--sorted .table__sort-icon {
+  color: var(--color-primary);
+}
+
+/* =============================================================================
+   Table Body
+   ============================================================================= */
+
+.table__body {
+  background: var(--g-background);
+}
+
+.table__row {
+  border-bottom: var(--g-border-width) solid var(--g-border-color);
+  transition: background var(--g-transition);
+}
+
+.table__row:last-child {
+  border-bottom: none;
+}
+
+.table__row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.table__row--selected {
+  background: rgba(0, 102, 204, 0.1); /* var(--color-primary) with alpha */
+}
+
+.table__row--selected:hover {
+  background: rgba(0, 102, 204, 0.12);
+}
+
+.table__cell {
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  font-size: var(--g-font-size);
+  color: var(--g-text-primary);
+  vertical-align: middle;
+}
+
+.table__cell--checkbox {
+  width: 48px;
+  padding-left: var(--g-spacing);
+  padding-right: var(--g-spacing-sm);
+}
+
+/* =============================================================================
+   Empty State
+   ============================================================================= */
+
+.table__row--empty {
+  border: none;
+}
+
+.table__row--empty:hover::before {
+  background: transparent;
+}
+
+.table__cell--empty {
+  padding: var(--g-spacing-lg);
+  text-align: center;
+  color: var(--g-text-muted);
+  font-style: italic;
+}
+
+/* =============================================================================
+   Loading Skeleton
+   ============================================================================= */
+
+.table__row--skeleton {
+  border-bottom: var(--g-border-width) solid var(--g-border-color);
+}
+
+.table__row--skeleton:hover::before {
+  background: transparent;
+}
+
+.table__skeleton {
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-800) 0%,
+    var(--color-gray-700) 50%,
+    var(--color-gray-800) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Default variant (already defined above) */
+
+/* Emphasized variant */
+.table--emphasized {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.table--emphasized .table__header {
+  background: var(--g-button-primary);
+  color: var(--color-white);
+}
+
+.table--emphasized .table__header-cell {
+  color: var(--color-white);
+}
+
+.table--emphasized .table__sort-icon {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.table--emphasized .table__header-cell--sorted .table__sort-icon {
+  color: var(--color-white);
+}
+
+/* Subtle variant */
+.table--subtle {
+  border: none;
+  background: transparent;
+}
+
+.table--subtle .table__header {
+  background: transparent;
+  border-bottom-color: var(--g-border-color-subtle);
+}
+
+.table--subtle .table__row {
+  border-bottom-color: var(--g-border-color-subtle);
+}
+
+/* =============================================================================
+   Sizes
+   ============================================================================= */
+
+.table--compact .table__header-cell {
+  padding: var(--g-spacing-xs) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.table--compact .table__cell {
+  padding: var(--g-spacing-xs) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.table--compact .table__header-cell--checkbox,
+.table--compact .table__cell--checkbox {
+  width: 40px;
+  padding-left: var(--g-spacing-sm);
+  padding-right: var(--g-spacing-xs);
+}
+
+.table--spacious .table__header-cell {
+  padding: var(--g-spacing) var(--g-spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.table--spacious .table__cell {
+  padding: var(--g-spacing) var(--g-spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.table--spacious .table__header-cell--checkbox,
+.table--spacious .table__cell--checkbox {
+  width: 56px;
+  padding-left: var(--g-spacing-lg);
+  padding-right: var(--g-spacing);
+}

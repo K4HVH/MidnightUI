@@ -6,7 +6,7 @@ Comprehensive reference for the SolidJS component library. Combines the componen
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 18 components in this SolidJS design system, organized by category.
+A comprehensive reference for all 19 components in this SolidJS design system, organized by category.
 
 ---
 
@@ -811,6 +811,141 @@ import { BsCheck } from 'solid-icons/bs';
 | `.badge--top-right`, `.badge--top-left`, `.badge--bottom-right`, `.badge--bottom-left` | Placement modifiers |
 | `.badge--dot` | Dot mode (10px circle) |
 | `.badge--icon` | Icon mode (18px circle) |
+
+---
+
+### Table
+
+A data table component with multi-select, sortable columns, sticky header support, and multiple visual variants. Supports loading states with skeleton rows and empty states with custom messages.
+
+**Props Interface**
+
+```typescript
+interface Column<T> {
+  key: string;                                                    // unique column identifier
+  header: string;                                                 // column header text
+  cell: (row: T) => JSX.Element | string | number;              // cell renderer function
+  width?: string;                                                 // CSS width value (e.g., "200px")
+  align?: 'left' | 'center' | 'right';                           // text alignment (default: 'left')
+  sortable?: boolean;                                            // allow sorting on this column (default: true when onSort provided)
+}
+
+interface TableProps<T> {
+  columns: Column<T>[];                                          // required - column definitions
+  data: T[];                                                     // required - data array
+  getRowId: (row: T) => string;                                 // required - unique row ID extractor
+  // Selection
+  selectable?: boolean;                                          // show selection checkboxes
+  selectedRows?: Set<string> | string[];                        // controlled selected row IDs
+  onSelectionChange?: (selected: Set<string>) => void;          // selection change handler
+  // Sorting
+  sortKey?: string;                                              // current sort column key
+  sortDirection?: 'asc' | 'desc';                               // current sort direction
+  onSort?: (key: string, direction: 'asc' | 'desc') => void;   // sort change handler
+  // Appearance
+  variant?: 'default' | 'emphasized' | 'subtle';                // default: 'default'
+  size?: 'compact' | 'normal' | 'spacious';                     // default: 'normal'
+  stickyHeader?: boolean;                                        // sticky table header
+  // States
+  loading?: boolean;                                             // show skeleton loading rows
+  emptyMessage?: string;                                         // empty state message (default: "No data available")
+  // Other
+  class?: string;                                                // additional CSS class
+}
+```
+
+**Features**
+
+- **Multi-select**: Checkbox column with select all/individual row selection
+- **Sortable columns**: Click headers to toggle asc/desc sort with chevron indicators
+- **Sticky header**: Optional sticky positioning for scrollable tables
+- **Variants**: `default` (bordered), `emphasized` (primary gradient header), `subtle` (minimal borders)
+- **Sizes**: `compact`, `normal`, `spacious` (matches Button/Card sizing)
+- **Loading state**: Shows 5 animated skeleton rows while loading
+- **Empty state**: Centered message when no data
+- **Flexible columns**: Custom width, alignment, and cell rendering per column
+- **Row selection styling**: Selected rows have blue background tint
+
+**Usage Example**
+
+```tsx
+import { Table, type Column } from '../components/display/Table';
+import { createSignal } from 'solid-js';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+const users: User[] = [
+  { id: '1', name: 'Alice', email: 'alice@example.com', role: 'Admin' },
+  { id: '2', name: 'Bob', email: 'bob@example.com', role: 'User' },
+];
+
+const columns: Column<User>[] = [
+  { key: 'name', header: 'Name', cell: (row) => row.name, width: '200px' },
+  { key: 'email', header: 'Email', cell: (row) => row.email },
+  { key: 'role', header: 'Role', cell: (row) => row.role, width: '120px', align: 'center' },
+];
+
+function UserTable() {
+  const [selected, setSelected] = createSignal<Set<string>>(new Set());
+  const [sortKey, setSortKey] = createSignal<string>();
+  const [sortDir, setSortDir] = createSignal<'asc' | 'desc'>('asc');
+
+  const handleSort = (key: string, direction: 'asc' | 'desc') => {
+    setSortKey(key);
+    setSortDir(direction);
+  };
+
+  return (
+    <Table
+      columns={columns}
+      data={users}
+      getRowId={(row) => row.id}
+      selectable
+      selectedRows={selected()}
+      onSelectionChange={setSelected}
+      sortKey={sortKey()}
+      sortDirection={sortDir()}
+      onSort={handleSort}
+      stickyHeader
+      variant="emphasized"
+      size="normal"
+    />
+  );
+}
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.table` | Outer wrapper with border and background |
+| `.table__container` | Scrollable container |
+| `.table__element` | `<table>` element |
+| `.table__header` | `<thead>` element |
+| `.table__header-cell` | Header cell |
+| `.table__header-cell--sortable` | Sortable header (clickable with hover effect) |
+| `.table__header-cell--sorted` | Currently sorted column |
+| `.table__row` | Table row with hover effect |
+| `.table__row--selected` | Selected row (blue background) |
+| `.table__row--skeleton` | Loading skeleton row |
+| `.table__cell` | Table cell |
+| `.table--default`, `.table--emphasized`, `.table--subtle` | Variant modifiers |
+| `.table--compact`, `.table--spacious` | Size modifiers |
+| `.table--sticky-header` | Enables sticky header positioning |
+
+**Important Notes**
+
+- Selection state is controlled externally via `selectedRows` and `onSelectionChange`
+- Sorting must be implemented by parent component (Table only handles UI)
+- `stickyHeader` requires a fixed height container to scroll properly
+- Column `sortable: false` explicitly disables sorting for that column
+- Empty state spans all columns including checkbox column
+- Loading skeleton shows 5 rows regardless of data length
 
 ---
 

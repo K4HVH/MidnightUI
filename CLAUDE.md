@@ -50,11 +50,11 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 18 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, etc.)
+      demos/                # 19 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (8 components)
     surfaces/               # Layout and background (2 components)
-    display/                # Data presentation (4 components)
+    display/                # Data presentation (5 components)
     feedback/               # User feedback (2 components)
     navigation/             # Navigation patterns (2 components)
   styles/
@@ -64,7 +64,7 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (16 test files)
+  unit/                     # Vitest unit tests (17 test files)
   e2e/                      # Playwright e2e tests (7 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -96,6 +96,7 @@ src/components/
     Avatar.tsx               # Image/initials/icon avatar. Sizes: compact, normal, spacious. Shape: circle (default), square. Renders as <button> when onClick provided, <div> otherwise.
     AvatarGroup.tsx          # Groups Avatars with overlap. max prop shows "+N" overflow. Spacing: tight, normal, loose.
     Badge.tsx                # Notification badge overlay. Variants: primary, success, warning, error, info, neutral. Modes: content, dot, icon. Placement: top-right (default), top-left, bottom-right, bottom-left.
+    Table.tsx                # Data table/grid. Multi-select with checkboxes, sortable columns, sticky header (optional). Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Loading skeleton, empty state, flexible column config.
     Tooltip.tsx              # Hover/focus tooltip via Portal. Placement: top (default), bottom, left, right with auto-flip. Show/hide delays with fade animation.
   feedback/                  # User feedback
     Dialog.tsx               # Modal dialog via Portal over Card. Sizes: small, medium (default), large, fullscreen. Backdrop/escape dismiss. Exports DialogHeader, DialogFooter.
