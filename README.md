@@ -4,7 +4,7 @@ A SolidJS component library and design system built with Vite and Bun. Features 
 
 ## Features
 
-- **20 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **21 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -85,6 +85,7 @@ Page layout and navigation components.
 | Component | Description |
 |-----------|-------------|
 | **Menu** | Dropdown/context menu with nested submenus |
+| **Pagination** | Page navigation control with ellipsis support |
 | **Pane** | Collapsible side/top/bottom panel |
 | **Tabs** | Tab bar for content switching with icon support |
 

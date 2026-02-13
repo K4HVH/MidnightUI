@@ -1353,6 +1353,120 @@ import { BsGear, BsTrash } from 'solid-icons/bs';
 
 ---
 
+### Pagination
+
+A page navigation control that displays page numbers with smart ellipsis for large ranges. Controlled component that manages page state via props.
+
+**Props Interface**
+
+```typescript
+interface PaginationProps {
+  page: number;                     // Current page (1-indexed)
+  totalPages: number;               // Total number of pages
+  onPageChange: (page: number) => void;  // Callback when page changes
+  variant?: 'primary' | 'secondary' | 'subtle';  // default: 'secondary'
+  size?: 'compact' | 'normal' | 'spacious';  // default: 'normal'
+  showFirstLast?: boolean;          // Show first/last buttons (default: true)
+  showPrevNext?: boolean;           // Show prev/next buttons (default: true)
+  siblingCount?: number;            // Pages shown on each side of current (default: 1)
+  disabled?: boolean;               // Disables all buttons
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Variants**:
+  - `primary` - Active page has blue gradient background
+  - `secondary` (default) - Active page has border highlight
+  - `subtle` - Transparent buttons, minimal styling
+- **Sizes**:
+  - `compact` (32px buttons, smaller gaps)
+  - `normal` (40px buttons, default)
+  - `spacious` (48px buttons, larger gaps)
+- **Navigation controls**:
+  - First/Last buttons: Jump to first or last page (toggle via `showFirstLast`)
+  - Prev/Next buttons: Navigate one page at a time (toggle via `showPrevNext`)
+  - Can hide both for page-numbers-only mode
+- **Page number display**:
+  - Always shows first and last page
+  - Shows `siblingCount` pages on each side of current page
+  - Inserts ellipsis (`…`) when there's a gap
+  - Example with `siblingCount={1}` on page 5 of 10: `1 ... 4 5 6 ... 10`
+- **Controlled state**: Component is always controlled - parent must manage `page` state and handle `onPageChange`
+- **Disabled state**: All buttons become non-interactive with reduced opacity
+- **Accessibility**: Full ARIA support with `aria-label` on all buttons and `aria-current="page"` on active page
+
+**Usage Example**
+
+```tsx
+import { createSignal } from 'solid-js';
+import { Pagination } from '../components/navigation/Pagination';
+
+function MyComponent() {
+  const [currentPage, setCurrentPage] = createSignal(1);
+
+  return (
+    <div>
+      {/* Basic pagination */}
+      <Pagination
+        page={currentPage()}
+        totalPages={10}
+        onPageChange={setCurrentPage}
+      />
+
+      {/* Compact primary variant */}
+      <Pagination
+        page={currentPage()}
+        totalPages={20}
+        onPageChange={setCurrentPage}
+        variant="primary"
+        size="compact"
+      />
+
+      {/* Page numbers only (no nav buttons) */}
+      <Pagination
+        page={currentPage()}
+        totalPages={15}
+        onPageChange={setCurrentPage}
+        showFirstLast={false}
+        showPrevNext={false}
+      />
+
+      {/* More visible pages (siblingCount=2) */}
+      <Pagination
+        page={currentPage()}
+        totalPages={100}
+        onPageChange={setCurrentPage}
+        siblingCount={2}
+      />
+      {/* Shows: 1 ... 48 49 50 51 52 ... 100 (if on page 50) */}
+
+      {/* Disabled state */}
+      <Pagination
+        page={5}
+        totalPages={10}
+        onPageChange={() => {}}
+        disabled
+      />
+    </div>
+  );
+}
+```
+
+**Implementation Notes**
+
+- Always controlled - no internal page state management
+- Smart ellipsis algorithm avoids duplicate page buttons near edges
+- First/Last buttons auto-disable at boundaries
+- Prev/Next buttons auto-disable at boundaries
+- Returns early if page is out of bounds or hasn't changed
+- Uses 4px gap between buttons for consistent spacing
+- Button widths are `min-width` to accommodate double-digit page numbers
+- All navigation buttons are icon-only (chevron icons from solid-icons/bs)
+
+---
+
 ### Pane
 
 A collapsible panel that attaches to any edge of its container (or the viewport). Supports three states (closed/partial/open), permanent and temporary modes, push and overlay layout behaviors, and both controlled and uncontrolled usage.

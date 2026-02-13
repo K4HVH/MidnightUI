@@ -1,0 +1,217 @@
+/* =============================================================================
+   Pagination Component
+   ============================================================================= */
+
+.pagination {
+  display: inline-flex;
+}
+
+.pagination--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination__container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+/* Page numbers container */
+.pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+/* Buttons */
+.pagination__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 var(--g-spacing-sm);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  background: var(--g-background);
+  color: var(--g-text-secondary);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--g-transition);
+  outline: none;
+}
+
+/* Hover effect using ::before pseudo-element */
+.pagination__button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  border-radius: var(--g-radius);
+  transition: background var(--g-transition);
+  pointer-events: none;
+}
+
+.pagination__button:not(:disabled):hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Focus state */
+.pagination__button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Active state */
+.pagination__button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Disabled state */
+.pagination__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Active page */
+.pagination__button--active {
+  border-color: var(--color-primary);
+  color: var(--g-text-primary);
+  font-weight: 600;
+}
+
+/* Navigation buttons (first, prev, next, last) - icon-only */
+.pagination__button--first,
+.pagination__button--prev,
+.pagination__button--next,
+.pagination__button--last {
+  min-width: 40px;
+  padding: 0;
+}
+
+/* Ellipsis */
+.pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  color: var(--g-text-muted);
+  font-size: var(--font-size-base);
+  user-select: none;
+}
+
+/* ============================================================================
+   Variant: Primary
+   ============================================================================ */
+
+.pagination--primary .pagination__button--active {
+  background: var(--g-button-primary);
+  border-color: var(--color-primary);
+  color: var(--g-text-primary);
+}
+
+.pagination--primary .pagination__button--active::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pagination--primary .pagination__button--active:not(:disabled):hover::before {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================================================
+   Variant: Secondary (default)
+   ============================================================================ */
+
+.pagination--secondary .pagination__button {
+  border-color: var(--g-border-color);
+}
+
+.pagination--secondary .pagination__button--active {
+  border-color: var(--color-primary);
+  background: rgba(0, 102, 204, 0.1);
+}
+
+/* ============================================================================
+   Variant: Subtle
+   ============================================================================ */
+
+.pagination--subtle .pagination__button {
+  border-color: transparent;
+  background: transparent;
+}
+
+.pagination--subtle .pagination__button--active {
+  background: var(--g-background-elevated);
+  border-color: var(--g-border-color-subtle);
+}
+
+/* ============================================================================
+   Size: Compact
+   ============================================================================ */
+
+.pagination--compact .pagination__button {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--spacing-2);
+  font-size: var(--font-size-xs);
+}
+
+.pagination--compact .pagination__button--first,
+.pagination--compact .pagination__button--prev,
+.pagination--compact .pagination__button--next,
+.pagination--compact .pagination__button--last {
+  min-width: 32px;
+  padding: 0;
+}
+
+.pagination--compact .pagination__ellipsis {
+  min-width: 32px;
+  height: 32px;
+  font-size: var(--font-size-sm);
+}
+
+.pagination--compact .pagination__container {
+  gap: var(--spacing-0-5);
+}
+
+.pagination--compact .pagination__pages {
+  gap: var(--spacing-0-5);
+}
+
+/* ============================================================================
+   Size: Spacious
+   ============================================================================ */
+
+.pagination--spacious .pagination__button {
+  min-width: 48px;
+  height: 48px;
+  padding: 0 var(--g-spacing);
+  font-size: var(--font-size-base);
+}
+
+.pagination--spacious .pagination__button--first,
+.pagination--spacious .pagination__button--prev,
+.pagination--spacious .pagination__button--next,
+.pagination--spacious .pagination__button--last {
+  min-width: 48px;
+  padding: 0;
+}
+
+.pagination--spacious .pagination__ellipsis {
+  min-width: 48px;
+  height: 48px;
+  font-size: var(--font-size-lg);
+}
+
+.pagination--spacious .pagination__container {
+  gap: var(--spacing-2);
+}
+
+.pagination--spacious .pagination__pages {
+  gap: var(--spacing-2);
+}

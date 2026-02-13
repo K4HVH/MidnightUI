@@ -64,7 +64,7 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (18 test files)
+  unit/                     # Vitest unit tests (19 test files)
   e2e/                      # Playwright e2e tests (7 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -103,6 +103,7 @@ src/components/
     Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (default), top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
   navigation/                # Navigation patterns
     Menu.tsx                 # Dropdown/context menu via Portal. Triggers: click, contextmenu, both. Auto-positioning with flip. Anchored (follows trigger on scroll) or unanchored. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Supports nested submenus with hover. Exports MenuItem, MenuSeparator.
+    Pagination.tsx           # Page navigation control. Controlled via page/onPageChange. Variants: primary, secondary, subtle. Sizes: compact, normal, spacious. Features: page numbers with ellipsis, first/last buttons (toggleable), prev/next buttons (toggleable), configurable siblingCount for page density.
     Pane.tsx                 # Collapsible side/top/bottom panel. States: closed, partial, open. Modes: permanent (push, with handle) or temporary (overlay, with backdrop). Controlled or uncontrolled. Position: left (default), right, top, bottom.
     Tabs.tsx                 # Tab bar for content switching. Variants: primary, secondary, subtle. Orientation: horizontal (default), vertical. Options array with value/label/icon. Controlled or uncontrolled. Sizes: compact, normal, spacious.
 ```

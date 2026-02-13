@@ -24,6 +24,7 @@ import PaneDemo from './pages/demos/PaneDemo';
 import FormDemo from './pages/demos/FormDemo';
 import TableDemo from './pages/demos/TableDemo';
 import MenuDemo from './pages/demos/MenuDemo';
+import PaginationDemo from './pages/demos/PaginationDemo';
 
 const App: Component = () => {
   return (
@@ -52,6 +53,7 @@ const App: Component = () => {
           <Route path="form" component={FormDemo} />
           <Route path="table" component={TableDemo} />
           <Route path="menu" component={MenuDemo} />
+          <Route path="pagination" component={PaginationDemo} />
         </Route>
       </Router>
     </NotificationProvider>
