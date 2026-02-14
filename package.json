@@ -18,6 +18,9 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "license": "MIT",
+  "resolutions": {
+    "lru-cache": "^10.0.0"
+  },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@solidjs/testing-library": "^0.8.10",
