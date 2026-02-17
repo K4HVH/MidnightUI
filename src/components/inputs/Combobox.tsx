@@ -1,7 +1,7 @@
 import { Component, createSignal, Show, For, splitProps, JSX } from 'solid-js';
-import { BsX } from 'solid-icons/bs';
 import { Checkbox } from './Checkbox';
 import { Menu } from '../navigation/Menu';
+import { Chip } from '../display/Chip';
 import '../../styles/components/inputs/Combobox.css';
 
 interface ComboboxOption {
@@ -158,24 +158,13 @@ export const Combobox: Component<ComboboxProps> = (props) => {
                       {(option) => {
                         const Icon = option.iconChecked || option.icon;
                         return (
-                          <span class="combobox__chip">
-                            {Icon && (
-                              <span class="combobox__icon">
-                                <Icon />
-                              </span>
-                            )}
-                            <span>{option.label}</span>
-                            <button
-                              type="button"
-                              class="combobox__chip-remove"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleRemove(option.value);
-                              }}
-                            >
-                              <BsX />
-                            </button>
-                          </span>
+                          <Chip
+                            icon={Icon}
+                            onRemove={() => handleRemove(option.value)}
+                            size={size()}
+                          >
+                            {option.label}
+                          </Chip>
                         );
                       }}
                     </For>

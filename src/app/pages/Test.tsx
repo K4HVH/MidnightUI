@@ -6,7 +6,7 @@ import { Tabs } from '../../components/navigation/Tabs';
 import {
   BsType, BsInputCursor, BsCardText, BsCheckSquare, BsCircle,
   BsList, BsChevronExpand, BsSliders, BsCursor, BsGrid,
-  BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward,
+  BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward, BsTag,
   BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable, BsThreeDots,
   BsChevronBarLeft, BsChevronRight, BsChevronBarExpand,
 } from 'solid-icons/bs';
@@ -27,6 +27,7 @@ const tabOptions = [
   { value: 'notification', label: 'Notification', icon: BsBell },
   { value: 'tooltip', label: 'Tooltip', icon: BsChat },
   { value: 'badge', label: 'Badge', icon: BsAward },
+  { value: 'chip', label: 'Chip', icon: BsTag },
   { value: 'avatar', label: 'Avatar', icon: BsPerson },
   { value: 'tabs', label: 'Tabs', icon: BsFolder },
   { value: 'pane', label: 'Pane', icon: BsLayoutSidebar },

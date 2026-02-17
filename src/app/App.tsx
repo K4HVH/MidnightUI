@@ -18,6 +18,7 @@ import DialogDemo from './pages/demos/DialogDemo';
 import NotificationDemo from './pages/demos/NotificationDemo';
 import TooltipDemo from './pages/demos/TooltipDemo';
 import BadgeDemo from './pages/demos/BadgeDemo';
+import ChipDemo from './pages/demos/ChipDemo';
 import AvatarDemo from './pages/demos/AvatarDemo';
 import TabsDemo from './pages/demos/TabsDemo';
 import PaneDemo from './pages/demos/PaneDemo';
@@ -49,6 +50,7 @@ const App: Component = () => {
           <Route path="notification" component={NotificationDemo} />
           <Route path="tooltip" component={TooltipDemo} />
           <Route path="badge" component={BadgeDemo} />
+          <Route path="chip" component={ChipDemo} />
           <Route path="avatar" component={AvatarDemo} />
           <Route path="tabs" component={TabsDemo} />
           <Route path="pane" component={PaneDemo} />

@@ -50,11 +50,11 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 23 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, etc.)
+      demos/                # 24 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (7 components)
     surfaces/               # Layout and background (2 components)
-    display/                # Data presentation (5 components)
+    display/                # Data presentation (6 components)
     feedback/               # User feedback (6 components)
     navigation/             # Navigation patterns (6 components)
   styles/
@@ -64,8 +64,8 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (27 test files)
-  e2e/                      # Playwright e2e tests (10 spec files)
+  unit/                     # Vitest unit tests (28 test files)
+  e2e/                      # Playwright e2e tests (11 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -84,7 +84,7 @@ src/components/
     Button.tsx               # Variants: primary, secondary, subtle, danger. Sizes: compact, normal, spacious. Supports icon + loading state (shows circular Progress).
     ButtonGroup.tsx          # Groups buttons. Orientation: horizontal (default), vertical.
     Checkbox.tsx             # Supports label, indeterminate, icon mode (iconUnchecked/iconChecked).
-    Combobox.tsx             # Dropdown select via Portal. Single or multi-select. Uses Checkbox internally for multi.
+    Combobox.tsx             # Dropdown select via Portal. Single or multi-select. Uses Checkbox internally for multi options, Chip for selected values in multi-select.
     RadioGroup.tsx           # Radio buttons with options array. Orientation: horizontal, vertical (default). Icon mode support.
     Slider.tsx               # Single/range slider. Marks, tooltips (Portal), orientation, step=null snaps to marks only.
     TextField.tsx            # Text input/textarea. Supports label, prefix/suffix, clearable, multiline with auto-grow, character count.
@@ -95,6 +95,7 @@ src/components/
     Avatar.tsx               # Image/initials/icon avatar. Sizes: compact, normal, spacious. Shape: circle (default), square. Renders as <button> when onClick provided, <div> otherwise.
     AvatarGroup.tsx          # Groups Avatars with overlap. max prop shows "+N" overflow. Spacing: tight, normal, loose.
     Badge.tsx                # Notification badge overlay. Variants: primary, success, warning, error, info, neutral. Modes: content, dot, icon. Placement: top-right (default), top-left, bottom-right, bottom-left.
+    Chip.tsx                 # Interactive removable tags/labels. Variants: primary, success, warning, error, info, neutral. Sizes: compact, normal, spacious. Optional icon. Removable (onRemove), clickable (onClick), or static. Used by Combobox for multi-select.
     Table.tsx                # Data table/grid. Multi-select with checkboxes, sortable columns, sticky header (optional). Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Loading skeleton, empty state, flexible column config.
     Tooltip.tsx              # Hover/focus tooltip via Portal. Placement: top (default), bottom, left, right with auto-flip. Show/hide delays with fade animation.
   feedback/                  # User feedback

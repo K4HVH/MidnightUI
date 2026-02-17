@@ -840,6 +840,93 @@ import { BsCheck } from 'solid-icons/bs';
 
 ---
 
+### Chip
+
+An interactive tag or label component used for displaying removable items, clickable filters, or static categories. Commonly used in multi-select inputs, tag lists, and filter UIs.
+
+**Props Interface**
+
+```typescript
+interface ChipProps {
+  children: JSX.Element;                                                      // required - chip label text
+  variant?: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'; // default: 'neutral'
+  size?: 'compact' | 'normal' | 'spacious';                                  // default: 'normal'
+  icon?: Component;                                                           // optional icon on left side
+  onRemove?: () => void;                                                      // callback to make chip removable (shows X button)
+  onClick?: () => void;                                                       // callback to make chip clickable
+  disabled?: boolean;                                                         // disable interactions
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Color variants**: `neutral` (gray), `primary` (blue), `success` (green), `warning` (yellow), `error` (red), `info` (blue)
+- **Sizes**: `compact`, `normal`, `spacious` (affects padding and font size)
+- **Removable**: Provide `onRemove` callback to show X button for removing the chip
+- **Clickable**: Provide `onClick` callback to make the entire chip clickable (adds hover effects)
+- **Static**: Without `onClick` or `onRemove`, chip is display-only
+- **Disabled**: Reduces opacity, disables all interactions, sets `cursor: not-allowed`
+- **Keyboard support**:
+  - Removable chips: Backspace/Delete keys trigger `onRemove`
+  - Clickable chips: Enter/Space keys trigger `onClick`
+  - Focusable via Tab when interactive (clickable or removable)
+- **Role**: Sets `role="button"` when clickable, `aria-disabled` when disabled
+- Used by Combobox component for multi-select chip display
+
+**Usage Example**
+
+```tsx
+import { Chip } from '../components/display/Chip';
+import { BsTag } from 'solid-icons/bs';
+
+{/* Static chip */}
+<Chip>Category</Chip>
+
+{/* Removable chip */}
+<Chip icon={BsTag} onRemove={() => handleRemove('javascript')}>
+  JavaScript
+</Chip>
+
+{/* Clickable chip for filters */}
+<Chip
+  variant="primary"
+  onClick={() => toggleFilter('active')}
+>
+  Active
+</Chip>
+
+{/* Both clickable and removable */}
+<Chip
+  variant="success"
+  icon={BsTag}
+  onClick={() => selectTag('featured')}
+  onRemove={() => removeTag('featured')}
+>
+  Featured
+</Chip>
+
+{/* Disabled chip */}
+<Chip disabled onRemove={() => {}}>
+  Disabled
+</Chip>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.chip` | Base chip element |
+| `.chip--neutral`, `.chip--primary`, `.chip--success`, `.chip--warning`, `.chip--error`, `.chip--info` | Color variants |
+| `.chip--compact`, `.chip--spacious` | Size modifiers |
+| `.chip--clickable` | Applied when chip has onClick and not disabled |
+| `.chip--disabled` | Disabled state |
+| `.chip__icon` | Icon container |
+| `.chip__label` | Text label with ellipsis overflow |
+| `.chip__remove` | Remove button (X icon) |
+
+---
+
 ### Table
 
 A data table component with multi-select, sortable columns, sticky header support, and multiple visual variants. Supports loading states with skeleton rows and empty states with custom messages.

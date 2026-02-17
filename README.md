@@ -1,10 +1,10 @@
 # MidnightUI
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 26 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 27 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **26 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **27 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -56,6 +56,7 @@ Components for presenting information.
 | **Avatar** | User avatar display |
 | **AvatarGroup** | Grouped avatar display with overlap |
 | **Badge** | Status and label badges |
+| **Chip** | Interactive removable tags and labels with variants |
 | **Table** | Data table with sorting, selection, and sticky headers |
 | **Tooltip** | Hover tooltips for contextual information |
 
@@ -104,7 +105,7 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 23 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, etc.)
+│       └── demos/              # 24 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.

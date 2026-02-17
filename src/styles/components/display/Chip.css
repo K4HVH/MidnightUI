@@ -1,0 +1,216 @@
+/* =============================================================================
+   Chip Component
+   ============================================================================= */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--g-spacing-sm);
+  background: var(--g-background-elevated);
+  border: var(--g-border-width) solid var(--g-border-color-subtle);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--g-text-secondary);
+  white-space: nowrap;
+  user-select: none;
+  transition: all var(--g-transition);
+  max-width: 250px;
+  position: relative;
+  outline: none;
+}
+
+/* Label */
+.chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Icon */
+.chip__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+/* Remove button */
+.chip__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: var(--g-text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  transition: color var(--g-transition);
+  flex-shrink: 0;
+}
+
+.chip__remove:hover {
+  color: var(--g-text-secondary);
+}
+
+.chip__remove:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Size Variants */
+
+/* Compact */
+.chip--compact {
+  padding: 2px var(--spacing-1);
+  font-size: var(--font-size-xs);
+  gap: 2px;
+  max-width: 200px;
+}
+
+.chip--compact .chip__remove {
+  font-size: 14px;
+}
+
+/* Spacious */
+.chip--spacious {
+  padding: var(--spacing-2) var(--g-spacing);
+  font-size: var(--font-size-base);
+  gap: var(--spacing-2);
+  max-width: 300px;
+}
+
+.chip--spacious .chip__remove {
+  font-size: 20px;
+}
+
+/* Clickable State */
+.chip--clickable {
+  cursor: pointer;
+}
+
+.chip--clickable::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.chip--clickable:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chip--clickable:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Disabled State */
+.chip--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chip--disabled.chip--clickable {
+  cursor: not-allowed;
+}
+
+.chip--disabled .chip__remove {
+  cursor: not-allowed;
+}
+
+/* Color Variants */
+
+/* Neutral (default) */
+.chip--neutral {
+  background: var(--g-background-elevated);
+  border-color: var(--g-border-color-subtle);
+  color: var(--g-text-secondary);
+}
+
+/* Primary */
+.chip--primary {
+  background: var(--color-blue-950);
+  border-color: var(--color-blue-800);
+  color: var(--color-blue-300);
+}
+
+.chip--primary .chip__remove {
+  color: var(--color-blue-400);
+}
+
+.chip--primary .chip__remove:hover {
+  color: var(--color-blue-300);
+}
+
+/* Success */
+.chip--success {
+  background: var(--color-green-900);
+  border-color: var(--color-green-700);
+  color: var(--color-green-300);
+}
+
+.chip--success .chip__remove {
+  color: var(--color-green-400);
+}
+
+.chip--success .chip__remove:hover {
+  color: var(--color-green-300);
+}
+
+/* Warning */
+.chip--warning {
+  background: var(--color-yellow-900);
+  border-color: var(--color-yellow-700);
+  color: var(--color-yellow-300);
+}
+
+.chip--warning .chip__remove {
+  color: var(--color-yellow-400);
+}
+
+.chip--warning .chip__remove:hover {
+  color: var(--color-yellow-300);
+}
+
+/* Error */
+.chip--error {
+  background: var(--color-red-900);
+  border-color: var(--color-red-700);
+  color: var(--color-red-300);
+}
+
+.chip--error .chip__remove {
+  color: var(--color-red-400);
+}
+
+.chip--error .chip__remove:hover {
+  color: var(--color-red-300);
+}
+
+/* Info */
+.chip--info {
+  background: var(--color-blue-900);
+  border-color: var(--color-blue-700);
+  color: var(--color-blue-300);
+}
+
+.chip--info .chip__remove {
+  color: var(--color-blue-400);
+}
+
+.chip--info .chip__remove:hover {
+  color: var(--color-blue-300);
+}
