@@ -8,7 +8,7 @@ import {
   BsList, BsChevronExpand, BsSliders, BsCursor, BsGrid,
   BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward, BsTag,
   BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable, BsThreeDots,
-  BsChevronBarLeft, BsChevronRight, BsChevronBarExpand,
+  BsChevronBarLeft, BsChevronRight, BsChevronBarExpand, BsHash,
 } from 'solid-icons/bs';
 
 const tabOptions = [
@@ -37,6 +37,7 @@ const tabOptions = [
   { value: 'pagination', label: 'Pagination', icon: BsChevronBarLeft },
   { value: 'breadcrumbs', label: 'Breadcrumbs', icon: BsChevronRight },
   { value: 'accordion', label: 'Accordion', icon: BsChevronBarExpand },
+  { value: 'numberinput', label: 'NumberInput', icon: BsHash },
 ];
 
 const Test = (props: RouteSectionProps) => {

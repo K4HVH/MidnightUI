@@ -6,7 +6,7 @@ Comprehensive reference for MidnightUI, a SolidJS component library with a dark 
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 25 components in MidnightUI, organized by category.
+A comprehensive reference for all 28 components in MidnightUI, organized by category.
 
 ---
 
@@ -257,6 +257,89 @@ const dropdown = document.querySelector('.combobox__dropdown');
 // Incorrect - will return null
 const dropdown = container.querySelector('.combobox__dropdown');
 ```
+
+---
+
+### NumberInput
+
+A numeric stepper input with decrement (−) and increment (+) buttons flanking the input field. Supports min/max clamping on blur, custom step size, decimal precision, hold-to-repeat on button press, and Arrow Up/Down keyboard shortcuts.
+
+**Props Interface**
+
+```typescript
+interface NumberInputProps {
+  value?: number;
+  onChange?: (value: number | undefined) => void;  // undefined when field is cleared
+  onBlur?: () => void;
+  min?: number;                  // lower bound; clamps on blur, disables − at boundary
+  max?: number;                  // upper bound; clamps on blur, disables + at boundary
+  step?: number;                 // default: 1
+  precision?: number;            // decimal places for rounding (e.g. 2 → 1.55)
+  disabled?: boolean;
+  size?: 'normal' | 'compact';   // default: 'normal'
+  label?: string;
+  error?: string;                // triggers invalid styling (error text via FormField)
+  invalid?: boolean;
+  placeholder?: string;
+  prefix?: JSX.Element | string; // displayed before the − button
+  suffix?: JSX.Element | string; // displayed after the + button
+  class?: string;
+  name?: string;
+  id?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
+}
+```
+
+**Behaviour**
+
+- **Clamping**: values typed outside min/max are clamped when the input loses focus, not on every keystroke
+- **Hold-to-repeat**: pressing and holding a stepper button fires immediately, then repeats after 400 ms at 80 ms intervals
+- **Keyboard**: Arrow Up increments, Arrow Down decrements (preventDefault on both)
+- **Empty input**: blurring an empty field emits `onChange(undefined)`; invalid strings reset to the previous value
+- **Precision**: `precision={2}` rounds to 2 decimal places using `Math.round` (e.g. `1.555` → `1.56`)
+- **ARIA**: renders `role="spinbutton"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`
+
+**Usage Example**
+
+```tsx
+import { NumberInput } from '../components/inputs/NumberInput';
+
+// Basic controlled
+const [qty, setQty] = createSignal<number | undefined>(1);
+<NumberInput value={qty()} onChange={setQty} min={1} max={99} label="Quantity" />
+
+// Currency with precision
+<NumberInput value={price()} onChange={setPrice} step={0.01} precision={2} prefix="$" min={0} />
+
+// Weight with suffix
+<NumberInput value={weight()} onChange={setWeight} step={0.5} precision={1} suffix="kg" min={0} />
+
+// Compact size
+<NumberInput size="compact" value={count()} onChange={setCount} min={0} />
+
+// With FormField for validation
+<FormField label="Units" required error={form.errors.units}>
+  <NumberInput value={form.values.units} onChange={form.handleChange('units')} min={0} max={999} name="units" invalid={!!form.errors.units} />
+</FormField>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.number-input` | Root container |
+| `.number-input--compact` | Compact size modifier |
+| `.number-input--disabled` | Disabled state |
+| `.number-input--invalid` | Invalid/error state (red border) |
+| `.number-input__wrapper` | Bordered flex container |
+| `.number-input__stepper` | Shared stepper button style |
+| `.number-input__stepper--decrement` | − button (border-right separator) |
+| `.number-input__stepper--increment` | + button (border-left separator) |
+| `.number-input__input` | The text input (centered, role=spinbutton) |
+| `.number-input__prefix` | Prefix slot (border-right separator) |
+| `.number-input__suffix` | Suffix slot (border-left separator) |
 
 ---
 

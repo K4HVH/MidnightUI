@@ -28,6 +28,7 @@ import MenuDemo from './pages/demos/MenuDemo';
 import PaginationDemo from './pages/demos/PaginationDemo';
 import BreadcrumbsDemo from './pages/demos/BreadcrumbsDemo';
 import AccordionDemo from './pages/demos/AccordionDemo';
+import NumberInputDemo from './pages/demos/NumberInputDemo';
 
 const App: Component = () => {
   return (
@@ -60,6 +61,7 @@ const App: Component = () => {
           <Route path="pagination" component={PaginationDemo} />
           <Route path="breadcrumbs" component={BreadcrumbsDemo} />
           <Route path="accordion" component={AccordionDemo} />
+          <Route path="numberinput" component={NumberInputDemo} />
         </Route>
       </Router>
     </NotificationProvider>

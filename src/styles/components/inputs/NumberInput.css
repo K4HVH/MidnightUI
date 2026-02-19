@@ -1,0 +1,199 @@
+/* =============================================================================
+   NumberInput Component
+   ============================================================================= */
+
+.number-input {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+/* Label */
+.number-input__label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--g-text-secondary);
+}
+
+/* Wrapper */
+.number-input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--g-background);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  transition: border-color var(--g-transition);
+  overflow: hidden;
+}
+
+.number-input__wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Hover */
+.number-input:not(.number-input--disabled) .number-input__wrapper:hover {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.number-input:not(.number-input--disabled) .number-input__wrapper:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Focus */
+.number-input:not(.number-input--disabled) .number-input__wrapper:has(.number-input__input:focus) {
+  border-color: var(--color-primary);
+}
+
+/* Disabled */
+.number-input--disabled .number-input__wrapper {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Invalid */
+.number-input--invalid .number-input__wrapper {
+  border-color: var(--color-danger);
+}
+
+.number-input--invalid .number-input__wrapper:focus-within {
+  border-color: var(--color-danger);
+}
+
+/* Stepper buttons */
+.number-input__stepper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--g-spacing-sm);
+  min-width: 32px;
+  background: transparent;
+  border: none;
+  color: var(--g-text-muted);
+  cursor: pointer;
+  font-size: 1.1em;
+  line-height: 1;
+  transition: color var(--g-transition), background var(--g-transition);
+  flex-shrink: 0;
+  user-select: none;
+  z-index: 1;
+}
+
+.number-input__stepper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+}
+
+.number-input__stepper:not(:disabled):hover {
+  color: var(--g-text-primary);
+}
+
+.number-input__stepper:not(:disabled):hover::before {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.number-input__stepper:not(:disabled):active::before {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.number-input__stepper:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.number-input__stepper:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+/* Separator lines between steppers and input */
+.number-input__stepper--decrement {
+  border-right: var(--g-border-width) solid var(--g-border-color);
+}
+
+.number-input__stepper--increment {
+  border-left: var(--g-border-width) solid var(--g-border-color);
+}
+
+/* Input field */
+.number-input__input {
+  flex: 1;
+  padding: var(--g-spacing-sm) var(--g-spacing-sm);
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--g-text-secondary);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  text-align: center;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.number-input__input::placeholder {
+  color: var(--g-text-muted);
+}
+
+.number-input__input:disabled {
+  cursor: not-allowed;
+}
+
+/* Compact size */
+.number-input--compact .number-input__input {
+  padding: var(--spacing-1) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.number-input--compact .number-input__stepper {
+  padding: 0 var(--g-spacing-xs);
+  min-width: 24px;
+  font-size: 1em;
+}
+
+/* Prefix and suffix */
+.number-input__prefix,
+.number-input__suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--g-spacing);
+  color: var(--g-text-muted);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.number-input--compact .number-input__prefix,
+.number-input--compact .number-input__suffix {
+  padding: 0 var(--g-spacing-sm);
+  font-size: var(--font-size-xs);
+}
+
+/* Prefix gets a right border (sits before the decrement button) */
+.number-input__prefix {
+  border-right: var(--g-border-width) solid var(--g-border-color);
+}
+
+/* Suffix gets a left border (sits after the increment button) */
+.number-input__suffix {
+  border-left: var(--g-border-width) solid var(--g-border-color);
+}
