@@ -6,7 +6,7 @@ Comprehensive reference for MidnightUI, a SolidJS component library with a dark 
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 28 components in MidnightUI, organized by category.
+A comprehensive reference for all 29 components in MidnightUI, organized by category.
 
 ---
 
@@ -257,6 +257,156 @@ const dropdown = document.querySelector('.combobox__dropdown');
 // Incorrect - will return null
 const dropdown = container.querySelector('.combobox__dropdown');
 ```
+
+---
+
+### DatePicker
+
+A date, time, or datetime picker that renders a calendar dropdown via Portal. Supports single value and range selection, Monday-first calendar with month/year drill-down, time spinners, and configurable date constraints. Values are ISO strings.
+
+**Props Interface**
+
+```typescript
+interface DatePickerRangeValue {
+  start?: string;   // ISO date/datetime string
+  end?: string;     // ISO date/datetime string
+}
+
+interface DatePickerProps {
+  // Single value
+  value?: string;                              // ISO date ("YYYY-MM-DD"), time ("HH:MM"), or datetime ("YYYY-MM-DDTHH:MM")
+  onChange?: (value: string) => void;
+  // Range value (when range=true)
+  range?: boolean;
+  rangeValue?: DatePickerRangeValue;
+  onRangeChange?: (value: DatePickerRangeValue) => void;
+  // Mode
+  mode?: 'date' | 'time' | 'datetime';         // default: 'date'
+  // Constraints
+  minDate?: string;                            // ISO date string
+  maxDate?: string;                            // ISO date string
+  isDateDisabled?: (date: Date) => boolean;    // callback to disable specific dates
+  // Display
+  label?: string;
+  placeholder?: string;
+  clearable?: boolean;                         // shows × clear button when value is set
+  // Appearance
+  size?: 'normal' | 'compact';                 // default: 'normal'
+  disabled?: boolean;
+  invalid?: boolean;
+  error?: string;                              // triggers invalid styling
+  // Controlled open state
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  // Pass-through
+  class?: string;
+  name?: string;
+  id?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
+}
+```
+
+**Modes**
+
+| Mode | Value format | Calendar | Time spinner |
+|------|-------------|----------|-------------|
+| `date` (default) | `"2026-02-19"` | ✓ | ✗ |
+| `time` | `"14:30"` | ✗ | ✓ |
+| `datetime` | `"2026-02-19T14:30"` | ✓ | ✓ |
+
+**Behaviour**
+
+- **Calendar**: Monday-first 6-week grid. Click month/year header to drill into month picker (4×3 grid), click again for year picker (4×5, 20 years). Prev/Next buttons navigate months or years depending on current view.
+- **Range selection**: First click sets `start`, second click sets `end`. Hovering shows a visual range preview. If second click is before start, the clicked date becomes the new start. Calendar stays open after start is set; closes after end is set (except in `datetime` range mode).
+- **Time spinner**: Up/Down arrow buttons for hour (0–23, wraps) and minute (0–59, wraps). In `datetime` mode the time is combined with the selected date on every change. Range `datetime` mode shows separate Start/End time pickers.
+- **Today button**: Shown in footer for `date` and `datetime` modes. Selects today's date and closes the picker (in `date` mode).
+- **Portal**: Calendar panel renders via Portal for correct z-index stacking. Positions below trigger with auto-flip above if viewport space requires. Right-edge is clamped to viewport.
+- **Keyboard**: Escape closes; Enter/Space opens. Click outside closes.
+- **Disabled dates**: Days outside `minDate`/`maxDate` or returned `true` by `isDateDisabled` are rendered as disabled buttons.
+
+**Usage Examples**
+
+```tsx
+import { DatePicker, DatePickerRangeValue } from '../components/inputs/DatePicker';
+
+// Basic date picker
+const [date, setDate] = createSignal('');
+<DatePicker label="Start date" value={date()} onChange={setDate} clearable />
+
+// Time only
+const [time, setTime] = createSignal('09:00');
+<DatePicker mode="time" label="Meeting time" value={time()} onChange={setTime} />
+
+// Date + time
+const [dt, setDt] = createSignal('');
+<DatePicker mode="datetime" label="Appointment" value={dt()} onChange={setDt} />
+
+// Date range
+const [range, setRange] = createSignal<DatePickerRangeValue>({});
+<DatePicker range rangeValue={range()} onRangeChange={setRange} label="Date range" clearable />
+
+// With constraints
+<DatePicker
+  value={date()}
+  onChange={setDate}
+  minDate="2026-01-01"
+  maxDate="2026-12-31"
+  isDateDisabled={(d) => d.getDay() === 0 || d.getDay() === 6}  // no weekends
+/>
+
+// Compact + invalid
+<DatePicker size="compact" value={date()} onChange={setDate} invalid={!date()} error="Required" />
+
+// With FormField
+<FormField label="Booking date" required error={form.errors.date}>
+  <DatePicker value={form.values.date} onChange={form.handleChange('date')} invalid={!!form.errors.date} />
+</FormField>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.date-picker` | Root container |
+| `.date-picker--compact` | Compact size modifier |
+| `.date-picker--disabled` | Disabled state |
+| `.date-picker--invalid` | Invalid/error state (red border) |
+| `.date-picker--open` | Open state (primary border) |
+| `.date-picker__label` | Label element |
+| `.date-picker__wrapper` | Clickable trigger (combobox role) |
+| `.date-picker__trigger-icon` | Calendar/clock icon |
+| `.date-picker__display` | Selected value text |
+| `.date-picker__display--placeholder` | Muted placeholder text |
+| `.date-picker__clear` | × clear button |
+| `.date-picker__panel` | Portal-rendered calendar panel |
+| `.date-picker__header` | Panel header (nav + month/year) |
+| `.date-picker__nav-btn` | Prev/Next navigation buttons |
+| `.date-picker__month-year-btn` | Month/year label (click to drill down) |
+| `.date-picker__day-headers` | Day-of-week header row |
+| `.date-picker__day-header` | Single day header (Mon, Tue, …) |
+| `.date-picker__days-grid` | 7-column day grid |
+| `.date-picker__day` | Individual day button |
+| `.date-picker__day--today` | Today indicator (blue dot) |
+| `.date-picker__day--selected` | Selected day (single mode) |
+| `.date-picker__day--range-start` | Range start day |
+| `.date-picker__day--range-end` | Range end day |
+| `.date-picker__day--in-range` | Day within selected range |
+| `.date-picker__day--other-month` | Day from prev/next month (muted) |
+| `.date-picker__day--disabled` | Disabled day |
+| `.date-picker__month-grid` | 4×3 month picker grid |
+| `.date-picker__month-item` | Month button |
+| `.date-picker__year-grid` | 4×5 year picker grid |
+| `.date-picker__year-item` | Year button |
+| `.date-picker__time` | Time spinner section |
+| `.date-picker__time--range` | Range time section (stacked rows) |
+| `.date-picker__time-column` | Hour or minute column |
+| `.date-picker__time-value` | Current hour/minute display |
+| `.date-picker__time-btn` | Hour/minute increment/decrement button |
+| `.date-picker__footer` | Panel footer |
+| `.date-picker__footer-btn` | Today button |
+| `.date-picker__range-hint` | "Pick start/end date" hint text |
 
 ---
 

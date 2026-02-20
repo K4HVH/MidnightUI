@@ -1,10 +1,10 @@
 # MidnightUI
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 28 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 29 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **28 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **29 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -44,6 +44,7 @@ Interactive form controls and user input components.
 | **Checkbox** | Checkbox with custom icon support |
 | **Combobox** | Dropdown select with Portal rendering (single and multi-select) |
 | **RadioGroup** | Radio button groups with horizontal/vertical layout |
+| **DatePicker** | Date/time/datetime picker with calendar, time spinner, range selection, and date constraints |
 | **NumberInput** | Numeric stepper with min/max clamping, custom step, decimal precision, and hold-to-repeat |
 | **Slider** | Single and range sliders with marks and tooltips |
 | **TextField** | Text input field |
@@ -106,7 +107,7 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 24 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, etc.)
+│       └── demos/              # 27 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, DatePickerDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.

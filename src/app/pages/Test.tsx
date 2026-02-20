@@ -8,7 +8,7 @@ import {
   BsList, BsChevronExpand, BsSliders, BsCursor, BsGrid,
   BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward, BsTag,
   BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable, BsThreeDots,
-  BsChevronBarLeft, BsChevronRight, BsChevronBarExpand, BsHash,
+  BsChevronBarLeft, BsChevronRight, BsChevronBarExpand, BsHash, BsCalendar,
 } from 'solid-icons/bs';
 
 const tabOptions = [
@@ -38,6 +38,7 @@ const tabOptions = [
   { value: 'breadcrumbs', label: 'Breadcrumbs', icon: BsChevronRight },
   { value: 'accordion', label: 'Accordion', icon: BsChevronBarExpand },
   { value: 'numberinput', label: 'NumberInput', icon: BsHash },
+  { value: 'datepicker', label: 'DatePicker', icon: BsCalendar },
 ];
 
 const Test = (props: RouteSectionProps) => {

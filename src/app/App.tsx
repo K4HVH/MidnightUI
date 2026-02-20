@@ -29,6 +29,7 @@ import PaginationDemo from './pages/demos/PaginationDemo';
 import BreadcrumbsDemo from './pages/demos/BreadcrumbsDemo';
 import AccordionDemo from './pages/demos/AccordionDemo';
 import NumberInputDemo from './pages/demos/NumberInputDemo';
+import DatePickerDemo from './pages/demos/DatePickerDemo';
 
 const App: Component = () => {
   return (
@@ -62,6 +63,7 @@ const App: Component = () => {
           <Route path="breadcrumbs" component={BreadcrumbsDemo} />
           <Route path="accordion" component={AccordionDemo} />
           <Route path="numberinput" component={NumberInputDemo} />
+          <Route path="datepicker" component={DatePickerDemo} />
         </Route>
       </Router>
     </NotificationProvider>
