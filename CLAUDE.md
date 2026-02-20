@@ -50,9 +50,9 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 27 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, NumberInputDemo.tsx, DatePickerDemo.tsx, etc.)
+      demos/                # 28 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, NumberInputDemo.tsx, DatePickerDemo.tsx, FileUploadDemo.tsx, etc.)
   components/
-    inputs/                 # Interactive form controls (9 components)
+    inputs/                 # Interactive form controls (10 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (6 components)
     feedback/               # User feedback (6 components)
@@ -64,8 +64,8 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (31 test files)
-  e2e/                      # Playwright e2e tests (13 spec files)
+  unit/                     # Vitest unit tests (32 test files)
+  e2e/                      # Playwright e2e tests (14 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -87,6 +87,7 @@ src/components/
     Combobox.tsx             # Dropdown select via Portal. Single or multi-select. Uses Checkbox internally for multi options, Chip for selected values in multi-select.
     RadioGroup.tsx           # Radio buttons with options array. Orientation: horizontal, vertical (default). Icon mode support.
     DatePicker.tsx           # Date/time/datetime picker via Portal dropdown. Modes: date, time, datetime. ISO string values. Range selection (range prop). Min/max constraints plus isDateDisabled callback. Monday-first calendar, month/year drill-down. Exports DatePickerRangeValue interface.
+    FileUpload.tsx           # File picker. Variants: dropzone (large bordered drop area) | button (compact trigger). Single or multiple files (multiple prop). Drag-and-drop support. Selected files shown as removable Chips. Optional progress prop (0-100) for linear Progress bar. Constraints: accept, maxSize (bytes), maxFiles. onError for validation messages.
     NumberInput.tsx          # Numeric stepper input. Min/max clamping on blur, custom step, decimal precision prop, hold-to-repeat buttons, Arrow Up/Down keyboard support. Prefix/suffix support.
     Slider.tsx               # Single/range slider. Marks, tooltips (Portal), orientation, step=null snaps to marks only.
     TextField.tsx            # Text input/textarea. Supports label, prefix/suffix, clearable, multiline with auto-grow, character count.

@@ -6,7 +6,7 @@ Comprehensive reference for MidnightUI, a SolidJS component library with a dark 
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 29 components in MidnightUI, organized by category.
+A comprehensive reference for all 30 components in MidnightUI, organized by category.
 
 ---
 
@@ -407,6 +407,90 @@ const [range, setRange] = createSignal<DatePickerRangeValue>({});
 | `.date-picker__footer` | Panel footer |
 | `.date-picker__footer-btn` | Today button |
 | `.date-picker__range-hint` | "Pick start/end date" hint text |
+
+---
+
+### FileUpload
+
+A file picker component supporting two visual variants: a `dropzone` (large bordered drag-and-drop area) and a `button` (compact browse trigger). Both variants support drag-and-drop. Selected files are displayed as removable `Chip` tags. An optional `progress` prop renders a linear `Progress` bar. Validates `accept`, `maxSize`, and `maxFiles` constraints.
+
+**Props Interface**
+
+```typescript
+interface FileUploadProps {
+  value?: File[];
+  onChange?: (files: File[]) => void;
+  onBlur?: () => void;
+  onError?: (message: string) => void;
+  /** 'dropzone' = large bordered drop area; 'button' = compact browse trigger. Default: 'dropzone' */
+  variant?: 'dropzone' | 'button';
+  size?: 'normal' | 'compact';
+  label?: string;
+  error?: string;
+  invalid?: boolean;
+  required?: boolean;
+  /** Allow multiple file selection. Default: false */
+  multiple?: boolean;
+  /** Native file input accept string, e.g. "image/*,.pdf". Validated on drag-and-drop too. */
+  accept?: string;
+  /** Maximum file size in bytes per file. Fires onError if exceeded. */
+  maxSize?: number;
+  /** Maximum number of files allowed (multiple mode only). Fires onError if exceeded. */
+  maxFiles?: number;
+  /** Upload progress 0–100. Shows a linear Progress bar when defined. */
+  progress?: number;
+  disabled?: boolean;
+  name?: string;
+  id?: string;
+  class?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
+}
+```
+
+**Usage**
+
+```typescript
+import { FileUpload } from '../components/inputs/FileUpload';
+
+// Dropzone — single file
+const [file, setFile] = createSignal<File[]>([]);
+<FileUpload label="Upload document" value={file()} onChange={setFile} />
+
+// Dropzone — multiple files with constraints
+const [files, setFiles] = createSignal<File[]>([]);
+const [err, setErr] = createSignal<string>();
+<FileUpload
+  label="Photos"
+  multiple
+  accept="image/*"
+  maxSize={5_000_000}
+  maxFiles={5}
+  value={files()}
+  onChange={setFiles}
+  onError={setErr}
+  error={err()}
+  invalid={!!err()}
+/>
+
+// Button variant
+<FileUpload variant="button" label="Attachment" value={file()} onChange={setFile} />
+
+// With upload progress
+<FileUpload label="Upload" value={file()} onChange={setFile} progress={uploadPercent()} />
+```
+
+**Notes**
+
+- `value` is always `File[]` regardless of `multiple` mode — use `files()[0]` for single-file scenarios.
+- In single mode, a new selection replaces the existing file. In multi mode, new files are merged with existing.
+- The `accept` constraint is validated both by the native file input and programmatically on drag-and-drop events.
+- The `progress` bar is shown whenever `progress !== undefined`, including at `0`. Actual upload logic is handled externally.
+- `onBlur` fires when the interactive element (dropzone div or browse button) loses focus — used by `useForm`'s `handleBlur` to mark the field as touched.
+- Files can also be added by pasting from the clipboard (e.g. a screenshot) — both variants handle `onPaste`.
+- Pass `aria-describedby` to link the interactive element to error/help text rendered by `FormField`.
+- Pairs naturally with `FormField` for label, required asterisk, and error display.
 
 ---
 

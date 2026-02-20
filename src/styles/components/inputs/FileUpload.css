@@ -1,0 +1,239 @@
+/* =============================================================================
+   FileUpload Component
+   ============================================================================= */
+
+.file-upload {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  width: 100%;
+}
+
+/* Hide the native file input — triggered programmatically */
+.file-upload__input {
+  display: none;
+}
+
+/* Label */
+.file-upload__label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--g-text-secondary);
+}
+
+/* =============================================================================
+   Dropzone Variant
+   ============================================================================= */
+
+.file-upload__dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-8) var(--g-spacing);
+  border: 2px dashed var(--g-border-color);
+  border-radius: var(--g-radius);
+  background: var(--g-background-subtle);
+  cursor: pointer;
+  transition: border-color var(--g-transition), background var(--g-transition);
+  outline: none;
+  text-align: center;
+  user-select: none;
+}
+
+.file-upload__dropzone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.file-upload:not(.file-upload--disabled) .file-upload__dropzone:hover,
+.file-upload:not(.file-upload--disabled) .file-upload__dropzone:focus-visible {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.file-upload:not(.file-upload--disabled) .file-upload__dropzone:hover::before,
+.file-upload:not(.file-upload--disabled) .file-upload__dropzone:focus-visible::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Drag-over state */
+.file-upload--drag-over.file-upload--dropzone .file-upload__dropzone {
+  border-color: var(--color-primary);
+  border-style: solid;
+}
+
+.file-upload--drag-over.file-upload--dropzone .file-upload__dropzone::before {
+  background: rgba(0, 102, 204, 0.08);
+}
+
+/* Invalid state */
+.file-upload--invalid .file-upload__dropzone {
+  border-color: var(--color-danger);
+}
+
+/* Compact dropzone */
+.file-upload--compact .file-upload__dropzone {
+  padding: var(--g-spacing);
+  gap: var(--spacing-1);
+}
+
+/* Dropzone icon */
+.file-upload__dropzone-icon {
+  font-size: 2.5rem;
+  color: var(--g-text-muted);
+  transition: color var(--g-transition);
+  line-height: 1;
+  display: flex;
+}
+
+.file-upload:not(.file-upload--disabled) .file-upload__dropzone:hover .file-upload__dropzone-icon,
+.file-upload--drag-over .file-upload__dropzone-icon {
+  color: var(--color-accent);
+}
+
+.file-upload--compact .file-upload__dropzone-icon {
+  font-size: 1.5rem;
+}
+
+/* Dropzone text */
+.file-upload__dropzone-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.file-upload__dropzone-primary {
+  font-size: var(--font-size-base);
+  color: var(--g-text-secondary);
+}
+
+.file-upload--compact .file-upload__dropzone-primary {
+  font-size: var(--font-size-sm);
+}
+
+.file-upload__dropzone-hint {
+  font-size: var(--font-size-sm);
+  color: var(--g-text-muted);
+}
+
+/* =============================================================================
+   Button Variant
+   ============================================================================= */
+
+.file-upload__button-area {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--g-spacing-sm);
+  padding: var(--spacing-1) 0;
+}
+
+/* Highlight hint text while dragging over button area */
+.file-upload--drag-over.file-upload--button .file-upload__button-area {
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--g-radius);
+}
+
+.file-upload__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  background: var(--g-background-elevated);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  color: var(--g-text-secondary);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--g-transition), color var(--g-transition);
+  white-space: nowrap;
+}
+
+.file-upload__button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.file-upload__button:hover:not(:disabled) {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.file-upload__button:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.file-upload__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.file-upload--compact .file-upload__button {
+  padding: var(--spacing-1) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.file-upload__button-hint {
+  font-size: var(--font-size-sm);
+  color: var(--g-text-muted);
+}
+
+.file-upload__button-constraint {
+  width: 100%;
+  font-size: var(--font-size-xs);
+  color: var(--g-text-muted);
+}
+
+/* =============================================================================
+   Progress
+   ============================================================================= */
+
+.file-upload__progress {
+  /* Progress component handles its own layout */
+}
+
+/* =============================================================================
+   File list (Chips)
+   ============================================================================= */
+
+.file-upload__files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+/* =============================================================================
+   Error message
+   ============================================================================= */
+
+.file-upload__error {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+/* =============================================================================
+   Disabled state
+   ============================================================================= */
+
+.file-upload--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}

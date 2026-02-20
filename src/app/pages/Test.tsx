@@ -9,6 +9,7 @@ import {
   BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward, BsTag,
   BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable, BsThreeDots,
   BsChevronBarLeft, BsChevronRight, BsChevronBarExpand, BsHash, BsCalendar,
+  BsCloudUpload,
 } from 'solid-icons/bs';
 
 const tabOptions = [
@@ -39,6 +40,7 @@ const tabOptions = [
   { value: 'accordion', label: 'Accordion', icon: BsChevronBarExpand },
   { value: 'numberinput', label: 'NumberInput', icon: BsHash },
   { value: 'datepicker', label: 'DatePicker', icon: BsCalendar },
+  { value: 'fileupload', label: 'FileUpload', icon: BsCloudUpload },
 ];
 
 const Test = (props: RouteSectionProps) => {

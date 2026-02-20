@@ -30,6 +30,7 @@ import BreadcrumbsDemo from './pages/demos/BreadcrumbsDemo';
 import AccordionDemo from './pages/demos/AccordionDemo';
 import NumberInputDemo from './pages/demos/NumberInputDemo';
 import DatePickerDemo from './pages/demos/DatePickerDemo';
+import FileUploadDemo from './pages/demos/FileUploadDemo';
 
 const App: Component = () => {
   return (
@@ -64,6 +65,7 @@ const App: Component = () => {
           <Route path="accordion" component={AccordionDemo} />
           <Route path="numberinput" component={NumberInputDemo} />
           <Route path="datepicker" component={DatePickerDemo} />
+          <Route path="fileupload" component={FileUploadDemo} />
         </Route>
       </Router>
     </NotificationProvider>
