@@ -39,7 +39,7 @@ describe('Checkbox', () => {
   it('toggles checked state on click', () => {
     const TestComponent = () => {
       const [checked, setChecked] = createSignal(false);
-      return <Checkbox checked={checked()} onChange={(e) => setChecked(e.currentTarget.checked)} />;
+      return <Checkbox checked={checked()} onChange={(v) => setChecked(v)} />;
     };
     const { container } = render(() => <TestComponent />);
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;

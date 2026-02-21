@@ -29,12 +29,12 @@ const CheckboxDemo: Component = () => {
           <Checkbox
             label="Toggle me"
             checked={checked1()}
-            onChange={(e) => setChecked1(e.currentTarget.checked)}
+            onChange={setChecked1}
           />
           <Checkbox
             label="Toggle me too"
             checked={checked2()}
-            onChange={(e) => setChecked2(e.currentTarget.checked)}
+            onChange={setChecked2}
           />
           <p>
             <small>
@@ -53,7 +53,7 @@ const CheckboxDemo: Component = () => {
             label="Toggle all states"
             checked={checked3()}
             indeterminate={checked3() === undefined}
-            onChange={(e) => setChecked3(e.currentTarget.checked)}
+            onChange={setChecked3}
           />
         </div>
       </Card>

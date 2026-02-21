@@ -20,6 +20,7 @@ import {
   BsX,
 } from 'solid-icons/bs';
 import '../../styles/components/inputs/DatePicker.css';
+import { useFormField } from '../../contexts/FormFieldContext';
 
 // ---- Public types ----
 
@@ -54,11 +55,13 @@ export interface DatePickerProps {
   // Appearance
   size?: 'normal' | 'compact';
   disabled?: boolean;
+  required?: boolean;
   invalid?: boolean;
   error?: string;
   // Controlled open state
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  onBlur?: () => void;
   // Pass-through
   class?: string;
   name?: string;
@@ -222,10 +225,11 @@ export const DatePicker: Component<DatePickerProps> = (props) => {
     'label', 'placeholder', 'clearable',
     'size', 'disabled', 'invalid', 'error',
     'open', 'onOpenChange',
-    'class', 'name', 'id',
+    'onBlur', 'class', 'name', 'id', 'required',
     'aria-describedby', 'aria-required', 'aria-labelledby',
   ]);
 
+  const fieldCtx = useFormField();
   const mode = () => local.mode ?? 'date';
   const size = () => local.size ?? 'normal';
 
@@ -625,6 +629,7 @@ export const DatePicker: Component<DatePickerProps> = (props) => {
       setIsEditing(false);
       setInputText(dv);
     }
+    local.onBlur?.();
   };
 
   const handleInputKeyDown = (e: KeyboardEvent) => {
@@ -920,7 +925,9 @@ export const DatePicker: Component<DatePickerProps> = (props) => {
     return `${MONTH_NAMES[viewMonth()]} ${viewYear()}`;
   };
 
-  const inputId = () => local.id || local.name;
+  const inputId = () => local.id ?? fieldCtx?.fieldId ?? local.name;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   return (
     <div class={containerClasses()} {...rest}>
@@ -953,11 +960,12 @@ export const DatePicker: Component<DatePickerProps> = (props) => {
           placeholder={placeholder()}
           readOnly={!!local.range}
           disabled={local.disabled}
+          required={local.required}
           aria-expanded={isOpen()}
           aria-haspopup="dialog"
           aria-invalid={local.invalid || !!local.error}
-          aria-describedby={local['aria-describedby']}
-          aria-required={local['aria-required']}
+          aria-describedby={ariaDescribedBy()}
+          aria-required={ariaRequired()}
           aria-labelledby={local['aria-labelledby']}
           name={local.name}
           autocomplete="off"

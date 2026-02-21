@@ -3,6 +3,9 @@ import { createSignal } from 'solid-js';
 import { Card, CardHeader } from '../../../components/surfaces/Card';
 import { FileUpload } from '../../../components/inputs/FileUpload';
 import { FormField } from '../../../components/feedback/FormField';
+import { Form } from '../../../components/feedback/Form';
+import { Button } from '../../../components/inputs/Button';
+import { useForm } from '../../../utils/useForm';
 
 const FileUploadDemo: Component = () => {
   const [files1, setFiles1] = createSignal<File[]>([]);
@@ -13,7 +16,18 @@ const FileUploadDemo: Component = () => {
   const [files6, setFiles6] = createSignal<File[]>([]);
   const [files7, setFiles7] = createSignal<File[]>([]);
   const [constraintError, setConstraintError] = createSignal<string | undefined>();
-  const [uploadError, setUploadError] = createSignal<string | undefined>();
+
+  const contractForm = useForm<{ contract: File[] }>({
+    initialValues: { contract: [] },
+    validate: (values) => {
+      const errors: { contract?: string } = {};
+      if (values.contract.length === 0) errors.contract = 'Please upload at least one file.';
+      return errors;
+    },
+    onSubmit: async (_values) => {
+      await new Promise((r) => setTimeout(r, 800));
+    },
+  });
 
   return (
     <>
@@ -135,21 +149,38 @@ const FileUploadDemo: Component = () => {
       </Card>
 
       <Card>
-        <CardHeader title="With FormField" subtitle="Uses onBlur, required, aria-describedby — full forms system integration" />
-        <FormField label="Contract" required error={uploadError()} fieldId="contract-upload" errorId="contract-error">
-          <FileUpload
-            id="contract-upload"
-            name="contract"
-            accept=".pdf,.doc,.docx"
+        <CardHeader title="useForm Integration" subtitle="Validation, error display, focus-on-error — full forms system integration" />
+        <Form onSubmit={contractForm.handleSubmit}>
+          <FormField
+            label="Contract document"
             required
-            value={[]}
-            onChange={() => setUploadError(undefined)}
-            onBlur={() => { if (!uploadError()) setUploadError(undefined); }}
-            onError={setUploadError}
-            invalid={!!uploadError()}
-            aria-describedby={uploadError() ? 'contract-error' : undefined}
-          />
-        </FormField>
+            error={contractForm.errors.contract}
+            fieldId="contract-upload"
+            errorId="contract-error"
+          >
+            <FileUpload
+              id="contract-upload"
+              name="contract"
+              accept=".pdf,.doc,.docx"
+              required
+              value={contractForm.values.contract}
+              onChange={contractForm.handleChange('contract')}
+              onBlur={contractForm.handleBlur('contract')}
+              onError={(msg) => contractForm.setFieldError('contract', msg)}
+              invalid={!!contractForm.errors.contract}
+              aria-describedby={contractForm.errors.contract ? 'contract-error' : undefined}
+            />
+          </FormField>
+          <div style={{ display: 'flex', gap: 'var(--g-spacing)', 'margin-top': 'var(--g-spacing-sm)' }}>
+            <Button type="submit" loading={contractForm.isSubmitting}>
+              {contractForm.isSubmitting ? 'Submitting…' : 'Submit'}
+            </Button>
+            <Button type="button" variant="secondary" onClick={() => contractForm.reset()}>
+              Reset
+            </Button>
+          </div>
+        </Form>
+        <p><small>Click Submit without uploading to trigger validation. File: {contractForm.values.contract[0]?.name ?? 'none'}</small></p>
       </Card>
     </>
   );

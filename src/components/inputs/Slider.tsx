@@ -1,5 +1,6 @@
-import { Component, createSignal, splitProps, onMount, onCleanup, Show, For } from 'solid-js';
+import { Component, createSignal, createEffect, splitProps, onMount, onCleanup, Show, For } from 'solid-js';
 import { Portal } from 'solid-js/web';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/Slider.css';
 
 interface SliderMark {
@@ -11,6 +12,8 @@ interface SliderProps {
   value?: number | [number, number];
   onChange?: (value: number | [number, number]) => void;
   onBlur?: () => void;
+  name?: string;
+  id?: string;
   min?: number;
   max?: number;
   step?: number | null;
@@ -22,6 +25,7 @@ interface SliderProps {
   showTooltip?: boolean;
   error?: string;
   invalid?: boolean;
+  required?: boolean;
   class?: string;
   'aria-describedby'?: string;
   'aria-required'?: boolean;
@@ -33,6 +37,8 @@ export const Slider: Component<SliderProps> = (props) => {
     'value',
     'onChange',
     'onBlur',
+    'name',
+    'id',
     'min',
     'max',
     'step',
@@ -44,11 +50,17 @@ export const Slider: Component<SliderProps> = (props) => {
     'showTooltip',
     'error',
     'invalid',
+    'required',
     'class',
     'aria-describedby',
     'aria-required',
     'aria-labelledby',
   ]);
+
+  const fieldCtx = useFormField();
+  const sliderId = () => local.id ?? fieldCtx?.fieldId;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   const min = () => local.min ?? 0;
   const max = () => local.max ?? 100;
@@ -65,6 +77,11 @@ export const Slider: Component<SliderProps> = (props) => {
   let trackRef: HTMLDivElement | undefined;
   let startThumbRef: HTMLDivElement | undefined;
   let endThumbRef: HTMLDivElement | undefined;
+
+  createEffect(() => {
+    if (local.name) endThumbRef?.setAttribute('name', local.name);
+    else endThumbRef?.removeAttribute('name');
+  });
 
   const getValue = (): [number, number] => {
     if (local.range) {
@@ -241,7 +258,16 @@ export const Slider: Component<SliderProps> = (props) => {
 
   return (
     <>
-      <div class={classNames()} onBlur={local.onBlur} aria-invalid={local.invalid || !!local.error} {...rest}>
+      <div
+        id={sliderId()}
+        class={classNames()}
+        onBlur={local.onBlur}
+        aria-invalid={local.invalid || !!local.error}
+        aria-describedby={ariaDescribedBy()}
+        aria-required={ariaRequired()}
+        aria-labelledby={local['aria-labelledby']}
+        {...rest}
+      >
         <div
           ref={trackRef}
           class="slider__track"

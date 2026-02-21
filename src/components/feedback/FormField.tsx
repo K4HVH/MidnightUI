@@ -1,6 +1,7 @@
 import { Component, JSX, Show, createMemo, splitProps } from 'solid-js';
 import { FieldError } from './FieldError';
 import { generateId } from '../../utils/generateId';
+import { FormFieldContext } from '../../contexts/FormFieldContext';
 import '../../styles/components/feedback/FormField.css';
 
 interface FormFieldProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -27,16 +28,18 @@ export const FormField: Component<FormFieldProps> = (props) => {
     'helpTextId',
   ]);
 
-  // Generate unique IDs for accessibility linking
-  const fieldId = () => local.fieldId || generateId('field');
-  const errorId = () => local.errorId || generateId('error');
-  const helpTextId = () => local.helpTextId || generateId('help');
+  // IDs are computed ONCE per mount (not inside reactive functions) so the same
+  // ID is stable across all reads: label for=, context, aria-describedby, etc.
+  const fieldId = local.fieldId ?? generateId('field');
+  const errorId = local.errorId ?? generateId('error');
+  const helpTextId = local.helpTextId ?? generateId('help');
 
-  // Build aria-describedby linking
+  // Build aria-describedby reactively so it updates when error/helpText change.
+  // Exposed as an accessor so context consumers stay reactive.
   const ariaDescribedBy = createMemo(() => {
     const ids: string[] = [];
-    if (local.error) ids.push(errorId());
-    if (local.helpText) ids.push(helpTextId());
+    if (local.error) ids.push(errorId);
+    if (local.helpText) ids.push(helpTextId);
     return ids.length > 0 ? ids.join(' ') : undefined;
   });
 
@@ -51,23 +54,31 @@ export const FormField: Component<FormFieldProps> = (props) => {
   };
 
   return (
-    <div class={classNames()} {...rest}>
-      <Show when={local.label}>
-        <label class="form-field__label" for={fieldId()}>
-          {local.label}
-          {local.required && <span class="form-field__required">*</span>}
-        </label>
-      </Show>
+    <FormFieldContext.Provider
+      value={{
+        fieldId: fieldId,
+        ariaDescribedBy: ariaDescribedBy,
+        required: local.required,
+      }}
+    >
+      <div class={classNames()} {...rest}>
+        <Show when={local.label}>
+          <label class="form-field__label" for={fieldId}>
+            {local.label}
+            {local.required && <span class="form-field__required">*</span>}
+          </label>
+        </Show>
 
-      <div class="form-field__control">{local.children}</div>
+        <div class="form-field__control">{local.children}</div>
 
-      <Show when={local.helpText}>
-        <div id={helpTextId()} class="form-field__help-text">
-          {local.helpText}
-        </div>
-      </Show>
+        <Show when={local.helpText}>
+          <div id={helpTextId} class="form-field__help-text">
+            {local.helpText}
+          </div>
+        </Show>
 
-      <FieldError error={local.error} id={errorId()} />
-    </div>
+        <FieldError error={local.error} id={errorId} />
+      </div>
+    </FormFieldContext.Provider>
   );
 };

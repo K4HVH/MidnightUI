@@ -62,6 +62,14 @@ src/
     components/{category}/  # Per-component CSS files (mirror component tree)
   utils/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
+    generateId.ts           # Counter-based unique ID generator; produces stable IDs per component mount
+    useForm.ts              # Controlled form state, validation, and submission hook
+    useFormArray.ts         # Dynamic array field management (add/remove/reorder rows)
+    validators.ts           # Composable validators (commonValidators, composeValidators, etc.)
+    zodAdapter.ts           # Zod schema adapter for useForm
+  contexts/
+    FormContext.tsx          # FormProvider + useFormContext() for cross-component form state access
+    FormFieldContext.tsx     # FormFieldContext + useFormField() for automatic label/aria ID wiring
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
   unit/                     # Vitest unit tests (32 test files)
@@ -83,13 +91,13 @@ src/components/
   inputs/                    # Interactive form controls
     Button.tsx               # Variants: primary, secondary, subtle, danger. Sizes: compact, normal, spacious. Supports icon + loading state (shows circular Progress).
     ButtonGroup.tsx          # Groups buttons. Orientation: horizontal (default), vertical.
-    Checkbox.tsx             # Supports label, indeterminate, icon mode (iconUnchecked/iconChecked).
+    Checkbox.tsx             # Supports label, indeterminate, icon mode (iconUnchecked/iconChecked). required prop supported.
     Combobox.tsx             # Dropdown select via Portal. Single or multi-select. Uses Checkbox internally for multi options, Chip for selected values in multi-select.
     RadioGroup.tsx           # Radio buttons with options array. Orientation: horizontal, vertical (default). Icon mode support.
     DatePicker.tsx           # Date/time/datetime picker via Portal dropdown. Modes: date, time, datetime. ISO string values. Range selection (range prop). Min/max constraints plus isDateDisabled callback. Monday-first calendar, month/year drill-down. Exports DatePickerRangeValue interface.
     FileUpload.tsx           # File picker. Variants: dropzone (large bordered drop area) | button (compact trigger). Single or multiple files (multiple prop). Drag-and-drop support. Selected files shown as removable Chips. Optional progress prop (0-100) for linear Progress bar. Constraints: accept, maxSize (bytes), maxFiles. onError for validation messages.
     NumberInput.tsx          # Numeric stepper input. Min/max clamping on blur, custom step, decimal precision prop, hold-to-repeat buttons, Arrow Up/Down keyboard support. Prefix/suffix support.
-    Slider.tsx               # Single/range slider. Marks, tooltips (Portal), orientation, step=null snaps to marks only.
+    Slider.tsx               # Single/range slider. Marks, tooltips (Portal), orientation, step=null snaps to marks only. required and id props supported.
     TextField.tsx            # Text input/textarea. Supports label, prefix/suffix, clearable, multiline with auto-grow, character count.
   surfaces/                  # Layout and background
     Card.tsx                 # Container. Variants: default, emphasized, subtle. Accent borders: primary, secondary, accent. Padding: compact, normal, spacious. Exports CardHeader.
@@ -178,6 +186,16 @@ The form system provides controlled form handling with validation, error display
 - After first submit, re-validates on change and blur
 - Before submit, no errors are displayed even if validation would fail
 - All fields marked as touched on submit
+
+**FormFieldContext** (`src/contexts/FormFieldContext.tsx`):
+
+When any input is nested inside a `FormField`, it automatically receives three values via context — no manual prop wiring needed:
+
+- `fieldId`: stable generated ID that `<label for={fieldId}>` points to; the input uses this as its `id`
+- `ariaDescribedBy`: reactive accessor returning the IDs of the visible error/help-text elements; wired to `aria-describedby` on the input
+- `required`: whether the field is required; wired to `aria-required` on the input
+
+All 8 input components (`TextField`, `Checkbox`, `RadioGroup`, `Combobox`, `NumberInput`, `Slider`, `DatePicker`, `FileUpload`) consume `useFormField()` and apply context values as fallbacks. Explicit props always take precedence. The `required` prop on FormField sets `aria-required` on inputs (screen-reader accessible); to also trigger native browser validation, add `required` directly to the input.
 
 **Usage pattern**:
 ```typescript

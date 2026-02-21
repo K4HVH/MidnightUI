@@ -2,6 +2,7 @@ import { Component, createSignal, For, Show, splitProps, onMount, onCleanup } fr
 import { BsCloudUpload, BsUpload } from 'solid-icons/bs';
 import { Progress } from '../feedback/Progress';
 import { Chip } from '../display/Chip';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/FileUpload.css';
 
 interface FileUploadProps {
@@ -92,7 +93,11 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
   const variant = () => local.variant ?? 'dropzone';
   const size = () => local.size ?? 'normal';
   const selectedFiles = () => local.value ?? [];
-  const inputId = () => local.id || local.name;
+
+  const fieldCtx = useFormField();
+  const inputId = () => local.id ?? fieldCtx?.fieldId ?? local.name;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   const processFiles = (incoming: File[]) => {
     if (!local.onChange) return;
@@ -250,6 +255,9 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
         required={local.required}
         class="file-upload__input"
         aria-label={local.label || 'File upload'}
+        aria-invalid={local.invalid || !!local.error}
+        aria-required={ariaRequired()}
+        aria-describedby={ariaDescribedBy()}
         onChange={handleInputChange}
       />
 
@@ -276,8 +284,8 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
           }}
           aria-disabled={local.disabled}
           aria-invalid={local.invalid || !!local.error}
-          aria-required={local['aria-required'] ?? local.required}
-          aria-describedby={local['aria-describedby']}
+          aria-required={ariaRequired()}
+          aria-describedby={ariaDescribedBy()}
           aria-labelledby={local['aria-labelledby']}
         >
           <div class="file-upload__dropzone-icon">
@@ -313,8 +321,8 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
             onBlur={local.onBlur}
             disabled={local.disabled}
             aria-invalid={local.invalid || !!local.error}
-            aria-required={local['aria-required'] ?? local.required}
-            aria-describedby={local['aria-describedby']}
+            aria-required={ariaRequired()}
+            aria-describedby={ariaDescribedBy()}
             aria-labelledby={local['aria-labelledby']}
           >
             <BsUpload />

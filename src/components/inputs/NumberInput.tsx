@@ -1,5 +1,6 @@
 import { Component, JSX, Show, splitProps, createSignal, createEffect, onCleanup } from 'solid-js';
 import { BsDash, BsPlus } from 'solid-icons/bs';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/NumberInput.css';
 
 interface NumberInputProps {
@@ -11,6 +12,7 @@ interface NumberInputProps {
   step?: number;
   precision?: number;
   disabled?: boolean;
+  required?: boolean;
   size?: 'normal' | 'compact';
   label?: string;
   error?: string;
@@ -36,6 +38,7 @@ export const NumberInput: Component<NumberInputProps> = (props) => {
     'step',
     'precision',
     'disabled',
+    'required',
     'size',
     'label',
     'error',
@@ -53,6 +56,11 @@ export const NumberInput: Component<NumberInputProps> = (props) => {
 
   const step = () => local.step ?? 1;
   const size = () => local.size ?? 'normal';
+
+  const fieldCtx = useFormField();
+  const inputId = () => local.id ?? fieldCtx?.fieldId ?? local.name;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   const [isFocused, setIsFocused] = createSignal(false);
   const [inputValue, setInputValue] = createSignal(
@@ -161,8 +169,6 @@ export const NumberInput: Component<NumberInputProps> = (props) => {
     return (local.value ?? 0) < local.max;
   };
 
-  const inputId = () => local.id || local.name;
-
   const classNames = () => {
     const classes = ['number-input'];
     if (size() === 'compact') classes.push('number-input--compact');
@@ -210,13 +216,14 @@ export const NumberInput: Component<NumberInputProps> = (props) => {
           value={inputValue()}
           placeholder={local.placeholder}
           disabled={local.disabled}
+          required={local.required}
           onInput={handleInput}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           aria-invalid={local.invalid || !!local.error}
-          aria-describedby={local['aria-describedby']}
-          aria-required={local['aria-required']}
+          aria-describedby={ariaDescribedBy()}
+          aria-required={ariaRequired()}
           aria-labelledby={local['aria-labelledby']}
           aria-valuemin={local.min}
           aria-valuemax={local.max}

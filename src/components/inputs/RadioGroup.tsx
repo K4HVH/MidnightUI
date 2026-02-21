@@ -1,4 +1,5 @@
 import { Component, JSX, For, splitProps, Show } from 'solid-js';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/RadioGroup.css';
 
 interface RadioOption {
@@ -18,8 +19,10 @@ interface RadioGroupProps {
   size?: 'normal' | 'compact';
   orientation?: 'horizontal' | 'vertical';
   disabled?: boolean;
+  required?: boolean;
   error?: string;
   invalid?: boolean;
+  id?: string;
   class?: string;
   'aria-describedby'?: string;
   'aria-required'?: boolean;
@@ -32,6 +35,7 @@ const Radio: Component<{
   label: string;
   checked: boolean;
   disabled?: boolean;
+  required?: boolean;
   size?: 'normal' | 'compact';
   iconUnchecked?: Component;
   iconChecked?: Component;
@@ -71,6 +75,7 @@ const Radio: Component<{
         value={props.value}
         checked={props.checked}
         disabled={props.disabled}
+        required={props.required}
         onChange={props.onChange}
         aria-describedby={props['aria-describedby']}
         aria-required={props['aria-required']}
@@ -109,13 +114,20 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
     'size',
     'orientation',
     'disabled',
+    'required',
     'error',
     'invalid',
+    'id',
     'class',
     'aria-describedby',
     'aria-required',
     'aria-labelledby',
   ]);
+
+  const fieldCtx = useFormField();
+  const groupId = () => local.id ?? fieldCtx?.fieldId;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   const orientation = () => local.orientation ?? 'vertical';
 
@@ -144,7 +156,7 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
   };
 
   return (
-    <div class={classNames()} onBlur={local.onBlur} {...rest}>
+    <div id={groupId()} class={classNames()} onBlur={local.onBlur} {...rest}>
       <For each={local.options}>
         {(option) => (
           <Radio
@@ -153,12 +165,13 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
             label={option.label}
             checked={local.value === option.value}
             disabled={local.disabled || option.disabled}
+            required={local.required}
             size={local.size}
             iconUnchecked={option.iconUnchecked}
             iconChecked={option.iconChecked}
             onChange={() => handleChange(option.value)}
-            aria-describedby={local['aria-describedby']}
-            aria-required={local['aria-required']}
+            aria-describedby={ariaDescribedBy()}
+            aria-required={ariaRequired()}
             aria-labelledby={local['aria-labelledby']}
             aria-invalid={local.invalid || !!local.error}
           />

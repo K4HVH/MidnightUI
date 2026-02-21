@@ -1,7 +1,8 @@
-import { Component, createSignal, Show, For, splitProps, JSX } from 'solid-js';
+import { Component, createSignal, createEffect, Show, For, splitProps, JSX } from 'solid-js';
 import { Checkbox } from './Checkbox';
 import { Menu } from '../navigation/Menu';
 import { Chip } from '../display/Chip';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/Combobox.css';
 
 interface ComboboxOption {
@@ -15,6 +16,7 @@ interface ComboboxOption {
 
 interface ComboboxProps {
   name?: string;
+  id?: string;
   value?: string | string[];
   onChange?: (value: string | string[]) => void;
   onBlur?: () => void;
@@ -23,6 +25,7 @@ interface ComboboxProps {
   size?: 'normal' | 'compact';
   disabled?: boolean;
   multiple?: boolean;
+  required?: boolean;
   error?: string;
   invalid?: boolean;
   class?: string;
@@ -34,6 +37,7 @@ interface ComboboxProps {
 export const Combobox: Component<ComboboxProps> = (props) => {
   const [local, rest] = splitProps(props, [
     'name',
+    'id',
     'value',
     'onChange',
     'onBlur',
@@ -42,6 +46,7 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     'size',
     'disabled',
     'multiple',
+    'required',
     'error',
     'invalid',
     'class',
@@ -50,7 +55,19 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     'aria-labelledby',
   ]);
 
+  const fieldCtx = useFormField();
+  const inputId = () => local.id ?? fieldCtx?.fieldId;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
+
   const [isOpen, setIsOpen] = createSignal(false);
+
+  let triggerRef: HTMLDivElement | undefined;
+
+  createEffect(() => {
+    if (local.name) triggerRef?.setAttribute('name', local.name);
+    else triggerRef?.removeAttribute('name');
+  });
 
   const size = () => local.size ?? 'normal';
 
@@ -142,11 +159,16 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     <Menu
       trigger={
         <div
+          ref={triggerRef}
+          id={inputId()}
           class={classNames()}
           tabIndex={local.disabled ? -1 : 0}
           onKeyDown={handleKeyDown}
           onBlur={local.onBlur}
           aria-invalid={local.invalid || !!local.error}
+          aria-describedby={ariaDescribedBy()}
+          aria-required={ariaRequired()}
+          aria-labelledby={local['aria-labelledby']}
           {...rest}
         >
           <div class="combobox__trigger">

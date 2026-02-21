@@ -1,5 +1,6 @@
 import { Component, JSX, Show, splitProps, createEffect } from 'solid-js';
 import { BsX } from 'solid-icons/bs';
+import { useFormField } from '../../contexts/FormFieldContext';
 import '../../styles/components/inputs/TextField.css';
 
 interface TextFieldProps {
@@ -10,6 +11,7 @@ interface TextFieldProps {
   type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
   placeholder?: string;
   disabled?: boolean;
+  required?: boolean;
   size?: 'normal' | 'compact';
   label?: string;
   error?: string;
@@ -39,6 +41,7 @@ export const TextField: Component<TextFieldProps> = (props) => {
     'type',
     'placeholder',
     'disabled',
+    'required',
     'size',
     'label',
     'error',
@@ -155,7 +158,10 @@ export const TextField: Component<TextFieldProps> = (props) => {
     return local.clearable && local.value && local.value.length > 0 && !local.disabled;
   };
 
-  const inputId = () => local.id || local.name;
+  const fieldCtx = useFormField();
+  const inputId = () => local.id ?? fieldCtx?.fieldId ?? local.name;
+  const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
+  const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   // Auto-grow textarea when value changes
   createEffect(() => {
@@ -189,12 +195,13 @@ export const TextField: Component<TextFieldProps> = (props) => {
               value={local.value || ''}
               placeholder={local.placeholder}
               disabled={local.disabled}
+              required={local.required}
               maxLength={local.maxLength}
               onInput={handleInput}
               onBlur={handleBlur}
               aria-invalid={local.invalid || !!local.error}
-              aria-describedby={local['aria-describedby']}
-              aria-required={local['aria-required']}
+              aria-describedby={ariaDescribedBy()}
+              aria-required={ariaRequired()}
               aria-labelledby={local['aria-labelledby']}
             />
           }
@@ -207,13 +214,14 @@ export const TextField: Component<TextFieldProps> = (props) => {
             value={local.value || ''}
             placeholder={local.placeholder}
             disabled={local.disabled}
+            required={local.required}
             maxLength={local.maxLength}
             rows={rows()}
             onInput={handleInput}
             onBlur={handleBlur}
             aria-invalid={local.invalid || !!local.error}
-            aria-describedby={local['aria-describedby']}
-            aria-required={local['aria-required']}
+            aria-describedby={ariaDescribedBy()}
+            aria-required={ariaRequired()}
             aria-labelledby={local['aria-labelledby']}
             style={{ resize: local.maxRows ? 'none' : 'vertical' }}
           />

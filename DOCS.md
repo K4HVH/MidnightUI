@@ -662,16 +662,25 @@ interface SliderMark {
 interface SliderProps {
   value?: number | [number, number];                          // single or range value
   onChange?: (value: number | [number, number]) => void;
+  onBlur?: () => void;
+  name?: string;
+  id?: string;
   min?: number;                                               // default: 0
   max?: number;                                               // default: 100
   step?: number | null;                                       // default: 1. null = snap to marks only
   disabled?: boolean;                                         // default: false
+  required?: boolean;                                         // sets aria-required; native required not applicable
   orientation?: 'horizontal' | 'vertical';                    // default: 'horizontal'
   size?: 'normal' | 'compact';                                // default: 'normal'
   range?: boolean;                                            // default: false
   marks?: SliderMark[];                                       // optional tick marks
   showTooltip?: boolean;                                      // default: true (shown on hover/drag)
+  error?: string;
+  invalid?: boolean;
   class?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
 }
 ```
 
@@ -1730,13 +1739,33 @@ A form field container that provides consistent layout for labels, input control
 
 ```typescript
 interface FormFieldProps {
-  label?: string;       // Field label text
-  error?: string;       // Error message (passed to FieldError)
-  required?: boolean;   // Shows required asterisk (*)
-  children: JSX.Element;  // Input control (TextField, Checkbox, etc.)
-  class?: string;       // Additional CSS classes
+  label?: string;           // Field label text
+  error?: string;           // Error message (passed to FieldError)
+  required?: boolean;       // Shows required asterisk (*) and propagates aria-required to child input via context
+  children: JSX.Element;    // Input control (TextField, Checkbox, etc.)
+  class?: string;           // Additional CSS classes
+  fieldId?: string;         // Override auto-generated input ID (default: stable generated ID)
+  errorId?: string;         // Override auto-generated error element ID
+  helpText?: string;        // Help text shown below the input
+  helpTextId?: string;      // Override auto-generated help text element ID
 }
 ```
+
+**Automatic Label Association (FormFieldContext)**
+
+`FormField` provides a `FormFieldContext` that all input components consume automatically. Inputs nested inside a `FormField` receive their `id`, `aria-describedby`, and `aria-required` without any manual prop wiring:
+
+```tsx
+{/* No id/aria-* props needed — FormFieldContext wires them automatically */}
+<FormField label="Email" error={form.errors.email} required helpText="Used for login">
+  <TextField value={form.values.email} onChange={form.handleChange('email')} />
+</FormField>
+```
+
+- The `<label for=...>` correctly focuses the input when clicked
+- `aria-describedby` on the input points to the error/help-text elements
+- `aria-required` is set on the input for screen readers
+- Explicit props on the input always override context values
 
 **Layout Structure**
 

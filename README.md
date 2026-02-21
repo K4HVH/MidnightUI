@@ -72,7 +72,7 @@ User feedback and dialog components.
 | **Dialog** | Modal dialog overlay |
 | **FieldError** | Displays field validation error with icon |
 | **Form** | Form wrapper with validation and submit handling |
-| **FormField** | Form field container with label and error display |
+| **FormField** | Form field container with label, error display, and automatic label/`aria-*` wiring to child inputs via context |
 | **Notification** | Toast notifications with provider context |
 | **Progress** | Linear and circular progress indicators with determinate/indeterminate modes |
 
@@ -118,9 +118,16 @@ src/
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files
-└── utils/
-    ├── cssVariables.ts         # CSS variable utilities
-    └── useForm.ts              # Form validation and state management hook
+├── utils/
+│   ├── cssVariables.ts         # CSS variable utilities
+│   ├── generateId.ts           # Stable ID generator for form elements
+│   ├── useForm.ts              # Form validation and state management hook
+│   ├── useFormArray.ts         # Dynamic array field management
+│   ├── validators.ts           # Composable field validators
+│   └── zodAdapter.ts           # Zod schema adapter for useForm
+└── contexts/
+    ├── FormContext.tsx              # Cross-component form state (FormProvider + useFormContext)
+    └── FormFieldContext.tsx         # Automatic label/aria wiring (FormFieldContext + useFormField)
 
 tests/
 ├── unit/                       # Vitest component tests

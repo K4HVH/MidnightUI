@@ -2,6 +2,10 @@ import { render } from '@solidjs/testing-library';
 import { describe, it, expect } from 'vitest';
 import { FormField } from '../../src/components/feedback/FormField';
 import { TextField } from '../../src/components/inputs/TextField';
+import { NumberInput } from '../../src/components/inputs/NumberInput';
+import { Combobox } from '../../src/components/inputs/Combobox';
+import { Slider } from '../../src/components/inputs/Slider';
+import { FileUpload } from '../../src/components/inputs/FileUpload';
 
 describe('FormField', () => {
   it('renders children in control wrapper', () => {
@@ -159,5 +163,124 @@ describe('FormField', () => {
     const controlIndex = children.findIndex((el) => el.classList.contains('form-field__control'));
 
     expect(controlIndex).toBeGreaterThan(labelIndex);
+  });
+
+  // ---- FormFieldContext wiring ----
+
+  describe('FormFieldContext label association', () => {
+    it('label for= points to TextField input id', () => {
+      const { container } = render(() => (
+        <FormField label="Email">
+          <TextField name="email" value="" onChange={() => {}} />
+        </FormField>
+      ));
+
+      const label = container.querySelector('.form-field__label') as HTMLLabelElement;
+      const input = container.querySelector('input') as HTMLInputElement;
+      expect(label).toBeInTheDocument();
+      expect(input).toBeInTheDocument();
+      expect(label.htmlFor).toBe(input.id);
+      expect(input.id).toBeTruthy();
+    });
+
+    it('TextField input aria-describedby points to error element when error is shown', () => {
+      const { container } = render(() => (
+        <FormField label="Email" error="Required">
+          <TextField value="" onChange={() => {}} />
+        </FormField>
+      ));
+
+      const input = container.querySelector('input') as HTMLInputElement;
+      const errorEl = container.querySelector('.field-error');
+      expect(input.getAttribute('aria-describedby')).toBeTruthy();
+      expect(errorEl?.id).toBeTruthy();
+      expect(input.getAttribute('aria-describedby')).toContain(errorEl?.id);
+    });
+
+    it('TextField input aria-describedby includes help text id when helpText provided', () => {
+      const { container } = render(() => (
+        <FormField label="Bio" helpText="Max 200 chars">
+          <TextField value="" onChange={() => {}} />
+        </FormField>
+      ));
+
+      const input = container.querySelector('input') as HTMLInputElement;
+      const helpEl = container.querySelector('.form-field__help-text');
+      expect(input.getAttribute('aria-describedby')).toBeTruthy();
+      expect(helpEl?.id).toBeTruthy();
+      expect(input.getAttribute('aria-describedby')).toContain(helpEl?.id);
+    });
+
+    it('explicit id on TextField takes precedence over context fieldId', () => {
+      const { container } = render(() => (
+        <FormField label="Username">
+          <TextField id="my-custom-id" value="" onChange={() => {}} />
+        </FormField>
+      ));
+
+      const input = container.querySelector('input') as HTMLInputElement;
+      expect(input.id).toBe('my-custom-id');
+    });
+
+    it('NumberInput input receives context fieldId', () => {
+      const { container } = render(() => (
+        <FormField label="Age">
+          <NumberInput value={0} onChange={() => {}} />
+        </FormField>
+      ));
+
+      const label = container.querySelector('.form-field__label') as HTMLLabelElement;
+      const input = container.querySelector('input') as HTMLInputElement;
+      expect(label.htmlFor).toBe(input.id);
+    });
+
+    it('Slider outer div receives context fieldId', () => {
+      const { container } = render(() => (
+        <FormField label="Volume">
+          <Slider value={50} onChange={() => {}} />
+        </FormField>
+      ));
+
+      const label = container.querySelector('.form-field__label') as HTMLLabelElement;
+      const slider = container.querySelector('.slider') as HTMLElement;
+      expect(slider).toBeInTheDocument();
+      expect(label.htmlFor).toBe(slider.id);
+    });
+
+    it('FileUpload hidden input receives context fieldId', () => {
+      const { container } = render(() => (
+        <FormField label="Document">
+          <FileUpload value={[]} onChange={() => {}} />
+        </FormField>
+      ));
+
+      const label = container.querySelector('.form-field__label') as HTMLLabelElement;
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      expect(label.htmlFor).toBe(input.id);
+    });
+
+    it('context aria-required propagates to TextField when FormField has required', () => {
+      const { container } = render(() => (
+        <FormField label="Name" required>
+          <TextField value="" onChange={() => {}} />
+        </FormField>
+      ));
+
+      const input = container.querySelector('input') as HTMLInputElement;
+      expect(input.getAttribute('aria-required')).toBe('true');
+    });
+
+    it('Combobox trigger receives context fieldId', () => {
+      const { container } = render(() => (
+        <FormField label="Country">
+          <Combobox options={[{ value: 'us', label: 'US' }]} onChange={() => {}} />
+        </FormField>
+      ));
+
+      const label = container.querySelector('.form-field__label') as HTMLLabelElement;
+      const trigger = container.querySelector('.combobox') as HTMLElement;
+      expect(trigger).toBeInTheDocument();
+      expect(label.htmlFor).toBe(trigger.id);
+    });
   });
 });

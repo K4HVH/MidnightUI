@@ -166,6 +166,7 @@ const BasicFormExample: Component = () => {
 
         <FormField label="Age" error={form.errors.age} required helpText="You must be at least 18">
           <Slider
+            name="age"
             value={form.values.age}
             onChange={form.handleChange('age')}
             onBlur={form.handleBlur('age')}
@@ -208,7 +209,7 @@ const BasicFormExample: Component = () => {
           <Checkbox
             name="terms"
             checked={form.values.terms}
-            onChange={(e) => form.handleChange('terms')(e.currentTarget.checked)}
+            onChange={form.handleChange('terms')}
             onBlur={form.handleBlur('terms')}
             label="I accept the terms and conditions"
             invalid={!!form.errors.terms}
@@ -219,7 +220,7 @@ const BasicFormExample: Component = () => {
           <Checkbox
             name="notifications"
             checked={form.values.notifications}
-            onChange={(e) => form.handleChange('notifications')(e.currentTarget.checked)}
+            onChange={form.handleChange('notifications')}
             onBlur={form.handleBlur('notifications')}
             label="Enable notifications"
             invalid={!!form.errors.notifications}
