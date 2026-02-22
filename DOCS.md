@@ -6,7 +6,7 @@ Comprehensive reference for MidnightUI, a SolidJS component library with a dark 
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 30 components in MidnightUI, organized by category.
+A comprehensive reference for all 31 components in MidnightUI, organized by category.
 
 ---
 
@@ -2696,6 +2696,131 @@ import { BsType, BsCursor } from 'solid-icons/bs';
 | `.tabs__tab--active` | Active/selected tab |
 | `.tabs__tab-icon` | Icon wrapper span |
 | `.tabs__tab-label` | Label text span |
+
+---
+
+### CommandPalette
+
+A modal command launcher overlay rendered via Portal. Provides a search input with built-in fuzzy filtering, grouped command items with descriptions, tags (rendered as Chip components), and keyboard shortcut badges. Supports controlled open/close state with an optional global Ctrl+K / Cmd+K keybinding.
+
+**Props Interface**
+
+```typescript
+interface CommandPaletteItem {
+  id: string;                   // unique identifier
+  label: string;                // display label
+  description?: string;         // optional description below label
+  icon?: Component;             // optional icon component
+  onSelect: () => void;         // callback when selected
+  disabled?: boolean;           // default: false
+  shortcut?: string;            // keyboard shortcut hint (e.g., "Ctrl+S")
+  group?: string;               // group/category name for sectioning
+  tags?: string[];              // right-side tag badges (rendered as Chip)
+  keywords?: string[];          // additional search keywords
+}
+
+interface CommandPaletteProps {
+  open: boolean;                                   // controlled open state
+  onClose: () => void;                             // close callback
+  items: CommandPaletteItem[];                     // command items
+  placeholder?: string;                            // default: 'Search commands...'
+  size?: 'compact' | 'normal' | 'spacious';        // default: 'normal'
+  keybinding?: boolean;                            // enable Ctrl+K / Cmd+K
+  onKeybinding?: () => void;                       // keybinding toggle callback
+  dismissOnBackdrop?: boolean;                     // default: true
+  emptyMessage?: string;                           // default: 'No commands found'
+  class?: string;
+}
+```
+
+**Reserved Shortcuts**
+
+The following modifier combos are automatically blocked — items with these shortcuts emit a `console.warn` and the shortcut is ignored at runtime:
+
+| Category | Keys |
+|---|---|
+| Browser-reserved | Ctrl/Cmd + N, T, W |
+| Text-editing | Ctrl/Cmd + A, C, V, X, Z, Y |
+
+The capture handler only intercepts keypresses matching a registered item shortcut. All other modifier combos (including text-editing) pass through naturally.
+
+**Exports**: `ReservedShortcut` (type), `RESERVED_SHORTCUTS` (ReadonlySet), `isReservedShortcut()`, `createCommandItem()`.
+
+```typescript
+import { createCommandItem, isReservedShortcut, RESERVED_SHORTCUTS } from '../components/navigation/CommandPalette';
+
+// createCommandItem validates at runtime and warns for reserved shortcuts
+const item = createCommandItem({
+  id: 'open', label: 'Open', shortcut: 'Ctrl+O', onSelect: () => {}
+});
+
+// Use the set/function for custom checks
+isReservedShortcut('Ctrl+N'); // true
+isReservedShortcut('Alt+N');  // false
+```
+
+**Features**
+
+- **Fuzzy search**: Built-in fuzzy matching across label, description, group, tags, and keywords
+- **Grouped items**: Items with a `group` property are visually sectioned under group headers. Ungrouped items appear first.
+- **Rich items**: Descriptions, icon components, keyboard shortcut badges, and tag chips
+- **Keyboard navigation**: ArrowUp/Down to navigate, Enter to select, Escape to close
+- **Sizes**: `compact` (narrower, smaller text), `normal`, `spacious` (wider, larger text)
+- **Keybinding**: Optional Ctrl+K / Cmd+K global listener via `keybinding` + `onKeybinding` props
+- **Accessibility**: `role="dialog"` with `aria-modal`, combobox pattern for input, listbox/option roles for items
+- **Reuses**: Chip component for tags, Portal for overlay rendering
+
+**Usage Example**
+
+```tsx
+import { createSignal } from 'solid-js';
+import { CommandPalette, type CommandPaletteItem } from '../components/navigation/CommandPalette';
+import { BsFileText, BsGear } from 'solid-icons/bs';
+
+const [open, setOpen] = createSignal(false);
+
+const items: CommandPaletteItem[] = [
+  { id: 'save', label: 'Save File', icon: BsFileText, shortcut: 'Ctrl+S', group: 'File', onSelect: () => console.log('Save') },
+  { id: 'settings', label: 'Settings', icon: BsGear, description: 'Configure preferences', tags: ['Config'], onSelect: () => console.log('Settings') },
+];
+
+{/* Basic usage */}
+<button onClick={() => setOpen(true)}>Open Command Palette</button>
+<CommandPalette open={open()} onClose={() => setOpen(false)} items={items} />
+
+{/* With keybinding */}
+<CommandPalette
+  open={open()}
+  onClose={() => setOpen(false)}
+  items={items}
+  keybinding
+  onKeybinding={() => setOpen((prev) => !prev)}
+/>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.command-palette` | Main container |
+| `.command-palette--compact`, `.command-palette--spacious` | Size modifiers |
+| `.command-palette__backdrop` | Backdrop overlay |
+| `.command-palette__header` | Search input container |
+| `.command-palette__input` | Search text input |
+| `.command-palette__clear` | Clear search button |
+| `.command-palette__list` | Scrollable results container |
+| `.command-palette__group-header` | Group section header |
+| `.command-palette__item` | Individual command item |
+| `.command-palette__item--active` | Keyboard-highlighted item |
+| `.command-palette__item--disabled` | Disabled item |
+| `.command-palette__item-icon` | Item icon wrapper |
+| `.command-palette__item-content` | Item label + description wrapper |
+| `.command-palette__item-label` | Item label text |
+| `.command-palette__item-description` | Item description text |
+| `.command-palette__item-tags` | Tags container |
+| `.command-palette__shortcut` | Keyboard shortcut badge |
+| `.command-palette__footer` | Footer with keyboard hints |
+| `.command-palette__empty` | Empty state message |
 
 ---
 

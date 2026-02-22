@@ -4,7 +4,7 @@ A SolidJS component library and design system built with Vite and Bun. Features 
 
 ## Features
 
-- **30 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **31 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -97,6 +97,7 @@ Page layout and navigation components.
 | **Pagination** | Page navigation control with ellipsis support |
 | **Pane** | Collapsible side/top/bottom panel |
 | **Tabs** | Tab bar for content switching with icon support |
+| **CommandPalette** | Modal command launcher with fuzzy search, grouped items, and keyboard navigation |
 
 ## Project Structure
 
@@ -108,13 +109,13 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 28 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, DatePickerDemo.tsx, FileUploadDemo.tsx, etc.)
+│       └── demos/              # 29 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, DatePickerDemo.tsx, FileUploadDemo.tsx, CommandPaletteDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
 │   ├── feedback/               # Dialog, FieldError, Form, FormField, Notification, Progress
 │   ├── surfaces/               # Card, GridBackground
-│   └── navigation/             # Accordion, Breadcrumbs, Menu, Pagination, Pane, Tabs
+│   └── navigation/             # Accordion, Breadcrumbs, CommandPalette, Menu, Pagination, Pane, Tabs
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files
