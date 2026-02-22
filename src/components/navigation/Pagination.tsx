@@ -127,8 +127,33 @@ export const Pagination: Component<PaginationProps> = (props) => {
     return classes.join(' ');
   };
 
+  const handleContainerKeyDown = (e: KeyboardEvent) => {
+    if (local.disabled) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') return;
+
+    const container = e.currentTarget as HTMLElement;
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('.pagination__button:not([disabled])'));
+    if (buttons.length === 0) return;
+
+    const current = buttons.indexOf(document.activeElement as HTMLButtonElement);
+    if (current < 0) return;
+
+    e.preventDefault();
+    let next: number;
+
+    if (e.key === 'ArrowRight') next = current < buttons.length - 1 ? current + 1 : 0;
+    else if (e.key === 'ArrowLeft') next = current > 0 ? current - 1 : buttons.length - 1;
+    else if (e.key === 'Home') next = 0;
+    else next = buttons.length - 1;
+
+    // Update tabindex: remove from all, set on target
+    buttons.forEach(b => b.setAttribute('tabindex', '-1'));
+    buttons[next].setAttribute('tabindex', '0');
+    buttons[next].focus();
+  };
+
   return (
-    <nav class={classNames()} aria-label="Pagination" {...rest}>
+    <nav class={classNames()} aria-label="Pagination" onKeyDown={handleContainerKeyDown} {...rest}>
       <div class="pagination__container">
         {/* First page button */}
         <Show when={shouldShowFirstLast()}>
@@ -137,6 +162,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--first"
             onClick={() => handlePageChange(1)}
             disabled={!canGoPrev()}
+            tabIndex={-1}
             aria-label="Go to first page"
           >
             <BsChevronBarLeft />
@@ -150,6 +176,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--prev"
             onClick={() => handlePageChange(local.page - 1)}
             disabled={!canGoPrev()}
+            tabIndex={-1}
             aria-label="Go to previous page"
           >
             <BsChevronLeft />
@@ -175,6 +202,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
                   }`}
                   onClick={() => handlePageChange(item as number)}
                   disabled={local.disabled}
+                  tabIndex={item === local.page ? 0 : -1}
                   aria-label={`Go to page ${item}`}
                   aria-current={item === local.page ? 'page' : undefined}
                 >
@@ -192,6 +220,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--next"
             onClick={() => handlePageChange(local.page + 1)}
             disabled={!canGoNext()}
+            tabIndex={-1}
             aria-label="Go to next page"
           >
             <BsChevronRight />
@@ -205,6 +234,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--last"
             onClick={() => handlePageChange(local.totalPages)}
             disabled={!canGoNext()}
+            tabIndex={-1}
             aria-label="Go to last page"
           >
             <BsChevronBarRight />

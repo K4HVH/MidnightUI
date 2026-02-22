@@ -226,6 +226,115 @@ export const Menu: Component<MenuProps> = (props) => {
     if (e.key === 'Escape' && isOpen()) {
       e.preventDefault();
       setOpen(false);
+      // Return focus to trigger
+      const focusTarget = triggerRef?.querySelector<HTMLElement>('[tabindex], button, a, input') || triggerRef;
+      focusTarget?.focus();
+    }
+  };
+
+  // Keyboard navigation within the menu
+  let typeAheadBuffer = '';
+  let typeAheadTimer: number | undefined;
+
+  const getMenuItems = (): HTMLButtonElement[] => {
+    if (!menuRef) return [];
+    return Array.from(menuRef.querySelectorAll<HTMLButtonElement>('.menu__item:not(.menu__item--disabled):not([disabled])'));
+  };
+
+  const focusMenuItem = (index: number) => {
+    const items = getMenuItems();
+    if (items.length === 0) return;
+    const clamped = Math.max(0, Math.min(items.length - 1, index));
+    items[clamped]?.focus();
+  };
+
+  const handleMenuKeyDown = (e: KeyboardEvent) => {
+    const items = getMenuItems();
+    if (items.length === 0) return;
+
+    const currentIndex = items.indexOf(document.activeElement as HTMLButtonElement);
+
+    switch (e.key) {
+      case 'ArrowDown': {
+        e.preventDefault();
+        const next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        focusMenuItem(next);
+        break;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        const prev = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        focusMenuItem(prev);
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        focusMenuItem(0);
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        focusMenuItem(items.length - 1);
+        break;
+      }
+      case 'ArrowRight': {
+        // Open submenu if current item has one
+        const current = items[currentIndex];
+        if (current?.classList.contains('menu__item--has-submenu')) {
+          e.preventDefault();
+          // Trigger hover to open submenu, then focus first item
+          current.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              const submenu = document.querySelector('.menu--submenu:last-of-type');
+              const firstItem = submenu?.querySelector<HTMLButtonElement>('.menu__item:not(.menu__item--disabled):not([disabled])');
+              firstItem?.focus();
+            });
+          });
+        }
+        break;
+      }
+      case 'ArrowLeft': {
+        // If we are in a submenu, close it and return focus to parent
+        // This is handled at the submenu level
+        break;
+      }
+      case 'Enter':
+      case ' ': {
+        // Native button handles Enter/Space click, but we ensure submenu behavior
+        if (items[currentIndex]?.classList.contains('menu__item--has-submenu')) {
+          e.preventDefault();
+          items[currentIndex].dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              const submenu = document.querySelector('.menu--submenu:last-of-type');
+              const firstItem = submenu?.querySelector<HTMLButtonElement>('.menu__item:not(.menu__item--disabled):not([disabled])');
+              firstItem?.focus();
+            });
+          });
+        }
+        break;
+      }
+      case 'Escape': {
+        // Handled by global handler
+        break;
+      }
+      default: {
+        // Type-ahead: single character search
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          typeAheadBuffer += e.key.toLowerCase();
+          clearTimeout(typeAheadTimer);
+          typeAheadTimer = window.setTimeout(() => { typeAheadBuffer = ''; }, 500);
+
+          const match = items.findIndex((item) => {
+            const text = item.textContent?.trim().toLowerCase() ?? '';
+            return text.startsWith(typeAheadBuffer);
+          });
+          if (match >= 0) focusMenuItem(match);
+        }
+        break;
+      }
     }
   };
 
@@ -243,6 +352,7 @@ export const Menu: Component<MenuProps> = (props) => {
     onCleanup(() => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
+      clearTimeout(typeAheadTimer);
       if (anchored()) {
         window.removeEventListener('scroll', updatePosition, true);
         window.removeEventListener('resize', updatePosition);
@@ -251,6 +361,7 @@ export const Menu: Component<MenuProps> = (props) => {
   });
 
   // Update position when menu opens - use double requestAnimationFrame for accurate dimensions
+  // Also focus first menu item for keyboard accessibility
   createEffect(() => {
     if (isOpen() && menuRef) {
       // Reset positioned state
@@ -259,6 +370,12 @@ export const Menu: Component<MenuProps> = (props) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           updatePosition();
+          // Focus first menu item when opened via keyboard (trigger was focused)
+          const triggerHadFocus = triggerRef?.contains(document.activeElement);
+          if (triggerHadFocus) {
+            const firstItem = menuRef?.querySelector<HTMLButtonElement>('.menu__item:not(.menu__item--disabled):not([disabled])');
+            firstItem?.focus();
+          }
         });
       });
     }
@@ -286,6 +403,14 @@ export const Menu: Component<MenuProps> = (props) => {
         class={`menu__trigger${local.wrapperClass ? ' ' + local.wrapperClass : ''}`}
         onClick={handleTriggerClick}
         onContextMenu={handleTriggerContextMenu}
+        onKeyDown={(e: KeyboardEvent) => {
+          if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+            if (openOn() === 'click' || openOn() === 'both') {
+              e.preventDefault();
+              if (!isOpen()) setOpen(true);
+            }
+          }
+        }}
       >
         {local.trigger}
       </div>
@@ -295,6 +420,8 @@ export const Menu: Component<MenuProps> = (props) => {
           <div
             ref={menuRef}
             class={menuClasses()}
+            role="menu"
+            onKeyDown={handleMenuKeyDown}
             style={{
               top: `${position().top}px`,
               left: `${position().left}px`,
@@ -380,10 +507,13 @@ export const MenuItem: Component<{
       <button
         ref={itemRef}
         class={`menu__item${local.disabled ? ' menu__item--disabled' : ''}${local.submenu ? ' menu__item--has-submenu' : ''}${local.class ? ' ' + local.class : ''}`}
+        role="menuitem"
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         disabled={local.disabled}
+        aria-haspopup={local.submenu ? 'menu' : undefined}
+        aria-expanded={local.submenu ? isHovered() : undefined}
       >
         {local.children}
         <Show when={local.submenu}>
@@ -396,12 +526,32 @@ export const MenuItem: Component<{
           <div
             ref={submenuRef}
             class="menu menu--submenu"
+            role="menu"
             style={{
               top: `${submenuPosition().top}px`,
               left: `${submenuPosition().left}px`,
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onKeyDown={(e: KeyboardEvent) => {
+              if (e.key === 'ArrowLeft' || e.key === 'Escape') {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsHovered(false);
+                itemRef?.focus();
+              } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End') {
+                e.preventDefault();
+                const subItems = Array.from(submenuRef?.querySelectorAll<HTMLButtonElement>('.menu__item:not(.menu__item--disabled):not([disabled])') ?? []);
+                if (subItems.length === 0) return;
+                const current = subItems.indexOf(document.activeElement as HTMLButtonElement);
+                let next: number;
+                if (e.key === 'ArrowDown') next = current < subItems.length - 1 ? current + 1 : 0;
+                else if (e.key === 'ArrowUp') next = current > 0 ? current - 1 : subItems.length - 1;
+                else if (e.key === 'Home') next = 0;
+                else next = subItems.length - 1;
+                subItems[next]?.focus();
+              }
+            }}
           >
             {local.submenu!()}
           </div>

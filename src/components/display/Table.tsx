@@ -209,7 +209,16 @@ export const Table = <T,>(props: TableProps<T>) => {
                         width: column.width,
                         'text-align': column.align || 'left',
                       }}
+                      tabIndex={isSortable ? 0 : undefined}
+                      role="columnheader"
+                      aria-sort={isSorted ? (local.sortDirection === 'asc' ? 'ascending' : 'descending') : undefined}
                       onClick={() => isSortable && handleSort(column.key)}
+                      onKeyDown={(e: KeyboardEvent) => {
+                        if (isSortable && (e.key === 'Enter' || e.key === ' ')) {
+                          e.preventDefault();
+                          handleSort(column.key);
+                        }
+                      }}
                     >
                       <div class="table__header-content">
                         <span class="table__header-label">{column.header}</span>

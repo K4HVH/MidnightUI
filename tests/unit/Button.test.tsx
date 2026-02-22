@@ -1,6 +1,7 @@
 import { render, fireEvent } from '@solidjs/testing-library';
 import { describe, it, expect, vi } from 'vitest';
 import { Button } from '../../src/components/inputs/Button';
+import { ButtonGroup } from '../../src/components/inputs/ButtonGroup';
 import { BsPlus } from 'solid-icons/bs';
 
 describe('Button', () => {
@@ -86,5 +87,40 @@ describe('Button', () => {
     expect(getByText('Add')).toBeInTheDocument();
     const icon = container.querySelector('.button__icon');
     expect(icon).toBeInTheDocument();
+  });
+});
+
+describe('ButtonGroup', () => {
+  it('has role="group" on container', () => {
+    const { container } = render(() => (
+      <ButtonGroup>
+        <Button>A</Button>
+        <Button>B</Button>
+      </ButtonGroup>
+    ));
+    const group = container.querySelector('[role="group"]');
+    expect(group).toBeInTheDocument();
+  });
+
+  it('has aria-orientation matching orientation prop', () => {
+    const { container } = render(() => (
+      <ButtonGroup orientation="vertical">
+        <Button>A</Button>
+        <Button>B</Button>
+      </ButtonGroup>
+    ));
+    const group = container.querySelector('[role="group"]');
+    expect(group).toHaveAttribute('aria-orientation', 'vertical');
+  });
+
+  it('defaults aria-orientation to horizontal', () => {
+    const { container } = render(() => (
+      <ButtonGroup>
+        <Button>A</Button>
+        <Button>B</Button>
+      </ButtonGroup>
+    ));
+    const group = container.querySelector('[role="group"]');
+    expect(group).toHaveAttribute('aria-orientation', 'horizontal');
   });
 });

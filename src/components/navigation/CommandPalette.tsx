@@ -439,6 +439,30 @@ export const CommandPalette: Component<CommandPaletteProps> = (props) => {
         scrollActiveIntoView();
         break;
       }
+      case 'Home': {
+        e.preventDefault();
+        let next = 0;
+        let attempts = 0;
+        while (items[next]?.disabled && attempts < count) {
+          next = (next + 1) % count;
+          attempts++;
+        }
+        setActiveIndex(next);
+        scrollActiveIntoView();
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        let next = count - 1;
+        let attempts = 0;
+        while (items[next]?.disabled && attempts < count) {
+          next = (next - 1 + count) % count;
+          attempts++;
+        }
+        setActiveIndex(next);
+        scrollActiveIntoView();
+        break;
+      }
       case 'Enter': {
         e.preventDefault();
         const item = items[activeIndex()];

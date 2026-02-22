@@ -116,6 +116,30 @@ export const Divider: Component<DividerProps> = (props) => {
     return classes.join(' ');
   };
 
+  const KEYBOARD_DRAG_STEP = 5;
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!local.draggable) return;
+
+    const isHorizontal = orientation() === 'horizontal';
+    let delta: number | null = null;
+
+    if (isHorizontal) {
+      if (e.key === 'ArrowDown') delta = KEYBOARD_DRAG_STEP;
+      else if (e.key === 'ArrowUp') delta = -KEYBOARD_DRAG_STEP;
+    } else {
+      if (e.key === 'ArrowRight') delta = KEYBOARD_DRAG_STEP;
+      else if (e.key === 'ArrowLeft') delta = -KEYBOARD_DRAG_STEP;
+    }
+
+    if (delta !== null) {
+      e.preventDefault();
+      local.onDragStart?.();
+      local.onDrag?.(delta);
+      local.onDragEnd?.();
+    }
+  };
+
   return (
     <div
       class={classNames()}
@@ -125,6 +149,7 @@ export const Divider: Component<DividerProps> = (props) => {
       onPointerDown={local.draggable ? handlePointerDown : undefined}
       onPointerMove={local.draggable ? handlePointerMove : undefined}
       onPointerUp={local.draggable ? handlePointerUp : undefined}
+      onKeyDown={local.draggable ? handleKeyDown : undefined}
       {...rest}
     >
       <Show when={local.label}>

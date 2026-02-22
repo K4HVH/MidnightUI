@@ -167,9 +167,32 @@ export const AccordionItem: Component<AccordionItemProps> = (props) => {
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (disabled()) return;
-    if (e.key === 'Enter' || e.key === ' ') {
+    const header = e.currentTarget as HTMLElement;
+    const accordion = header.closest('.accordion');
+    if (!accordion) return;
+
+    const headers = Array.from(accordion.querySelectorAll<HTMLButtonElement>('.accordion__header:not([disabled])'));
+    const currentIndex = headers.indexOf(header as HTMLButtonElement);
+    if (currentIndex < 0) return;
+
+    let targetIndex: number | null = null;
+
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
-      context.toggle(local.value);
+      targetIndex = currentIndex < headers.length - 1 ? currentIndex + 1 : 0;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      targetIndex = currentIndex > 0 ? currentIndex - 1 : headers.length - 1;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      targetIndex = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      targetIndex = headers.length - 1;
+    }
+
+    if (targetIndex !== null) {
+      headers[targetIndex]?.focus();
     }
   };
 

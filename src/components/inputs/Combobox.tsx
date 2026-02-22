@@ -61,12 +61,25 @@ export const Combobox: Component<ComboboxProps> = (props) => {
   const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
 
   const [isOpen, setIsOpen] = createSignal(false);
+  const [activeIndex, setActiveIndex] = createSignal(-1);
 
   let triggerRef: HTMLDivElement | undefined;
 
   createEffect(() => {
     if (local.name) triggerRef?.setAttribute('name', local.name);
     else triggerRef?.removeAttribute('name');
+  });
+
+  // Reset active index when dropdown closes; set to first selected or 0 when it opens
+  createEffect(() => {
+    if (isOpen()) {
+      const enabledOptions = local.options.filter(o => !o.disabled);
+      const selVals = selectedValues();
+      const firstSelectedIdx = local.options.findIndex(o => !o.disabled && selVals.includes(o.value));
+      setActiveIndex(firstSelectedIdx >= 0 ? firstSelectedIdx : (enabledOptions.length > 0 ? local.options.indexOf(enabledOptions[0]) : -1));
+    } else {
+      setActiveIndex(-1);
+    }
   });
 
   const size = () => local.size ?? 'normal';
@@ -113,6 +126,8 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     local.onChange(newValues);
   };
 
+  const getEnabledIndices = () => local.options.map((o, i) => o.disabled ? -1 : i).filter(i => i >= 0);
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (local.disabled) return;
 
@@ -120,11 +135,49 @@ export const Combobox: Component<ComboboxProps> = (props) => {
       setIsOpen(false);
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(!isOpen());
-    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      if (isOpen() && activeIndex() >= 0) {
+        const option = local.options[activeIndex()];
+        if (option && !option.disabled) {
+          handleSelect(option.value);
+        }
+      } else {
+        setIsOpen(!isOpen());
+      }
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (!isOpen()) {
         setIsOpen(true);
+      } else {
+        const enabled = getEnabledIndices();
+        if (enabled.length === 0) return;
+        const current = activeIndex();
+        const pos = enabled.indexOf(current);
+        const next = pos < enabled.length - 1 ? enabled[pos + 1] : enabled[0];
+        setActiveIndex(next);
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!isOpen()) {
+        setIsOpen(true);
+      } else {
+        const enabled = getEnabledIndices();
+        if (enabled.length === 0) return;
+        const current = activeIndex();
+        const pos = enabled.indexOf(current);
+        const next = pos > 0 ? enabled[pos - 1] : enabled[enabled.length - 1];
+        setActiveIndex(next);
+      }
+    } else if (e.key === 'Home') {
+      if (isOpen()) {
+        e.preventDefault();
+        const enabled = getEnabledIndices();
+        if (enabled.length > 0) setActiveIndex(enabled[0]);
+      }
+    } else if (e.key === 'End') {
+      if (isOpen()) {
+        e.preventDefault();
+        const enabled = getEnabledIndices();
+        if (enabled.length > 0) setActiveIndex(enabled[enabled.length - 1]);
       }
     }
   };
@@ -163,6 +216,10 @@ export const Combobox: Component<ComboboxProps> = (props) => {
           id={inputId()}
           class={classNames()}
           tabIndex={local.disabled ? -1 : 0}
+          role="combobox"
+          aria-expanded={isOpen()}
+          aria-haspopup="listbox"
+          aria-activedescendant={activeIndex() >= 0 ? `${inputId()}-option-${activeIndex()}` : undefined}
           onKeyDown={handleKeyDown}
           onBlur={local.onBlur}
           aria-invalid={local.invalid || !!local.error}
@@ -228,16 +285,23 @@ export const Combobox: Component<ComboboxProps> = (props) => {
       size={size()}
       wrapperClass="combobox-wrapper"
     >
-      <div class={`combobox__dropdown${size() === 'compact' ? ' combobox__dropdown--compact' : ''}`}>
+      <div class={`combobox__dropdown${size() === 'compact' ? ' combobox__dropdown--compact' : ''}`} role="listbox" aria-multiselectable={local.multiple || undefined}>
         <For each={local.options}>
-          {(option) => (
+          {(option, index) => (
             <div
-              class={`combobox__option ${option.disabled ? 'combobox__option--disabled' : ''} ${isSelected(option.value) ? 'combobox__option--selected' : ''}`}
+              id={`${inputId()}-option-${index()}`}
+              class={`combobox__option ${option.disabled ? 'combobox__option--disabled' : ''} ${isSelected(option.value) ? 'combobox__option--selected' : ''} ${activeIndex() === index() ? 'combobox__option--active' : ''}`}
+              role="option"
+              aria-selected={isSelected(option.value)}
+              aria-disabled={option.disabled}
               onMouseDown={(e) => {
                 if (option.disabled) {
                   e.stopPropagation();
                   e.preventDefault();
                 }
+              }}
+              onMouseEnter={() => {
+                if (!option.disabled) setActiveIndex(index());
               }}
               onClick={(e) => {
                 if (option.disabled) {

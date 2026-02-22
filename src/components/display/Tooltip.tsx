@@ -148,6 +148,13 @@ export const Tooltip: Component<TooltipProps> = (props) => {
   const handleFocus = () => handleShow();
   const handleBlur = () => handleHide();
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && (isMounted() || showTimeout)) {
+      e.preventDefault();
+      handleHide();
+    }
+  };
+
   onMount(() => {
     // Recalculate position on scroll/resize
     const handleRecalculate = () => {
@@ -196,6 +203,7 @@ export const Tooltip: Component<TooltipProps> = (props) => {
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
         {...rest}
       >
         {local.children}

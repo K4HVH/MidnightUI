@@ -156,7 +156,7 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
   };
 
   return (
-    <div id={groupId()} class={classNames()} onBlur={local.onBlur} {...rest}>
+    <div id={groupId()} class={classNames()} role="radiogroup" aria-orientation={orientation()} onBlur={local.onBlur} {...rest}>
       <For each={local.options}>
         {(option) => (
           <Radio

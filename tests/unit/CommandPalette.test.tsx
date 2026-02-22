@@ -352,6 +352,43 @@ describe('CommandPalette', () => {
       expect(activeItem!.textContent).toContain('First');
     });
 
+    it('moves to first enabled item with Home', () => {
+      const items: CommandPaletteItem[] = [
+        { id: '1', label: 'First', onSelect: vi.fn(), disabled: true },
+        { id: '2', label: 'Second', onSelect: vi.fn() },
+        { id: '3', label: 'Third', onSelect: vi.fn() },
+      ];
+      render(() => (
+        <CommandPalette open={true} onClose={() => {}} items={items} />
+      ));
+      const input = document.querySelector('.command-palette__input') as HTMLInputElement;
+
+      // Move down first
+      fireEvent.keyDown(input, { key: 'ArrowDown' });
+      fireEvent.keyDown(input, { key: 'ArrowDown' });
+
+      // Home should go to first enabled item (skipping disabled)
+      fireEvent.keyDown(input, { key: 'Home' });
+      const activeItem = document.querySelector('.command-palette__item--active');
+      expect(activeItem!.textContent).toContain('Second');
+    });
+
+    it('moves to last enabled item with End', () => {
+      const items: CommandPaletteItem[] = [
+        { id: '1', label: 'First', onSelect: vi.fn() },
+        { id: '2', label: 'Second', onSelect: vi.fn() },
+        { id: '3', label: 'Third', onSelect: vi.fn() },
+      ];
+      render(() => (
+        <CommandPalette open={true} onClose={() => {}} items={items} />
+      ));
+      const input = document.querySelector('.command-palette__input') as HTMLInputElement;
+
+      fireEvent.keyDown(input, { key: 'End' });
+      const activeItem = document.querySelector('.command-palette__item--active');
+      expect(activeItem!.textContent).toContain('Third');
+    });
+
     it('selects item with Enter', () => {
       const onSelect = vi.fn();
       const items: CommandPaletteItem[] = [

@@ -226,6 +226,88 @@ export const Slider: Component<SliderProps> = (props) => {
     }
   };
 
+  const handleThumbKeyDown = (e: KeyboardEvent, thumb: 'start' | 'end') => {
+    if (local.disabled) return;
+
+    const isHorizontal = orientation() === 'horizontal';
+    const s = step() ?? 1;
+    const range = max() - min();
+    const largeStep = Math.max(s, range / 10);
+
+    let delta: number | null = null;
+
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowUp':
+        delta = s;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        delta = -s;
+        break;
+      case 'PageUp':
+        delta = largeStep;
+        break;
+      case 'PageDown':
+        delta = -largeStep;
+        break;
+      case 'Home':
+        delta = min() - max(); // Will be clamped to min
+        break;
+      case 'End':
+        delta = max() - min(); // Will be clamped to max
+        break;
+      default:
+        return;
+    }
+
+    e.preventDefault();
+
+    const [startVal, endVal] = getValue();
+
+    if (local.range) {
+      if (thumb === 'start') {
+        let newStart = startVal + delta;
+        if (restrictToMarks()) {
+          const marks = local.marks!;
+          const currentIdx = marks.findIndex(m => m.value === startVal);
+          const nextIdx = Math.max(0, Math.min(marks.length - 1, currentIdx + (delta > 0 ? 1 : -1)));
+          newStart = marks[nextIdx].value;
+        }
+        newStart = Math.max(min(), Math.min(endVal, newStart));
+        local.onChange?.([newStart, endVal]);
+      } else {
+        let newEnd = endVal + delta;
+        if (restrictToMarks()) {
+          const marks = local.marks!;
+          const currentIdx = marks.findIndex(m => m.value === endVal);
+          const nextIdx = Math.max(0, Math.min(marks.length - 1, currentIdx + (delta > 0 ? 1 : -1)));
+          newEnd = marks[nextIdx].value;
+        }
+        newEnd = Math.max(startVal, Math.min(max(), newEnd));
+        local.onChange?.([startVal, newEnd]);
+      }
+    } else {
+      let newValue = endVal + delta;
+      if (restrictToMarks()) {
+        const marks = local.marks!;
+        const currentIdx = marks.findIndex(m => m.value === endVal);
+        const nextIdx = Math.max(0, Math.min(marks.length - 1, currentIdx + (delta > 0 ? 1 : -1)));
+        newValue = marks[nextIdx].value;
+      }
+      newValue = Math.max(min(), Math.min(max(), newValue));
+      local.onChange?.(newValue);
+    }
+
+    if (local.showTooltip !== false) {
+      setActiveThumb(thumb);
+      requestAnimationFrame(() => {
+        updateTooltipPosition();
+        setTimeout(() => setActiveThumb(null), 500);
+      });
+    }
+  };
+
   const classNames = () => {
     const classes = ['slider'];
 
@@ -310,6 +392,7 @@ export const Slider: Component<SliderProps> = (props) => {
               onPointerDown={(e) => handlePointerDown(e, 'start')}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
+              onKeyDown={(e) => handleThumbKeyDown(e, 'start')}
               onMouseEnter={() => {
                 if (local.showTooltip !== false) {
                   setHoveredThumb('start');
@@ -318,6 +401,12 @@ export const Slider: Component<SliderProps> = (props) => {
               }}
               onMouseLeave={() => setHoveredThumb(null)}
               tabIndex={local.disabled ? -1 : 0}
+              role="slider"
+              aria-valuemin={min()}
+              aria-valuemax={getValue()[1]}
+              aria-valuenow={getValue()[0]}
+              aria-orientation={orientation()}
+              aria-label="Range start"
             />
           )}
 
@@ -330,6 +419,7 @@ export const Slider: Component<SliderProps> = (props) => {
             onPointerDown={(e) => handlePointerDown(e, 'end')}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
+            onKeyDown={(e) => handleThumbKeyDown(e, 'end')}
             onMouseEnter={() => {
               if (local.showTooltip !== false) {
                 setHoveredThumb('end');
@@ -338,6 +428,12 @@ export const Slider: Component<SliderProps> = (props) => {
             }}
             onMouseLeave={() => setHoveredThumb(null)}
             tabIndex={local.disabled ? -1 : 0}
+            role="slider"
+            aria-valuemin={local.range ? getValue()[0] : min()}
+            aria-valuemax={max()}
+            aria-valuenow={getValue()[1]}
+            aria-orientation={orientation()}
+            aria-label={local.range ? 'Range end' : undefined}
           />
         </div>
       </div>

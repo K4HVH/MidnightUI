@@ -163,4 +163,28 @@ describe('RadioGroup', () => {
     expect(radio2.checked).toBe(false);
     expect(radio3.checked).toBe(true);
   });
+
+  it('has role="radiogroup" on container', () => {
+    const { container } = render(() => (
+      <RadioGroup name="test" options={mockOptions} />
+    ));
+    const group = container.querySelector('.radio-group');
+    expect(group).toHaveAttribute('role', 'radiogroup');
+  });
+
+  it('has aria-orientation matching orientation prop', () => {
+    const { container } = render(() => (
+      <RadioGroup name="test" options={mockOptions} orientation="horizontal" />
+    ));
+    const group = container.querySelector('.radio-group');
+    expect(group).toHaveAttribute('aria-orientation', 'horizontal');
+  });
+
+  it('defaults aria-orientation to vertical', () => {
+    const { container } = render(() => (
+      <RadioGroup name="test" options={mockOptions} />
+    ));
+    const group = container.querySelector('.radio-group');
+    expect(group).toHaveAttribute('aria-orientation', 'vertical');
+  });
 });

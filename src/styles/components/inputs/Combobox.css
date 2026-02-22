@@ -186,6 +186,15 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+.combobox__option--active::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.combobox__option--active {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
 .combobox__option--selected {
   color: var(--color-primary);
   font-weight: var(--font-weight-medium);

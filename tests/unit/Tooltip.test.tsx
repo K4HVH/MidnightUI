@@ -322,4 +322,55 @@ describe('Tooltip', () => {
     // Tooltip should still be visible
     expect(document.querySelector('[role="tooltip"]')).toBeInTheDocument();
   });
+
+  it('dismisses tooltip on Escape key', async () => {
+    const { container } = render(() => (
+      <Tooltip content="Tooltip text">
+        <button>Focus me</button>
+      </Tooltip>
+    ));
+
+    const trigger = container.querySelector('.tooltip__trigger') as HTMLElement;
+
+    // Show tooltip via focus
+    fireEvent.focus(trigger);
+    vi.advanceTimersByTime(200);
+
+    await waitFor(() => {
+      expect(document.querySelector('[role="tooltip"]')).toBeInTheDocument();
+    });
+
+    // Press Escape
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+
+    // Fast-forward past hide delay + fade out
+    vi.advanceTimersByTime(100);
+    vi.advanceTimersByTime(150);
+
+    await waitFor(() => {
+      expect(document.querySelector('[role="tooltip"]')).not.toBeInTheDocument();
+    });
+  });
+
+  it('cancels pending tooltip show on Escape key', async () => {
+    const { container } = render(() => (
+      <Tooltip content="Tooltip text">
+        <button>Focus me</button>
+      </Tooltip>
+    ));
+
+    const trigger = container.querySelector('.tooltip__trigger') as HTMLElement;
+
+    // Start showing tooltip
+    fireEvent.focus(trigger);
+    vi.advanceTimersByTime(100); // Halfway through show delay
+
+    // Press Escape before it appears
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+
+    vi.advanceTimersByTime(200);
+
+    // Tooltip should not appear
+    expect(document.querySelector('[role="tooltip"]')).not.toBeInTheDocument();
+  });
 });
