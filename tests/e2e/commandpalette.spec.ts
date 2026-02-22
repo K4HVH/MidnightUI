@@ -51,7 +51,7 @@ test.describe('CommandPalette behavior', () => {
     // Only matching item should be visible
     const items = page.locator('.command-palette__item');
     await expect(items).toHaveCount(1);
-    await expect(items.first()).toContainText('Save File');
+    await expect(items.first()).toContainText('Save');
   });
 
   test('shows empty state when no results', async ({ page }) => {

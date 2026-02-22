@@ -47,9 +47,9 @@ test.describe('Divider component', () => {
     await expect(themeCard.locator('.divider--accent')).toBeVisible();
 
     // Labels should be visible
-    await expect(themeCard.getByText('Default')).toBeVisible();
-    await expect(themeCard.getByText('Primary')).toBeVisible();
-    await expect(themeCard.getByText('Accent')).toBeVisible();
+    await expect(themeCard.getByText('Default', { exact: true })).toBeVisible();
+    await expect(themeCard.getByText('Primary', { exact: true })).toBeVisible();
+    await expect(themeCard.getByText('Accent', { exact: true })).toBeVisible();
   });
 
   test('renders dividers with labels', async ({ page }) => {
