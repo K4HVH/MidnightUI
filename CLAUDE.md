@@ -50,11 +50,11 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 29 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, NumberInputDemo.tsx, DatePickerDemo.tsx, FileUploadDemo.tsx, CommandPaletteDemo.tsx, etc.)
+      demos/                # 30 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, ChipDemo.tsx, NumberInputDemo.tsx, DatePickerDemo.tsx, FileUploadDemo.tsx, CommandPaletteDemo.tsx, DividerDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (10 components)
     surfaces/               # Layout and background (2 components)
-    display/                # Data presentation (6 components)
+    display/                # Data presentation (7 components)
     feedback/               # User feedback (6 components)
     navigation/             # Navigation patterns (7 components)
   styles/
@@ -72,8 +72,8 @@ src/
     FormFieldContext.tsx     # FormFieldContext + useFormField() for automatic label/aria ID wiring
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (33 test files)
-  e2e/                      # Playwright e2e tests (16 spec files)
+  unit/                     # Vitest unit tests (34 test files)
+  e2e/                      # Playwright e2e tests (17 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -109,6 +109,7 @@ src/components/
     Chip.tsx                 # Interactive removable tags/labels. Variants: primary, success, warning, error, info, neutral. Sizes: compact, normal, spacious. Optional icon. Removable (onRemove), clickable (onClick), or static. Used by Combobox for multi-select.
     Table.tsx                # Data table/grid. Multi-select with checkboxes, sortable columns, sticky header (optional). Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Loading skeleton, empty state, flexible column config.
     Tooltip.tsx              # Hover/focus tooltip via Portal. Placement: top (default), bottom, left, right with auto-flip. Show/hide delays with fade animation.
+    Divider.tsx              # Visual separator. Orientations: horizontal (default), vertical. Line styles: solid, dashed, dotted. Color variants: default, primary, accent. Optional inline label with start/center/end alignment. Optional draggable mode with onDrag/onDragStart/onDragEnd callbacks for resizable panels. Spacing: compact, normal, spacious.
   feedback/                  # User feedback
     Dialog.tsx               # Modal dialog via Portal over Card. Sizes: small, medium (default), large, fullscreen. Backdrop/escape dismiss. Exports DialogHeader, DialogFooter.
     FieldError.tsx           # Displays field validation error with icon. Conditionally renders based on error prop. Used standalone or within FormField.

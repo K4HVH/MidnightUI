@@ -32,6 +32,7 @@ import NumberInputDemo from './pages/demos/NumberInputDemo';
 import DatePickerDemo from './pages/demos/DatePickerDemo';
 import FileUploadDemo from './pages/demos/FileUploadDemo';
 import CommandPaletteDemo from './pages/demos/CommandPaletteDemo';
+import DividerDemo from './pages/demos/DividerDemo';
 
 const App: Component = () => {
   return (
@@ -68,6 +69,7 @@ const App: Component = () => {
           <Route path="datepicker" component={DatePickerDemo} />
           <Route path="fileupload" component={FileUploadDemo} />
           <Route path="commandpalette" component={CommandPaletteDemo} />
+          <Route path="divider" component={DividerDemo} />
         </Route>
       </Router>
     </NotificationProvider>

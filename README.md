@@ -1,10 +1,10 @@
 # MidnightUI
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 30 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 31 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **31 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **32 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -62,6 +62,7 @@ Components for presenting information.
 | **Chip** | Interactive removable tags and labels with variants |
 | **Table** | Data table with sorting, selection, and sticky headers |
 | **Tooltip** | Hover tooltips for contextual information |
+| **Divider** | Visual separator with horizontal/vertical orientation, line styles, color variants, optional label, and draggable resize mode |
 
 ### Feedback
 

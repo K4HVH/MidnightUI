@@ -1,0 +1,248 @@
+/* =============================================================================
+   Divider Component
+   ============================================================================= */
+
+/* Base */
+.divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* =============================================================================
+   Orientation
+   ============================================================================= */
+
+/* Horizontal (default) */
+.divider--horizontal {
+  width: 100%;
+  flex-direction: row;
+  margin: var(--g-spacing) 0;
+}
+
+.divider--horizontal::before,
+.divider--horizontal::after {
+  content: '';
+  flex: 1;
+  border-top: var(--g-border-width) solid var(--g-border-color);
+}
+
+/* Vertical */
+.divider--vertical {
+  height: 100%;
+  flex-direction: column;
+  margin: 0 var(--g-spacing);
+  align-self: stretch;
+}
+
+.divider--vertical::before,
+.divider--vertical::after {
+  content: '';
+  flex: 1;
+  border-left: var(--g-border-width) solid var(--g-border-color);
+}
+
+/* =============================================================================
+   Line Style Variants
+   ============================================================================= */
+
+/* Solid (default - already set above) */
+
+/* Dashed */
+.divider--dashed.divider--horizontal::before,
+.divider--dashed.divider--horizontal::after {
+  border-top-style: dashed;
+}
+
+.divider--dashed.divider--vertical::before,
+.divider--dashed.divider--vertical::after {
+  border-left-style: dashed;
+}
+
+/* Dotted */
+.divider--dotted.divider--horizontal::before,
+.divider--dotted.divider--horizontal::after {
+  border-top-style: dotted;
+}
+
+.divider--dotted.divider--vertical::before,
+.divider--dotted.divider--vertical::after {
+  border-left-style: dotted;
+}
+
+/* =============================================================================
+   Color Theme Variants
+   ============================================================================= */
+
+/* Primary */
+.divider--primary.divider--horizontal::before,
+.divider--primary.divider--horizontal::after {
+  border-top-color: var(--color-primary);
+}
+
+.divider--primary.divider--vertical::before,
+.divider--primary.divider--vertical::after {
+  border-left-color: var(--color-primary);
+}
+
+.divider--primary .divider__label {
+  color: var(--color-blue-300);
+}
+
+/* Accent */
+.divider--accent.divider--horizontal::before,
+.divider--accent.divider--horizontal::after {
+  border-top-color: var(--color-accent);
+}
+
+.divider--accent.divider--vertical::before,
+.divider--accent.divider--vertical::after {
+  border-left-color: var(--color-accent);
+}
+
+.divider--accent .divider__label {
+  color: var(--color-blue-400);
+}
+
+/* =============================================================================
+   Spacing Variants
+   ============================================================================= */
+
+/* Compact */
+.divider--spacing-compact.divider--horizontal {
+  margin: var(--g-spacing-sm) 0;
+}
+
+.divider--spacing-compact.divider--vertical {
+  margin: 0 var(--g-spacing-sm);
+}
+
+/* Spacious */
+.divider--spacing-spacious.divider--horizontal {
+  margin: var(--g-spacing-lg) 0;
+}
+
+.divider--spacing-spacious.divider--vertical {
+  margin: 0 var(--g-spacing-lg);
+}
+
+/* =============================================================================
+   Label
+   ============================================================================= */
+
+.divider__label {
+  padding: 0 var(--g-spacing);
+  font-size: var(--font-size-sm);
+  color: var(--g-text-muted);
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.divider--vertical .divider__label {
+  padding: var(--g-spacing) 0;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+}
+
+/* Label Alignment */
+
+/* Start: no flex before, all flex after */
+.divider--label-start::before {
+  flex: 0 0 var(--g-spacing);
+}
+
+.divider--label-start::after {
+  flex: 1;
+}
+
+/* Center (default): equal flex */
+.divider--label-center::before,
+.divider--label-center::after {
+  flex: 1;
+}
+
+/* End: all flex before, no flex after */
+.divider--label-end::before {
+  flex: 1;
+}
+
+.divider--label-end::after {
+  flex: 0 0 var(--g-spacing);
+}
+
+/* Without label: hide pseudo-element after (single line) */
+.divider--horizontal:not(.divider--with-label)::after {
+  display: none;
+}
+
+.divider--vertical:not(.divider--with-label)::after {
+  display: none;
+}
+
+/* =============================================================================
+   Draggable
+   ============================================================================= */
+
+.divider--draggable {
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.divider--draggable.divider--horizontal {
+  cursor: row-resize;
+}
+
+.divider--draggable::before,
+.divider--draggable::after {
+  transition: border-color var(--g-transition);
+}
+
+.divider--draggable:hover::before,
+.divider--draggable:hover::after {
+  border-color: var(--color-accent);
+}
+
+.divider--dragging::before,
+.divider--dragging::after {
+  border-color: var(--color-primary);
+}
+
+/* Drag Handle */
+.divider__handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--spacing-1) var(--spacing-2);
+  flex-shrink: 0;
+}
+
+.divider--vertical .divider__handle {
+  flex-direction: column;
+  padding: var(--spacing-2) var(--spacing-1);
+}
+
+.divider__handle-dot {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--g-text-muted);
+  transition: background var(--g-transition);
+}
+
+.divider--draggable:hover .divider__handle-dot {
+  background: var(--color-accent);
+}
+
+.divider--dragging .divider__handle-dot {
+  background: var(--color-primary);
+}
+
+/* Focus-visible for keyboard accessibility */
+.divider--draggable:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

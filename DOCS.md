@@ -6,7 +6,7 @@ Comprehensive reference for MidnightUI, a SolidJS component library with a dark 
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 31 components in MidnightUI, organized by category.
+A comprehensive reference for all 32 components in MidnightUI, organized by category.
 
 ---
 
@@ -1442,6 +1442,88 @@ import { Button } from '../components/inputs/Button';
 **Testing Notes**
 
 The tooltip content is rendered via `Portal`. Query `document` directly to find `.tooltip` elements. The tooltip has a 200ms show delay, so tests may need to wait before asserting visibility.
+
+---
+
+### Divider
+
+A visual separator line supporting horizontal and vertical orientations, multiple line styles, color theme variants, optional inline labels with configurable alignment, and an optional draggable mode for resizable panel layouts.
+
+**Props Interface**
+
+```typescript
+interface DividerProps {
+  orientation?: 'horizontal' | 'vertical';                  // default: 'horizontal'
+  lineStyle?: 'solid' | 'dashed' | 'dotted';                // default: 'solid'
+  variant?: 'default' | 'primary' | 'accent';               // default: 'default'
+  label?: string;                                            // optional inline label
+  labelAlign?: 'start' | 'center' | 'end';                  // default: 'center'
+  draggable?: boolean;                                       // default: false
+  onDrag?: (delta: number) => void;                          // pixel delta callback
+  onDragStart?: () => void;                                  // drag start callback
+  onDragEnd?: () => void;                                    // drag end callback
+  spacing?: 'compact' | 'normal' | 'spacious';              // default: 'normal'
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Orientation**: `horizontal` (full-width, border-top) or `vertical` (full-height, border-left)
+- **Line Style**: `solid`, `dashed`, `dotted` — controls the CSS border-style
+- **Color Variant**: `default` (gray border), `primary` (blue), `accent` (bright blue) — applies to both the line and label color
+- **Spacing**: `compact` (8px margin), `normal` (16px margin), `spacious` (24px margin)
+- **Label**: Optional inline text displayed along the divider line with start/center/end alignment
+- **Draggable**: When enabled, the divider becomes a drag handle with pointer capture, visual feedback, and delta callbacks
+- **Accessibility**: Uses `role="separator"` with `aria-orientation`
+
+**Usage Example**
+
+```tsx
+import { Divider } from '../components/display/Divider';
+
+// Basic horizontal divider
+<Divider />
+
+// Dashed primary divider with label
+<Divider lineStyle="dashed" variant="primary" label="OR" />
+
+// Vertical divider between nav items
+<div style={{ display: 'flex', 'align-items': 'center' }}>
+  <span>Home</span>
+  <Divider orientation="vertical" />
+  <span>About</span>
+</div>
+
+// Draggable divider for resizable panels
+<Divider
+  draggable
+  onDrag={(delta) => setWidth(w => Math.max(100, w + delta))}
+  onDragStart={() => console.log('drag started')}
+  onDragEnd={() => console.log('drag ended')}
+/>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.divider` | Base container (flex, role=separator) |
+| `.divider--horizontal`, `.divider--vertical` | Orientation |
+| `.divider--solid`, `.divider--dashed`, `.divider--dotted` | Line style |
+| `.divider--primary`, `.divider--accent` | Color variants |
+| `.divider--spacing-compact`, `.divider--spacing-spacious` | Spacing |
+| `.divider--with-label` | Has inline label |
+| `.divider--label-start`, `.divider--label-center`, `.divider--label-end` | Label alignment |
+| `.divider--draggable` | Draggable state |
+| `.divider--dragging` | Currently being dragged |
+| `.divider__label` | Label text element |
+| `.divider__handle` | Drag handle container (3 dots) |
+| `.divider__handle-dot` | Individual drag handle dot |
+
+**Testing Notes**
+
+The Divider renders directly in the DOM (no Portal). Query the `container` for `.divider` elements. For drag tests, mock `setPointerCapture` since jsdom doesn't support it, then use `fireEvent.pointerDown`, `fireEvent.pointerMove`, and `fireEvent.pointerUp`.
 
 ---
 
