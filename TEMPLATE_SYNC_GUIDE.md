@@ -10,31 +10,6 @@ This setup allows you to:
 - Push fixes from your projects back to the template
 - Keep projects independent with their own repositories
 
-## Initial Setup (Base Template)
-
-### 1. Set Up This Repository
-
-If not already done, ensure this base template is in Git and pushed to a remote:
-
-```bash
-# Initialize Git (if needed)
-git init
-
-# Add all files
-git add .
-git commit -m "Initial base template"
-
-# Add remote and push
-git remote add origin <your-base-template-repo-url>
-git push -u origin main
-```
-
-**Recommended:** Host this on GitHub/GitLab as either:
-- A public repository (if open source)
-- A private repository (for your personal/team use)
-
----
-
 ## Creating a New Project from Template
 
 ### Step 1: Create and Initialize New Project
