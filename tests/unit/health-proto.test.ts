@@ -8,9 +8,9 @@ import {
 } from '../../src/gen/midnightui/health_pb';
 
 describe('CheckRequest', () => {
-  it('creates a default message with empty service', () => {
+  it('creates a default message with undefined service (optional)', () => {
     const req = create(CheckRequestSchema);
-    expect(req.service).toBe('');
+    expect(req.service).toBeUndefined();
   });
 
   it('creates a message with a service name', () => {
@@ -25,10 +25,10 @@ describe('CheckRequest', () => {
     expect(decoded.service).toBe('test-service');
   });
 
-  it('serializes empty service to minimal bytes', () => {
+  it('serializes default (no service) to minimal bytes', () => {
     const req = create(CheckRequestSchema);
     const bytes = toBinary(CheckRequestSchema, req);
-    // Empty proto3 message with all default values serializes to zero bytes
+    // Optional field not set serializes to zero bytes
     expect(bytes.length).toBe(0);
   });
 
@@ -36,6 +36,13 @@ describe('CheckRequest', () => {
     const req = create(CheckRequestSchema, { service: 'svc' });
     const bytes = toBinary(CheckRequestSchema, req);
     expect(bytes.length).toBeGreaterThan(0);
+  });
+
+  it('roundtrips undefined service through binary', () => {
+    const original = create(CheckRequestSchema);
+    const bytes = toBinary(CheckRequestSchema, original);
+    const decoded = fromBinary(CheckRequestSchema, bytes);
+    expect(decoded.service).toBeUndefined();
   });
 });
 
@@ -45,6 +52,7 @@ describe('CheckResponse', () => {
     expect(resp.status).toBe(CheckResponse_ServingStatus.UNSPECIFIED);
     expect(resp.version).toBe('');
     expect(resp.uptimeSeconds).toBe(0n);
+    expect(resp.message).toBeUndefined();
   });
 
   it('creates a message with all fields populated', () => {
@@ -52,10 +60,12 @@ describe('CheckResponse', () => {
       status: CheckResponse_ServingStatus.SERVING,
       version: '1.2.3',
       uptimeSeconds: 86400n,
+      message: 'All systems operational',
     });
     expect(resp.status).toBe(CheckResponse_ServingStatus.SERVING);
     expect(resp.version).toBe('1.2.3');
     expect(resp.uptimeSeconds).toBe(86400n);
+    expect(resp.message).toBe('All systems operational');
   });
 
   it('roundtrips through binary serialization', () => {
@@ -63,12 +73,23 @@ describe('CheckResponse', () => {
       status: CheckResponse_ServingStatus.SERVING,
       version: '2.0.0',
       uptimeSeconds: 3600n,
+      message: 'healthy',
     });
     const bytes = toBinary(CheckResponseSchema, original);
     const decoded = fromBinary(CheckResponseSchema, bytes);
     expect(decoded.status).toBe(CheckResponse_ServingStatus.SERVING);
     expect(decoded.version).toBe('2.0.0');
     expect(decoded.uptimeSeconds).toBe(3600n);
+    expect(decoded.message).toBe('healthy');
+  });
+
+  it('roundtrips with message omitted', () => {
+    const original = create(CheckResponseSchema, {
+      status: CheckResponse_ServingStatus.SERVING,
+    });
+    const bytes = toBinary(CheckResponseSchema, original);
+    const decoded = fromBinary(CheckResponseSchema, bytes);
+    expect(decoded.message).toBeUndefined();
   });
 
   it('roundtrips NOT_SERVING status', () => {

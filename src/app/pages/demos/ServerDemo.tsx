@@ -12,6 +12,7 @@ type HealthResult = {
   status: CheckResponse_ServingStatus;
   version: string;
   uptimeSeconds: bigint;
+  message?: string;
   checkedAt: Date;
 };
 
@@ -67,6 +68,7 @@ const ServerDemo: Component = () => {
         status: response.status,
         version: response.version,
         uptimeSeconds: response.uptimeSeconds,
+        message: response.message,
         checkedAt: new Date(),
       });
     } catch (e) {
@@ -139,6 +141,12 @@ const ServerDemo: Component = () => {
                   <div class="flex--sm" style={{ 'align-items': 'center', gap: 'var(--g-spacing)' }}>
                     <span>Uptime:</span>
                     <span>{formatUptime(res().uptimeSeconds)}</span>
+                  </div>
+                </Show>
+                <Show when={res().message}>
+                  <div class="flex--sm" style={{ 'align-items': 'center', gap: 'var(--g-spacing)' }}>
+                    <span>Message:</span>
+                    <span>{res().message}</span>
                   </div>
                 </Show>
                 <div class="flex--sm" style={{ 'align-items': 'center', gap: 'var(--g-spacing)' }}>
