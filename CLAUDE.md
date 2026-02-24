@@ -89,7 +89,7 @@ src/
     FormFieldContext.tsx     # FormFieldContext + useFormField() for automatic label/aria ID wiring
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (34 test files)
+  unit/                     # Vitest unit tests (37 test files)
   e2e/                      # Playwright e2e tests (17 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -325,7 +325,7 @@ The project uses CSS custom properties defined in `src/styles/global.css` with a
 
 ### Unit Tests (Vitest)
 
-- Located in `tests/unit/` (33 test files covering all components)
+- Located in `tests/unit/` (37 test files covering all components + gRPC layer)
 - Config: `vitest.config.ts` -- jsdom environment, setup file imports `@testing-library/jest-dom`
 - Uses `@solidjs/testing-library` for component rendering
 - **All Portal-rendered content must be queried via `document`, not `container`** (affects Combobox, Slider tooltip, Tooltip, Dialog, Notification, CommandPalette)
