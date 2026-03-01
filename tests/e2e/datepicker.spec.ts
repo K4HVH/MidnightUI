@@ -240,10 +240,18 @@ test.describe('DatePicker component', () => {
 
   test('min/max constraint card disables out-of-range dates', async ({ page }) => {
     const cards = page.locator('.card');
-    const constraintCard = cards.nth(7); // Min/Max card
+    const constraintCard = cards.nth(7); // Min/Max card (min: 2026-02-10, max: 2026-03-15)
     await constraintCard.locator('.date-picker__icon-btn').click();
 
-    // Day 1 should be disabled (before Feb 10)
+    // Navigate back to February 2026 so day 1 (Feb 1) is before the min date (Feb 10)
+    const panel = page.locator('.date-picker__panel');
+    const headerText = panel.locator('.date-picker__month-year-btn');
+    // Keep clicking Previous until we reach February 2026
+    while (!(await headerText.textContent())?.includes('February')) {
+      await panel.locator('.date-picker__nav-btn[aria-label="Previous"]').click();
+    }
+
+    // Day 1 (Feb 1) should be disabled (before Feb 10)
     const day1 = page.locator('.date-picker__day:not(.date-picker__day--other-month)').first();
     await expect(day1).toBeDisabled();
     await page.keyboard.press('Escape');
