@@ -1,0 +1,11 @@
+services:
+  midnightui:
+    image: ghcr.io/k4hvh/midnightui:latest
+    container_name: midnightui
+    ports:
+      - "3002:3000"
+    restart: unless-stopped
+    environment:
+      #- PUBLIC_DIR=./dist                                  # Default: ./dist
+      #- PORT=3000                                          # Default: 3000
+      #- API_BASE_URL=https://midnightserver.k4tech.net     # Default: http://localhost:50051
