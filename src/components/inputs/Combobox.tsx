@@ -70,14 +70,10 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     else triggerRef?.removeAttribute('name');
   });
 
-  // Reset active index when dropdown closes; set to first selected or 0 when it opens
+  // Reset active index when dropdown opens/closes
+  // Don't auto-highlight any option on open — only highlight via keyboard nav or pointer hover
   createEffect(() => {
-    if (isOpen()) {
-      const enabledOptions = local.options.filter(o => !o.disabled);
-      const selVals = selectedValues();
-      const firstSelectedIdx = local.options.findIndex(o => !o.disabled && selVals.includes(o.value));
-      setActiveIndex(firstSelectedIdx >= 0 ? firstSelectedIdx : (enabledOptions.length > 0 ? local.options.indexOf(enabledOptions[0]) : -1));
-    } else {
+    if (!isOpen()) {
       setActiveIndex(-1);
     }
   });
@@ -147,10 +143,16 @@ export const Combobox: Component<ComboboxProps> = (props) => {
       e.preventDefault();
       if (!isOpen()) {
         setIsOpen(true);
+      }
+      const enabled = getEnabledIndices();
+      if (enabled.length === 0) return;
+      const current = activeIndex();
+      if (current === -1) {
+        // First keyboard nav — jump to first selected or first enabled
+        const selVals = selectedValues();
+        const firstSelectedIdx = local.options.findIndex(o => !o.disabled && selVals.includes(o.value));
+        setActiveIndex(firstSelectedIdx >= 0 ? firstSelectedIdx : enabled[0]);
       } else {
-        const enabled = getEnabledIndices();
-        if (enabled.length === 0) return;
-        const current = activeIndex();
         const pos = enabled.indexOf(current);
         const next = pos < enabled.length - 1 ? enabled[pos + 1] : enabled[0];
         setActiveIndex(next);
@@ -159,10 +161,14 @@ export const Combobox: Component<ComboboxProps> = (props) => {
       e.preventDefault();
       if (!isOpen()) {
         setIsOpen(true);
+      }
+      const enabled = getEnabledIndices();
+      if (enabled.length === 0) return;
+      const current = activeIndex();
+      if (current === -1) {
+        // First keyboard nav — jump to last enabled
+        setActiveIndex(enabled[enabled.length - 1]);
       } else {
-        const enabled = getEnabledIndices();
-        if (enabled.length === 0) return;
-        const current = activeIndex();
         const pos = enabled.indexOf(current);
         const next = pos > 0 ? enabled[pos - 1] : enabled[enabled.length - 1];
         setActiveIndex(next);
@@ -312,12 +318,15 @@ export const Combobox: Component<ComboboxProps> = (props) => {
               }}
             >
               {local.multiple ? (
-                <Checkbox
-                  checked={isSelected(option.value)}
-                  disabled={option.disabled}
-                  iconUnchecked={option.iconUnchecked}
-                  iconChecked={option.iconChecked}
-                />
+                <span onClick={(e) => e.stopPropagation()} style={{ display: 'contents' }}>
+                  <Checkbox
+                    checked={isSelected(option.value)}
+                    disabled={option.disabled}
+                    iconUnchecked={option.iconUnchecked}
+                    iconChecked={option.iconChecked}
+                    onChange={() => handleSelect(option.value)}
+                  />
+                </span>
               ) : (
                 option.icon && (
                   <span class="combobox__icon">
