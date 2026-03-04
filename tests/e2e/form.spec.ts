@@ -16,9 +16,9 @@ test.describe('Form behavior', () => {
       }
     });
 
-    // Wait for the form heading to be visible
-    const formHeading = page.locator('h2', { hasText: 'Form Management' });
-    await formHeading.scrollIntoViewIfNeeded();
+    // Wait for the form content to be visible
+    const formLabel = page.locator('label', { hasText: 'Email' }).first();
+    await formLabel.scrollIntoViewIfNeeded();
   });
 
   test('displays form fields correctly', async ({ page }) => {

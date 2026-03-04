@@ -820,8 +820,6 @@ const EnhancedResetExample: Component = () => {
 const FormDemo: Component = () => {
   return (
     <div style={{ display: 'flex', 'flex-direction': 'column', gap: 'var(--g-spacing-lg)' }}>
-      <h2>Form Management</h2>
-
       <BasicFormExample />
       <FieldValidatorExample />
       <AsyncValidationExample />
