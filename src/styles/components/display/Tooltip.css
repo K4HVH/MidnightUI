@@ -33,10 +33,5 @@
   font-size: 12px;
 }
 
-/* Mobile: show tooltip on focus for touch devices */
-@media (hover: none) and (pointer: coarse) {
-  .tooltip__trigger:focus-within + .tooltip,
-  .tooltip__trigger:active + .tooltip {
-    opacity: 1;
-  }
-}
+/* Tooltip visibility on touch devices is handled by JS focus/blur handlers
+   (Portal rendering prevents CSS sibling selectors from working) */

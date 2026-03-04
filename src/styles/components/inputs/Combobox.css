@@ -77,12 +77,14 @@
 }
 
 /* Hover state */
-.combobox:not(.combobox--disabled) .combobox__trigger:hover {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .combobox:not(.combobox--disabled) .combobox__trigger:hover {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.combobox:not(.combobox--disabled) .combobox__trigger:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+  .combobox:not(.combobox--disabled) .combobox__trigger:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Focus state */
@@ -182,8 +184,10 @@
   pointer-events: none;
 }
 
-.combobox__option:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .combobox__option:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .combobox__option--active::before {
@@ -209,8 +213,10 @@
   cursor: not-allowed;
 }
 
-.combobox__option--disabled:hover::before {
-  background: rgba(255, 255, 255, 0);
+@media (hover: hover) {
+  .combobox__option--disabled:hover::before {
+    background: rgba(255, 255, 255, 0);
+  }
 }
 
 /* Multiple selection chips container */

@@ -66,8 +66,10 @@
   border-radius: inherit;
 }
 
-.menu__item:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .menu__item:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .menu__item:active:not(:disabled)::before {

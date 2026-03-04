@@ -101,6 +101,8 @@
 .avatar-group__item:nth-child(10) { z-index: 1; }
 
 /* Hover brings avatar to front */
-.avatar-group__item:hover {
-  z-index: 20 !important;
+@media (hover: hover) {
+  .avatar-group__item:hover {
+    z-index: 20 !important;
+  }
 }

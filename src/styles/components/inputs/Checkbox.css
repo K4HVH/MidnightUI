@@ -128,18 +128,22 @@
 }
 
 /* Hover state (not disabled) */
-.checkbox:not(.checkbox--disabled):hover .checkbox__box {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .checkbox:not(.checkbox--disabled):hover .checkbox__box {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.checkbox:not(.checkbox--disabled):hover .checkbox__box::before {
-  background: rgba(255, 255, 255, 0.05);
+  .checkbox:not(.checkbox--disabled):hover .checkbox__box::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Hover for checked/indeterminate states */
 .checkbox:not(.checkbox--disabled):hover .checkbox__input:checked + .checkbox__box::before,
-.checkbox:not(.checkbox--disabled):hover .checkbox__input:indeterminate + .checkbox__box::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .checkbox:not(.checkbox--disabled):hover .checkbox__input:indeterminate + .checkbox__box::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Label text */
@@ -211,13 +215,17 @@
 }
 
 /* Hover effect for icon checkboxes */
-.checkbox--icon:not(.checkbox--disabled):hover .checkbox__icon-wrapper {
-  color: var(--g-border-color-emphasis);
+@media (hover: hover) {
+  .checkbox--icon:not(.checkbox--disabled):hover .checkbox__icon-wrapper {
+    color: var(--g-border-color-emphasis);
+  }
 }
 
 .checkbox--icon:not(.checkbox--disabled):hover .checkbox__input:checked ~ .checkbox__icon-wrapper,
-.checkbox--icon:not(.checkbox--disabled):hover .checkbox__input:indeterminate ~ .checkbox__icon-wrapper {
-  color: var(--color-accent);
+@media (hover: hover) {
+  .checkbox--icon:not(.checkbox--disabled):hover .checkbox__input:indeterminate ~ .checkbox__icon-wrapper {
+    color: var(--color-accent);
+  }
 }
 
 /* Mobile: increase touch target */

@@ -240,9 +240,11 @@
   transition: all var(--g-transition);
 }
 
-.notification__close:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--g-text-primary);
+@media (hover: hover) {
+  .notification__close:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--g-text-primary);
+  }
 }
 
 .notification__close:active {

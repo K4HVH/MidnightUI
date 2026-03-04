@@ -48,8 +48,10 @@
   color: var(--color-white);
 }
 
-.button--primary:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .button--primary:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .button--primary:active:not(:disabled)::before {
@@ -62,12 +64,14 @@
   color: var(--g-text-primary);
 }
 
-.button--secondary:hover:not(:disabled) {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .button--secondary:hover:not(:disabled) {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.button--secondary:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .button--secondary:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .button--secondary:active:not(:disabled)::before {
@@ -79,12 +83,14 @@
   color: var(--g-text-secondary);
 }
 
-.button--subtle:hover:not(:disabled) {
-  color: var(--g-text-primary);
-}
+@media (hover: hover) {
+  .button--subtle:hover:not(:disabled) {
+    color: var(--g-text-primary);
+  }
 
-.button--subtle:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .button--subtle:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .button--subtle:active:not(:disabled)::before {
@@ -96,8 +102,10 @@
   color: var(--color-white);
 }
 
-.button--danger:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .button--danger:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .button--danger:active:not(:disabled)::before {

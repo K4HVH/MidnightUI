@@ -146,8 +146,10 @@ button.avatar {
   color: var(--color-white);
 }
 
-.avatar--primary.avatar--interactive:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .avatar--primary.avatar--interactive:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .avatar--primary.avatar--interactive:active:not(:disabled)::before {
@@ -166,12 +168,14 @@ button.avatar {
   color: var(--g-text-primary);
 }
 
-.avatar--secondary.avatar--interactive:hover:not(:disabled) {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .avatar--secondary.avatar--interactive:hover:not(:disabled) {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.avatar--secondary.avatar--interactive:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .avatar--secondary.avatar--interactive:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .avatar--secondary.avatar--interactive:active:not(:disabled)::before {
@@ -191,12 +195,14 @@ button.avatar {
 }
 
 .avatar--subtle.avatar--interactive:hover:not(:disabled) .avatar__initials,
-.avatar--subtle.avatar--interactive:hover:not(:disabled) .avatar__icon {
-  color: var(--g-text-primary);
-}
+@media (hover: hover) {
+  .avatar--subtle.avatar--interactive:hover:not(:disabled) .avatar__icon {
+    color: var(--g-text-primary);
+  }
 
-.avatar--subtle.avatar--interactive:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .avatar--subtle.avatar--interactive:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .avatar--subtle.avatar--interactive:active:not(:disabled)::before {

@@ -65,12 +65,14 @@
    ============================================================================= */
 
 /* Inactive hover — matches .button--subtle hover overlay */
-.tabs--primary .tabs__tab:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
-}
+@media (hover: hover) {
+  .tabs--primary .tabs__tab:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 
-.tabs--primary .tabs__tab:hover:not(:disabled) {
-  color: var(--g-text-primary);
+  .tabs--primary .tabs__tab:hover:not(:disabled) {
+    color: var(--g-text-primary);
+  }
 }
 
 /* Inactive active (pressed) — matches .button--subtle */
@@ -84,8 +86,10 @@
   color: var(--color-white);
 }
 
-.tabs--primary .tabs__tab--active:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .tabs--primary .tabs__tab--active:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .tabs--primary .tabs__tab--active:active:not(:disabled)::before {
@@ -103,13 +107,15 @@
 }
 
 /* Inactive hover — matches .button--secondary hover */
-.tabs--secondary .tabs__tab:hover:not(:disabled) {
-  border-color: var(--g-border-color-emphasis);
-  color: var(--g-text-primary);
-}
+@media (hover: hover) {
+  .tabs--secondary .tabs__tab:hover:not(:disabled) {
+    border-color: var(--g-border-color-emphasis);
+    color: var(--g-text-primary);
+  }
 
-.tabs--secondary .tabs__tab:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .tabs--secondary .tabs__tab:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .tabs--secondary .tabs__tab:active:not(:disabled)::before {
@@ -123,8 +129,10 @@
   color: var(--g-text-primary);
 }
 
-.tabs--secondary .tabs__tab--active:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .tabs--secondary .tabs__tab--active:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .tabs--secondary .tabs__tab--active:active:not(:disabled)::before {
@@ -138,12 +146,14 @@
    ============================================================================= */
 
 /* Hover — matches .button--subtle */
-.tabs--subtle .tabs__tab:hover:not(:disabled) {
-  color: var(--g-text-primary);
-}
+@media (hover: hover) {
+  .tabs--subtle .tabs__tab:hover:not(:disabled) {
+    color: var(--g-text-primary);
+  }
 
-.tabs--subtle .tabs__tab:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .tabs--subtle .tabs__tab:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .tabs--subtle .tabs__tab:active:not(:disabled)::before {
@@ -159,8 +169,10 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.tabs--subtle .tabs__tab--active:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .tabs--subtle .tabs__tab--active:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .tabs--subtle .tabs__tab--active:active:not(:disabled)::before {
@@ -305,6 +317,7 @@
   z-index: 10;
   pointer-events: auto;
   user-select: none;
+  touch-action: manipulation;
 }
 
 /* Focus state */
@@ -366,8 +379,10 @@
   border-radius: var(--g-radius);
 }
 
-.tabs__scroll-indicator:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .tabs__scroll-indicator:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .tabs__scroll-indicator:active::before {
@@ -433,8 +448,10 @@
 }
 
 /* Hover state - text color change */
-.tabs__scroll-indicator:hover {
-  color: var(--g-text-primary);
+@media (hover: hover) {
+  .tabs__scroll-indicator:hover {
+    color: var(--g-text-primary);
+  }
 }
 
 /* Icon size */

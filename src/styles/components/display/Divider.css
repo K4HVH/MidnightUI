@@ -200,8 +200,10 @@
 }
 
 .divider--draggable:hover::before,
-.divider--draggable:hover::after {
-  border-color: var(--color-accent);
+@media (hover: hover) {
+  .divider--draggable:hover::after {
+    border-color: var(--color-accent);
+  }
 }
 
 .divider--dragging::before,
@@ -233,8 +235,10 @@
   transition: background var(--g-transition);
 }
 
-.divider--draggable:hover .divider__handle-dot {
-  background: var(--color-accent);
+@media (hover: hover) {
+  .divider--draggable:hover .divider__handle-dot {
+    background: var(--color-accent);
+  }
 }
 
 .divider--dragging .divider__handle-dot {

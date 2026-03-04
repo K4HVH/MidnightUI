@@ -57,8 +57,10 @@
   flex-shrink: 0;
 }
 
-.chip__remove:hover {
-  color: var(--g-text-secondary);
+@media (hover: hover) {
+  .chip__remove:hover {
+    color: var(--g-text-secondary);
+  }
 }
 
 .chip__remove:focus-visible {
@@ -108,8 +110,10 @@
   border-radius: inherit;
 }
 
-.chip--clickable:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .chip--clickable:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .chip--clickable:focus-visible {
@@ -151,8 +155,10 @@
   color: var(--color-blue-400);
 }
 
-.chip--primary .chip__remove:hover {
-  color: var(--color-blue-300);
+@media (hover: hover) {
+  .chip--primary .chip__remove:hover {
+    color: var(--color-blue-300);
+  }
 }
 
 /* Success */
@@ -166,8 +172,10 @@
   color: var(--color-green-400);
 }
 
-.chip--success .chip__remove:hover {
-  color: var(--color-green-300);
+@media (hover: hover) {
+  .chip--success .chip__remove:hover {
+    color: var(--color-green-300);
+  }
 }
 
 /* Warning */
@@ -181,8 +189,10 @@
   color: var(--color-yellow-400);
 }
 
-.chip--warning .chip__remove:hover {
-  color: var(--color-yellow-300);
+@media (hover: hover) {
+  .chip--warning .chip__remove:hover {
+    color: var(--color-yellow-300);
+  }
 }
 
 /* Error */
@@ -196,8 +206,10 @@
   color: var(--color-red-400);
 }
 
-.chip--error .chip__remove:hover {
-  color: var(--color-red-300);
+@media (hover: hover) {
+  .chip--error .chip__remove:hover {
+    color: var(--color-red-300);
+  }
 }
 
 /* Info */
@@ -211,6 +223,8 @@
   color: var(--color-blue-400);
 }
 
-.chip--info .chip__remove:hover {
-  color: var(--color-blue-300);
+@media (hover: hover) {
+  .chip--info .chip__remove:hover {
+    color: var(--color-blue-300);
+  }
 }

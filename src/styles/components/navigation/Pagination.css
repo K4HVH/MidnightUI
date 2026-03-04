@@ -56,8 +56,10 @@
   pointer-events: none;
 }
 
-.pagination__button:not(:disabled):hover::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .pagination__button:not(:disabled):hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Focus state */
@@ -119,8 +121,10 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.pagination--primary .pagination__button--active:not(:disabled):hover::before {
-  background: rgba(255, 255, 255, 0.15);
+@media (hover: hover) {
+  .pagination--primary .pagination__button--active:not(:disabled):hover::before {
+    background: rgba(255, 255, 255, 0.15);
+  }
 }
 
 /* ============================================================================

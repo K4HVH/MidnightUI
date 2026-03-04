@@ -115,9 +115,11 @@
   transition: all var(--g-transition);
 }
 
-.command-palette__clear:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--g-text-primary);
+@media (hover: hover) {
+  .command-palette__clear:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--g-text-primary);
+  }
 }
 
 .command-palette__clear:focus-visible {
@@ -183,8 +185,10 @@
   border-radius: inherit;
 }
 
-.command-palette__item:hover:not(.command-palette__item--disabled)::before {
-  background: rgba(255, 255, 255, 0.03);
+@media (hover: hover) {
+  .command-palette__item:hover:not(.command-palette__item--disabled)::before {
+    background: rgba(255, 255, 255, 0.03);
+  }
 }
 
 /* Active (keyboard-highlighted) item */

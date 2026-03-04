@@ -105,17 +105,21 @@
 }
 
 /* Hover state (not disabled) */
-.radio:not(.radio--disabled):hover .radio__circle {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .radio:not(.radio--disabled):hover .radio__circle {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.radio:not(.radio--disabled):hover .radio__circle::before {
-  background: rgba(255, 255, 255, 0.05);
+  .radio:not(.radio--disabled):hover .radio__circle::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Hover for checked state */
-.radio:not(.radio--disabled):hover .radio__input:checked + .radio__circle::before {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) {
+  .radio:not(.radio--disabled):hover .radio__input:checked + .radio__circle::before {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Label text */
@@ -184,12 +188,14 @@
 }
 
 /* Hover effect for icon radios */
-.radio--icon:not(.radio--disabled):hover .radio__icon-wrapper {
-  color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .radio--icon:not(.radio--disabled):hover .radio__icon-wrapper {
+    color: var(--g-border-color-emphasis);
+  }
 
-.radio--icon:not(.radio--disabled):hover .radio__input:checked ~ .radio__icon-wrapper {
-  color: var(--color-accent);
+  .radio--icon:not(.radio--disabled):hover .radio__input:checked ~ .radio__icon-wrapper {
+    color: var(--color-accent);
+  }
 }
 
 /* Radio Group */

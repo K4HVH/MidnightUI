@@ -45,8 +45,10 @@
   z-index: 0;
 }
 
-.date-picker:not(.date-picker--disabled) .date-picker__wrapper:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .date-picker:not(.date-picker--disabled) .date-picker__wrapper:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .date-picker--open .date-picker__wrapper {
@@ -85,8 +87,10 @@
   transition: color var(--g-transition);
 }
 
-.date-picker__icon-btn:hover {
-  color: var(--g-text-secondary);
+@media (hover: hover) {
+  .date-picker__icon-btn:hover {
+    color: var(--g-text-secondary);
+  }
 }
 
 .date-picker__icon-btn:disabled {
@@ -142,8 +146,10 @@
   font-size: var(--font-size-base);
 }
 
-.date-picker__clear:hover {
-  color: var(--g-text-primary);
+@media (hover: hover) {
+  .date-picker__clear:hover {
+    color: var(--g-text-primary);
+  }
 }
 
 /* ---- Compact variant ---- */
@@ -199,9 +205,11 @@
   font-size: var(--font-size-sm);
 }
 
-.date-picker__nav-btn:hover {
-  color: var(--g-text-primary);
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__nav-btn:hover {
+    color: var(--g-text-primary);
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .date-picker__month-year-btn {
@@ -218,8 +226,10 @@
   transition: background var(--g-transition);
 }
 
-.date-picker__month-year-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__month-year-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 /* ---- Day grid ---- */
@@ -264,8 +274,10 @@
   padding: 0;
 }
 
-.date-picker__day:hover:not(.date-picker__day--disabled) {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__day:hover:not(.date-picker__day--disabled) {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .date-picker__day--other-month {
@@ -291,8 +303,10 @@
   font-weight: 600;
 }
 
-.date-picker__day--selected:hover {
-  background: var(--color-accent) !important;
+@media (hover: hover) {
+  .date-picker__day--selected:hover {
+    background: var(--color-accent) !important;
+  }
 }
 
 .date-picker__day--range-start,
@@ -304,8 +318,10 @@
 }
 
 .date-picker__day--range-start:hover,
-.date-picker__day--range-end:hover {
-  background: var(--color-accent) !important;
+@media (hover: hover) {
+  .date-picker__day--range-end:hover {
+    background: var(--color-accent) !important;
+  }
 }
 
 .date-picker__day--in-range {
@@ -331,8 +347,10 @@
   cursor: not-allowed;
 }
 
-.date-picker__day--disabled:hover {
-  background: none;
+@media (hover: hover) {
+  .date-picker__day--disabled:hover {
+    background: none;
+  }
 }
 
 /* ---- Month grid ---- */
@@ -356,8 +374,10 @@
   transition: background var(--g-transition), color var(--g-transition);
 }
 
-.date-picker__month-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__month-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .date-picker__month-item--selected {
@@ -390,8 +410,10 @@
   transition: background var(--g-transition), color var(--g-transition);
 }
 
-.date-picker__year-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__year-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .date-picker__year-item--selected {
@@ -462,9 +484,11 @@
   font-size: var(--font-size-xs);
 }
 
-.date-picker__time-btn:hover {
-  color: var(--g-text-primary);
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) {
+  .date-picker__time-btn:hover {
+    color: var(--g-text-primary);
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .date-picker__time-sep {
@@ -496,8 +520,10 @@
   text-align: center;
 }
 
-.date-picker__ampm-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
+@media (hover: hover) {
+  .date-picker__ampm-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 }
 
 /* Range time pickers (stacked rows) */
@@ -541,9 +567,11 @@
   transition: background var(--g-transition), color var(--g-transition);
 }
 
-.date-picker__footer-btn:hover {
-  background: rgba(0, 102, 204, 0.15);
-  color: var(--color-accent);
+@media (hover: hover) {
+  .date-picker__footer-btn:hover {
+    background: rgba(0, 102, 204, 0.15);
+    color: var(--color-accent);
+  }
 }
 
 .date-picker__range-hint {

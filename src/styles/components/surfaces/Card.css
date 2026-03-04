@@ -60,13 +60,15 @@
   cursor: pointer;
 }
 
-.card--interactive:hover {
-  border-color: var(--g-border-color-emphasis);
-  transform: translateY(-2px);
-}
+@media (hover: hover) {
+  .card--interactive:hover {
+    border-color: var(--g-border-color-emphasis);
+    transform: translateY(-2px);
+  }
 
-.card--interactive:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+  .card--interactive:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .card--interactive:active {

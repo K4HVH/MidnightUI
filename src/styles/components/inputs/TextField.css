@@ -46,23 +46,29 @@
 }
 
 /* Hover state */
-.textfield:not(.textfield--disabled) .textfield__wrapper:hover {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .textfield:not(.textfield--disabled) .textfield__wrapper:hover {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.textfield:not(.textfield--disabled) .textfield__wrapper:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+  .textfield:not(.textfield--disabled) .textfield__wrapper:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Don't apply hover when hovering over interactive prefix/suffix */
 .textfield__wrapper:has(.textfield__prefix:hover .combobox),
-.textfield__wrapper:has(.textfield__suffix:hover .combobox) {
-  border-color: var(--g-border-color);
+@media (hover: hover) {
+  .textfield__wrapper:has(.textfield__suffix:hover .combobox) {
+    border-color: var(--g-border-color);
+  }
 }
 
 .textfield__wrapper:has(.textfield__prefix:hover .combobox)::before,
-.textfield__wrapper:has(.textfield__suffix:hover .combobox)::before {
-  background: rgba(255, 255, 255, 0);
+@media (hover: hover) {
+  .textfield__wrapper:has(.textfield__suffix:hover .combobox)::before {
+    background: rgba(255, 255, 255, 0);
+  }
 }
 
 /* Focus state */
@@ -196,8 +202,10 @@ textarea.textfield__input {
   flex-shrink: 0;
 }
 
-.textfield__clear:hover {
-  color: var(--g-text-secondary);
+@media (hover: hover) {
+  .textfield__clear:hover {
+    color: var(--g-text-secondary);
+  }
 }
 
 .textfield__clear:active {

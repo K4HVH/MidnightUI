@@ -207,6 +207,7 @@
   font-size: var(--font-size-xs);
   padding: 0;
   transition: all var(--g-transition);
+  touch-action: manipulation;
 }
 
 .pane__handle::before {
@@ -221,12 +222,14 @@
   pointer-events: none;
 }
 
-.pane__handle:hover {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .pane__handle:hover {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.pane__handle:hover::before {
-  background: rgba(255, 255, 255, 0.05);
+  .pane__handle:hover::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .pane__handle:active::before {

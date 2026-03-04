@@ -82,8 +82,10 @@
   transition: background var(--g-transition);
 }
 
-.table__header-cell--sortable:hover {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .table__header-cell--sortable:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .table__header-cell--sortable:active {
@@ -118,16 +120,20 @@
   border-bottom: none;
 }
 
-.table__row:hover {
-  background: rgba(255, 255, 255, 0.02);
+@media (hover: hover) {
+  .table__row:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
 }
 
 .table__row--selected {
   background: rgba(0, 102, 204, 0.1); /* var(--color-primary) with alpha */
 }
 
-.table__row--selected:hover {
-  background: rgba(0, 102, 204, 0.12);
+@media (hover: hover) {
+  .table__row--selected:hover {
+    background: rgba(0, 102, 204, 0.12);
+  }
 }
 
 .table__cell {
@@ -151,8 +157,10 @@
   border: none;
 }
 
-.table__row--empty:hover::before {
-  background: transparent;
+@media (hover: hover) {
+  .table__row--empty:hover::before {
+    background: transparent;
+  }
 }
 
 .table__cell--empty {
@@ -170,8 +178,10 @@
   border-bottom: var(--g-border-width) solid var(--g-border-color);
 }
 
-.table__row--skeleton:hover::before {
-  background: transparent;
+@media (hover: hover) {
+  .table__row--skeleton:hover::before {
+    background: transparent;
+  }
 }
 
 .table__skeleton {

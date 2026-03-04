@@ -181,12 +181,14 @@
   border-radius: inherit;
 }
 
-.file-upload__button:hover:not(:disabled) {
-  border-color: var(--g-border-color-emphasis);
-}
+@media (hover: hover) {
+  .file-upload__button:hover:not(:disabled) {
+    border-color: var(--g-border-color-emphasis);
+  }
 
-.file-upload__button:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+  .file-upload__button:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .file-upload__button:disabled {

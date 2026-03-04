@@ -57,8 +57,10 @@
   border-radius: inherit;
 }
 
-.accordion__header:hover:not(:disabled)::before {
-  background: rgba(255, 255, 255, 0.05);
+@media (hover: hover) {
+  .accordion__header:hover:not(:disabled)::before {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .accordion__header:active:not(:disabled)::before {
