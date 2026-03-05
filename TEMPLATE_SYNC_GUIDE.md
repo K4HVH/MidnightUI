@@ -28,6 +28,9 @@ git remote add template <base-template-repo-url>
 # Pull the template code
 git pull template main --allow-unrelated-histories
 
+# Rename the default branch to main (git init creates 'master' by default)
+git branch -m master main
+
 # Set up your new project's remote
 git remote add origin <your-new-project-repo-url>
 
@@ -273,7 +276,7 @@ If syncing creates too many conflicts, consider:
 
 ```bash
 # Create new project from template
-git init && git remote add template <base-url> && git pull template main --allow-unrelated-histories
+git init && git remote add template <base-url> && git pull template main --allow-unrelated-histories && git branch -m master main
 
 # Pull updates
 git fetch template && git merge template/main
