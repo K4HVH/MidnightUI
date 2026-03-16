@@ -317,6 +317,7 @@ code {
   padding: var(--g-spacing-xs) var(--g-spacing-sm);
   border-radius: var(--g-radius);
   border: var(--g-border-width) solid var(--g-border-color);
+  white-space: nowrap;
 }
 
 pre {
