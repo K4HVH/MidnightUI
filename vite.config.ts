@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
       },
     ],
     root: 'src',
+    publicDir: '../public',
     server: {
       port: 3000,
     },

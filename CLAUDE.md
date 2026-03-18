@@ -379,6 +379,20 @@ Three jobs:
 
 `playwright.config.ts` sets `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1` to bypass Playwright's Debian-only host validation on Fedora. Actual browser libraries are expected at `~/.cache/ms-playwright/fedora-compat/`.
 
+## Favicon and Social Embeds
+
+The site favicon lives in `public/favicon.svg` (served at a stable `/favicon.svg` URL via Vite's `publicDir`). A PNG copy at `public/favicon.png` is used as the Open Graph / Twitter Card preview image for link embeds on Discord, Twitter/X, etc.
+
+Embed metadata (description, `og:*`, `twitter:*` tags) is defined in `src/index.html`. The preview image URL points to `https://midnightui.k4tech.net/favicon.png`.
+
+**If the favicon SVG is modified, regenerate the PNG:**
+
+```bash
+magick -background none -density 2048 public/favicon.svg -resize 1024x1024 public/favicon.png
+```
+
+Requires ImageMagick (`magick` CLI). The `-density 2048` flag rasterizes the SVG at high DPI before downscaling, which keeps the output sharp.
+
 ## Git Workflow Rules
 
 **CRITICAL**: Never execute git commands that modify state or affect remote without explicit user permission.
