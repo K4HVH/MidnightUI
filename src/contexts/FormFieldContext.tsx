@@ -11,6 +11,12 @@ export interface FormFieldContextValue {
   /** Generated (or overridden) stable ID for the focusable input element. */
   fieldId: string;
   /**
+   * ID of the FormField's `<label>` element. Group children (e.g. RadioGroup,
+   * which renders a `<div role="radiogroup">`) must associate the label via
+   * `aria-labelledby` — a `<label for>` can only target a labelable control.
+   */
+  labelId?: string;
+  /**
    * Reactive accessor returning the space-separated IDs of the error/help-text
    * elements, or undefined when none are present. Returned as an accessor so
    * that updates (e.g. error appearing after submit) propagate reactively.

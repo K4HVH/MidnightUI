@@ -188,3 +188,20 @@ describe('RadioGroup', () => {
     expect(group).toHaveAttribute('aria-orientation', 'vertical');
   });
 });
+
+describe('RadioGroup — label association (regression)', () => {
+  const opts = [
+    { value: 'a', label: 'A' },
+    { value: 'b', label: 'B' },
+  ];
+
+  it('applies aria-labelledby to the radiogroup container', () => {
+    // A <label for> cannot target a <div role="radiogroup">, so the group must
+    // be named via aria-labelledby instead.
+    const { container } = render(() => (
+      <RadioGroup name="t" options={opts} aria-labelledby="my-label" />
+    ));
+    const group = container.querySelector('[role="radiogroup"]');
+    expect(group).toHaveAttribute('aria-labelledby', 'my-label');
+  });
+});

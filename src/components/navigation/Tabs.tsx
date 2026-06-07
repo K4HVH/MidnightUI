@@ -58,6 +58,15 @@ export const Tabs: Component<TabsProps> = (props) => {
 
   const currentValue = () => isControlled() ? local.value! : internalValue();
 
+  // The single tab stop for the roving tabindex. Falls back to the first enabled
+  // tab when the active value is absent from options or is disabled, so the
+  // tablist is never left without a keyboard-reachable tab stop.
+  const rovingValue = () => {
+    const current = local.options.find((o) => o.value === currentValue());
+    if (current && !current.disabled && !local.disabled) return current.value;
+    return local.options.find((o) => !o.disabled && !local.disabled)?.value;
+  };
+
   const setValue = (newValue: string) => {
     if (!isControlled()) {
       setInternalValue(newValue);
@@ -323,7 +332,7 @@ export const Tabs: Component<TabsProps> = (props) => {
             role="tab"
             aria-selected={isActive()}
             aria-label={local.iconOnly ? option.label : undefined}
-            tabIndex={isActive() ? 0 : -1}
+            tabIndex={option.value === rovingValue() ? 0 : -1}
             disabled={isDisabled()}
             onClick={() => handleClick(option)}
           >

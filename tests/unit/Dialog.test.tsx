@@ -271,3 +271,33 @@ describe('DialogFooter', () => {
     expect(footer).toBeInTheDocument();
   });
 });
+
+describe('Dialog — focus management & accessible name (regression)', () => {
+  afterEach(() => {
+    document.body.style.overflow = '';
+  });
+
+  it('moves focus into the dialog when opened', async () => {
+    render(() => (
+      <Dialog open={true} onClose={() => {}}>
+        <DialogHeader title="Settings" />
+        <button>Inner action</button>
+      </Dialog>
+    ));
+    await Promise.resolve(); // flush the queueMicrotask that moves focus in
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    expect(dialog.contains(document.activeElement)).toBe(true);
+  });
+
+  it('labels the dialog via the header title (aria-labelledby)', () => {
+    render(() => (
+      <Dialog open={true} onClose={() => {}}>
+        <DialogHeader title="Settings" />
+      </Dialog>
+    ));
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    const labelId = dialog.getAttribute('aria-labelledby');
+    expect(labelId).toBeTruthy();
+    expect(document.getElementById(labelId!)?.textContent).toContain('Settings');
+  });
+});

@@ -1,4 +1,4 @@
-import { Component, For, splitProps, Show } from 'solid-js';
+import { Component, For, splitProps, Show, createSignal, createEffect } from 'solid-js';
 import { BsChevronLeft, BsChevronRight, BsChevronBarLeft, BsChevronBarRight } from 'solid-icons/bs';
 import '../../styles/components/navigation/Pagination.css';
 
@@ -44,6 +44,17 @@ export const Pagination: Component<PaginationProps> = (props) => {
     return local.showPrevNext !== false;
   };
   const siblingCount = () => local.siblingCount ?? 1;
+
+  // Roving tabindex: exactly one button is the tab stop. Defaults to the active
+  // page button; arrow-key navigation moves the stop reactively via a signal
+  // (rather than imperative setAttribute, which a re-render would clobber).
+  // Reset to the active page whenever the page changes.
+  const [rovingKey, setRovingKey] = createSignal<string | null>(null);
+  const effectiveRovingKey = () => rovingKey() ?? `page-${local.page}`;
+  createEffect(() => {
+    local.page; // track
+    setRovingKey(null);
+  });
 
   // Calculate which page numbers to show
   const getPageNumbers = (): (number | 'ellipsis')[] => {
@@ -146,9 +157,9 @@ export const Pagination: Component<PaginationProps> = (props) => {
     else if (e.key === 'Home') next = 0;
     else next = buttons.length - 1;
 
-    // Update tabindex: remove from all, set on target
-    buttons.forEach(b => b.setAttribute('tabindex', '-1'));
-    buttons[next].setAttribute('tabindex', '0');
+    // Move the single tab stop reactively to the target button, then focus it.
+    const key = buttons[next].dataset.rovingKey;
+    if (key) setRovingKey(key);
     buttons[next].focus();
   };
 
@@ -162,7 +173,8 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--first"
             onClick={() => handlePageChange(1)}
             disabled={!canGoPrev()}
-            tabIndex={-1}
+            data-roving-key="first"
+            tabIndex={effectiveRovingKey() === 'first' ? 0 : -1}
             aria-label="Go to first page"
           >
             <BsChevronBarLeft />
@@ -176,7 +188,8 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--prev"
             onClick={() => handlePageChange(local.page - 1)}
             disabled={!canGoPrev()}
-            tabIndex={-1}
+            data-roving-key="prev"
+            tabIndex={effectiveRovingKey() === 'prev' ? 0 : -1}
             aria-label="Go to previous page"
           >
             <BsChevronLeft />
@@ -202,7 +215,8 @@ export const Pagination: Component<PaginationProps> = (props) => {
                   }`}
                   onClick={() => handlePageChange(item as number)}
                   disabled={local.disabled}
-                  tabIndex={item === local.page ? 0 : -1}
+                  data-roving-key={`page-${item}`}
+                  tabIndex={effectiveRovingKey() === `page-${item}` ? 0 : -1}
                   aria-label={`Go to page ${item}`}
                   aria-current={item === local.page ? 'page' : undefined}
                 >
@@ -220,7 +234,8 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--next"
             onClick={() => handlePageChange(local.page + 1)}
             disabled={!canGoNext()}
-            tabIndex={-1}
+            data-roving-key="next"
+            tabIndex={effectiveRovingKey() === 'next' ? 0 : -1}
             aria-label="Go to next page"
           >
             <BsChevronRight />
@@ -234,7 +249,8 @@ export const Pagination: Component<PaginationProps> = (props) => {
             class="pagination__button pagination__button--last"
             onClick={() => handlePageChange(local.totalPages)}
             disabled={!canGoNext()}
-            tabIndex={-1}
+            data-roving-key="last"
+            tabIndex={effectiveRovingKey() === 'last' ? 0 : -1}
             aria-label="Go to last page"
           >
             <BsChevronBarRight />

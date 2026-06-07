@@ -128,6 +128,9 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
   const groupId = () => local.id ?? fieldCtx?.fieldId;
   const ariaDescribedBy = () => local['aria-describedby'] ?? fieldCtx?.ariaDescribedBy?.();
   const ariaRequired = () => local['aria-required'] ?? local.required ?? fieldCtx?.required;
+  // Associate the group with the FormField label via aria-labelledby (a div with
+  // role="radiogroup" cannot be the target of a <label for>).
+  const ariaLabelledBy = () => local['aria-labelledby'] ?? fieldCtx?.labelId;
 
   const orientation = () => local.orientation ?? 'vertical';
 
@@ -156,7 +159,7 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
   };
 
   return (
-    <div id={groupId()} class={classNames()} role="radiogroup" aria-orientation={orientation()} onBlur={local.onBlur} {...rest}>
+    <div id={groupId()} class={classNames()} role="radiogroup" aria-orientation={orientation()} aria-labelledby={ariaLabelledBy()} onBlur={local.onBlur} {...rest}>
       <For each={local.options}>
         {(option) => (
           <Radio

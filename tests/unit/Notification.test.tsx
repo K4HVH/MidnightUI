@@ -202,3 +202,27 @@ describe('Notification', () => {
     ));
   });
 });
+
+describe('Notification — timer cleanup (regression)', () => {
+  it('clears outstanding timers on unmount (no fire after dispose)', () => {
+    vi.useFakeTimers();
+    let api!: ReturnType<typeof useNotification>;
+    const Capture: Component = () => {
+      api = useNotification();
+      return null;
+    };
+    const { unmount } = render(() => (
+      <NotificationProvider>
+        <Capture />
+      </NotificationProvider>
+    ));
+
+    api.notify({ title: 'Hi', duration: 1000 });
+    unmount();
+
+    // Before the fix, the auto-dismiss/removal timers were never tracked or
+    // cleared, so they fired on a disposed owner. Advancing time must not throw.
+    expect(() => vi.advanceTimersByTime(5000)).not.toThrow();
+    vi.useRealTimers();
+  });
+});

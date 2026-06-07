@@ -1,4 +1,4 @@
-import { Component, JSX, Show, createContext, useContext, createSignal, For } from 'solid-js';
+import { Component, JSX, Show, createContext, useContext, createSignal, onCleanup, For } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { BsX, BsCheckCircleFill, BsExclamationTriangleFill, BsInfoCircleFill, BsXCircleFill } from 'solid-icons/bs';
 import { Card } from '../surfaces/Card';
@@ -49,6 +49,20 @@ export const NotificationProvider: Component<{ children: JSX.Element }> = (props
   const [notifications, setNotifications] = createSignal<NotificationItem[]>([]);
   let idCounter = 0;
 
+  // Track outstanding timers so they can be cancelled on early dismiss and
+  // cleared when the provider unmounts (otherwise they fire on a disposed owner
+  // and leak — and break fake-timer tests).
+  const autoTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  const removalTimers = new Set<ReturnType<typeof setTimeout>>();
+
+  const clearAutoTimer = (id: string) => {
+    const handle = autoTimers.get(id);
+    if (handle !== undefined) {
+      clearTimeout(handle);
+      autoTimers.delete(id);
+    }
+  };
+
   const notify = (options: NotificationOptions): string => {
     const id = options.id || `notification-${++idCounter}`;
     const notification: NotificationItem = {
@@ -63,22 +77,23 @@ export const NotificationProvider: Component<{ children: JSX.Element }> = (props
 
     // Auto-dismiss if duration is set
     if (notification.duration !== null && notification.duration !== undefined && notification.duration > 0) {
-      setTimeout(() => {
-        dismiss(id);
-      }, notification.duration);
+      autoTimers.set(id, setTimeout(() => dismiss(id), notification.duration));
     }
 
     return id;
   };
 
   const dismiss = (id: string) => {
+    clearAutoTimer(id); // cancel any pending auto-dismiss for this notification
+
     // Set dismissing flag for animation
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, dismissing: true } : n))
     );
 
     // Wait for animation to complete before removing
-    setTimeout(() => {
+    const handle = setTimeout(() => {
+      removalTimers.delete(handle);
       setNotifications((prev) => {
         const notification = prev.find((n) => n.id === id);
         if (notification?.onClose) {
@@ -87,11 +102,21 @@ export const NotificationProvider: Component<{ children: JSX.Element }> = (props
         return prev.filter((n) => n.id !== id);
       });
     }, 300); // Match animation duration
+    removalTimers.add(handle);
   };
 
   const dismissAll = () => {
+    autoTimers.forEach(clearTimeout);
+    autoTimers.clear();
     setNotifications([]);
   };
+
+  onCleanup(() => {
+    autoTimers.forEach(clearTimeout);
+    removalTimers.forEach(clearTimeout);
+    autoTimers.clear();
+    removalTimers.clear();
+  });
 
   const getNotificationsByPosition = (position: NotificationPosition) => {
     return notifications().filter((n) => (n.position || 'top-right') === position);

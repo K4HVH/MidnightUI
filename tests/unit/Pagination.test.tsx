@@ -389,3 +389,25 @@ describe('Pagination', () => {
     expect(page9Buttons).toHaveLength(1);
   });
 });
+
+describe('Pagination — roving tabindex (regression)', () => {
+  it('moves the single tab stop reactively on arrow navigation', () => {
+    const { container } = render(() => (
+      <Pagination page={2} totalPages={5} onPageChange={() => {}} />
+    ));
+    const nav = container.querySelector('nav') as HTMLElement;
+    const active = container.querySelector('.pagination__button--active') as HTMLButtonElement;
+    expect(active.getAttribute('tabindex')).toBe('0');
+
+    active.focus();
+    fireEvent.keyDown(nav, { key: 'ArrowRight' });
+
+    // Exactly one tab stop, and it is the now-focused button (reactive, not a
+    // setAttribute that a re-render would clobber).
+    const stops = Array.from(container.querySelectorAll('.pagination__button')).filter(
+      (b) => b.getAttribute('tabindex') === '0',
+    );
+    expect(stops).toHaveLength(1);
+    expect(document.activeElement).toBe(stops[0]);
+  });
+});

@@ -509,3 +509,27 @@ describe('Scrollable Tabs', () => {
     expect(scrollContainer).toHaveClass('tabs');
   });
 });
+
+describe('Tabs — roving tabindex (regression)', () => {
+  const opts: TabOption[] = [
+    { value: 'a', label: 'A' },
+    { value: 'b', label: 'B', disabled: true },
+    { value: 'c', label: 'C' },
+  ];
+
+  it('keeps a single tab stop when the active value is not in the options', () => {
+    const { container } = render(() => <Tabs options={opts} value="does-not-exist" />);
+    const tabs = container.querySelectorAll('[role="tab"]');
+    // Before the fix the tablist had zero tab stops (keyboard-unreachable);
+    // now it falls back to the first enabled tab.
+    expect(tabs[0].getAttribute('tabindex')).toBe('0');
+    expect(Array.from(tabs).filter((t) => t.getAttribute('tabindex') === '0')).toHaveLength(1);
+  });
+
+  it('does not place the tab stop on a disabled active tab', () => {
+    const { container } = render(() => <Tabs options={opts} value="b" />);
+    const tabs = container.querySelectorAll('[role="tab"]');
+    expect(tabs[1].getAttribute('tabindex')).toBe('-1'); // disabled active tab
+    expect(tabs[0].getAttribute('tabindex')).toBe('0'); // first enabled fallback
+  });
+});
